@@ -10,13 +10,27 @@ import SwiftUI
 struct SplashView: View {
 
     var body: some View {
-        VStack{
+        ZStack {
             GifView(gifName: "earth_round")
-                .foregroundColor(.clear)
-                .frame(width: 600, height: 601)
+                .frame(width: 600, height: 600)
                 .clipped()
-                .opacity(0.8)
-                
+                .opacity(0.7)
+            
+            HStack(spacing: 5) {
+                Text("Fly to You")
+                    .font(.system(size: 40))
+                    .foregroundStyle(.white)
+                Image("paperplane")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 40, height: 40)
+            }
+            
+            Text("“마음을 담은 종이비행기를 접어서, \n누군가에게 날려보내는 감정 표현\"")
+                .font(.system(size: 20))
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.white)
+                .offset(y: 200)
         }
     }
 }
