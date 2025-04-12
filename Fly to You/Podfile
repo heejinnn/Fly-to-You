@@ -1,0 +1,22 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'Fly to You' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for Fly to You
+  pod 'FirebaseAnalytics'
+  
+
+
+  target 'Fly to YouTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'Fly to YouUITests' do
+    # Pods for testing
+  end
+
+end
