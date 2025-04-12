@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  MainView.swift
 //  Fly to You
 //
 //  Created by 최희진 on 4/12/25.
@@ -7,7 +7,10 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct MainView: View {
+    
+    @ObservedObject var viewModelWrapper: MainViewModelWrapper
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
@@ -20,5 +23,9 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    MainView(viewModelWrapper: MainViewModelWrapper())
+}
+
+final class MainViewModelWrapper: ObservableObject {
+   
 }
