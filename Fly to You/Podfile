@@ -6,8 +6,12 @@ target 'Fly to You' do
   use_frameworks!
 
   # Pods for Fly to You
+  
+  # Firebase
   pod 'FirebaseAnalytics'
   
+
+  pod 'Gifu'
 
 
   target 'Fly to YouTests' do

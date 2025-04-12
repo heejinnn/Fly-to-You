@@ -10,16 +10,12 @@ import SwiftUI
 struct SplashView: View {
 
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        GifView(gifName: "earth_round")
+                .frame(width: 200, height: 200)
     }
 }
 
 #Preview {
     SplashView()
 }
+
