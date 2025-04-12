@@ -10,8 +10,14 @@ import SwiftUI
 struct SplashView: View {
 
     var body: some View {
-        GifView(gifName: "earth_round")
-                .frame(width: 200, height: 200)
+        VStack{
+            GifView(gifName: "earth_round")
+                .foregroundColor(.clear)
+                .frame(width: 600, height: 601)
+                .clipped()
+                .opacity(0.8)
+                
+        }
     }
 }
 
