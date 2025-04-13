@@ -12,15 +12,19 @@ struct YourApp: App {
 
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @State private var showSplash = true
+    @State private var gifReady = false
+
 
     var body: some Scene {
         WindowGroup {
             if showSplash {
-                SplashView()
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            withAnimation {
-                                showSplash = false
+                SplashView(gifReady: $gifReady)
+                    .onChange(of: gifReady) { ready in
+                        if ready {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                withAnimation {
+                                    showSplash = false
+                                }
                             }
                         }
                     }

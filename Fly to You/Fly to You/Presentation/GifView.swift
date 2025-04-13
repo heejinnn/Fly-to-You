@@ -8,14 +8,23 @@
 import SwiftUI
 import WebKit
 
+import SwiftUI
+import WebKit
+
 struct GifView: UIViewRepresentable {
     let gifName: String
+    var onLoadCompleted: (() -> Void)? = nil
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(onLoadCompleted: onLoadCompleted)
+    }
 
     func makeUIView(context: Context) -> WKWebView {
         let webView = WKWebView()
         webView.scrollView.isScrollEnabled = false
         webView.isOpaque = false
         webView.backgroundColor = .clear
+        webView.navigationDelegate = context.coordinator
         return webView
     }
 
@@ -31,5 +40,17 @@ struct GifView: UIViewRepresentable {
         </html>
         """
         uiView.loadHTMLString(html, baseURL: nil)
+    }
+
+    class Coordinator: NSObject, WKNavigationDelegate {
+        let onLoadCompleted: (() -> Void)?
+
+        init(onLoadCompleted: (() -> Void)?) {
+            self.onLoadCompleted = onLoadCompleted
+        }
+
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            onLoadCompleted?()
+        }
     }
 }

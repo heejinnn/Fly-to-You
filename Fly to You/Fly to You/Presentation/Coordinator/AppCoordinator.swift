@@ -22,7 +22,7 @@ final class AppCoordinator: ObservableObject {
         case .main:
             MainView(viewModelWrapper: mainViewModelWrapper)
         case .splash:
-            SplashView()
+            SplashView(gifReady: .constant(false))
         }
     }
 }
