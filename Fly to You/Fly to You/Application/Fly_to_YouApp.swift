@@ -28,8 +28,8 @@ struct YourApp: App {
                         }
                     }
             } else {
-                AppComponent()
-                    .makeRootView()
+                
+                MainTabView()
             }
         }
     }

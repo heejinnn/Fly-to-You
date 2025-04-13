@@ -12,13 +12,16 @@ struct MainView: View {
     @ObservedObject var viewModelWrapper: MainViewModelWrapper
     
     var body: some View {
-        VStack {
-            Text("Hello, world!")
-        }
-        .background(
+        ZStack {
             Image("background_sky")
-        )
-        .padding()
+                .resizable()
+                .ignoresSafeArea(edges: .top)
+            
+            VStack {
+                Text("홈 뷰 내용")
+            }
+            
+        }
     }
 }
 
