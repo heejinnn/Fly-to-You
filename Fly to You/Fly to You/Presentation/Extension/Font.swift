@@ -49,4 +49,11 @@ extension Font {
 
         return Font.custom("\(familyName)-\(weightString)", size: fontSize)
     }
+    
+    static func italiana(size fontSize: CGFloat) -> Font {
+        let familyName = "Italiana"
+        let weightString = "Regular"
+
+        return Font.custom("\(familyName)-\(weightString)", size: fontSize)
+    }
 }

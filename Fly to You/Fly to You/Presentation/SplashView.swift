@@ -18,7 +18,7 @@ struct SplashView: View {
             
             HStack(spacing: 5) {
                 Text("Fly to You")
-                    .font(.system(size: 40))
+                    .font(.italiana(size: 40))
                     .foregroundStyle(.white)
                 Image("paperplane")
                     .resizable()
@@ -27,7 +27,7 @@ struct SplashView: View {
             }
             
             Text("“마음을 담은 종이비행기를 접어서, \n누군가에게 날려보내는 감정 표현\"")
-                .font(.system(size: 20))
+                .font(.pretendard(.ultraLight, size: 20))
                 .multilineTextAlignment(.center)
                 .foregroundStyle(.white)
                 .offset(y: 200)
