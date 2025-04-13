@@ -28,7 +28,6 @@ struct YourApp: App {
                         }
                     }
             } else {
-                
                 MainTabView()
             }
         }
