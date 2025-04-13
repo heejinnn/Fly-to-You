@@ -9,13 +9,28 @@ import SwiftUI
 
 @main
 struct YourApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @State private var showSplash = true
+    @State private var gifReady = false
 
-  @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
-  var body: some Scene {
-    WindowGroup {
-        AppComponent()
-            .makeRootView()
+    var body: some Scene {
+        WindowGroup {
+            if showSplash {
+                SplashView(gifReady: $gifReady)
+                    .onChange(of: gifReady) { ready in
+                        if ready {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                withAnimation {
+                                    showSplash = false
+                                }
+                            }
+                        }
+                    }
+            } else {
+                AppComponent()
+                    .makeRootView()
+            }
+        }
     }
-  }
 }
