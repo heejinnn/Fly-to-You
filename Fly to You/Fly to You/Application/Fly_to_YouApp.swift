@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct YourApp: App {
-
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @State private var showSplash = true
     @State private var gifReady = false
