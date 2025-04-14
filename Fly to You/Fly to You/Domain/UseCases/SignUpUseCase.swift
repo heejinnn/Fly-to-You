@@ -6,7 +6,7 @@
 //
 
 protocol SignUpUseCase{
-    func signUp(nickname: String)
+    func signUp(nickname: String, completion: @escaping (Bool) -> Void)
 }
 
 class DefaultSignUpUseCase: SignUpUseCase{
@@ -16,7 +16,7 @@ class DefaultSignUpUseCase: SignUpUseCase{
         self.repository = repository
     }
     
-    func signUp(nickname: String) {
-        repository.signUp(nickname: nickname)
+    func signUp(nickname: String, completion: @escaping (Bool) -> Void) {
+        repository.signUp(nickname: nickname, completion: completion)
     }
 }

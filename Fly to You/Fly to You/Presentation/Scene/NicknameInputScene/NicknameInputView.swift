@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import Combine
 
 struct NicknameInputView: View {
-    @StateObject private var viewModel = AuthViewModel()
+//    @StateObject private var viewModel = AuthViewModel()
     
     var body: some View {
         VStack(spacing: 20) {
@@ -28,5 +29,29 @@ struct NicknameInputView: View {
             .disabled(viewModel.nickname.isEmpty)
         }
         .padding()
+    }
+}
+
+final class AuthViewModelWrapper: ObservableObject {
+    @Published var isLoggedIn: Bool
+    @Published var duplicateError: Bool
+    
+    var viewModel: AuthViewModel
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(viewModel: AuthViewModel) {
+        self.viewModel = viewModel
+        bind()
+    }
+    private func bind() {
+        viewModel.isLoggedInPublisher
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.isLoggedIn, on: self)
+            .store(in: &cancellables)
+        
+        viewModel.duplicateErrorPublisher
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.duplicateError, on: self)
+            .store(in: &cancellables)
     }
 }

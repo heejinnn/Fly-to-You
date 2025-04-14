@@ -6,5 +6,5 @@
 //
 
 protocol SignUpRepo{
-    func signUp(nickname: String)
+    func signUp(nickname: String, completion: @escaping (Bool) -> Void)
 }

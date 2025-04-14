@@ -9,56 +9,53 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-class AuthViewModel: ObservableObject {
+
+protocol AuthViewModelInput{
+    func signUp(nickname: String, completion: @escaping (Bool) -> Void)
+}
+
+protocol AuthViewModelOutput{
+    var isLoggedInPublisher: Published<Bool>.Publisher { get }
+    var duplicateErrorPublisher: Published<Bool>.Publisher { get }
+}
+
+protocol AuthViewModel: AuthViewModelInput, AuthViewModelOutput{}
+
+class DefaultAuthViewModel: AuthViewModel {
     @Published var nickname: String = ""
     @Published var isLoggedIn: Bool = false
-    @Published var nicknameDuplicateError: Bool = false
+    @Published var duplicateError: Bool = false
+    
+    private let signUpUseCae: SignUpUseCase
+    
+    init(signUpUseCase: SignUpUseCase) {
+        self.signUpUseCae = signUpUseCase
+    }
     
     private let db = Firestore.firestore()
 
-    func trySignUp() {
-        checkNicknameDuplicate(nickname: nickname) { [weak self] isDuplicate in
-            guard let self = self else { return }
-            if isDuplicate {
-                self.nicknameDuplicateError = true
-                print("닉네임 중복됨")
-            } else {
-                self.nicknameDuplicateError = false
-                self.signInAnonymouslyAndSaveUser()
+    func signUp(nickname: String, completion: @escaping (Bool) -> Void) {
+        
+        signUpUseCae.signUp(nickname: nickname){ [weak self] result in
+            if result{
+                self?.isLoggedIn = true
+                self?.duplicateError = false
+                completion(true)
+            } else{
+                self?.isLoggedIn = false
+                self?.duplicateError = true
+                completion(false)
             }
         }
     }
+}
 
-    private func checkNicknameDuplicate(nickname: String, completion: @escaping (Bool) -> Void) {
-        db.collection("users")
-            .whereField("nickname", isEqualTo: nickname)
-            .getDocuments { snapshot, error in
-                if let error = error {
-                    print("중복 검사 오류: \(error.localizedDescription)")
-                    completion(true)
-                    return
-                }
-                let isDuplicated = snapshot?.documents.isEmpty == false
-                completion(isDuplicated)
-            }
+extension DefaultAuthViewModel{
+    var isLoggedInPublisher: Published<Bool>.Publisher{
+        $isLoggedIn
     }
-
-    private func signInAnonymouslyAndSaveUser() {
-        Auth.auth().signInAnonymously { [weak self] result, error in
-            guard let self = self, let uid = result?.user.uid else { return }
-
-            let user = UserModel(uid: uid, nickname: self.nickname, createdAt: Date())
-
-            do {
-                try self.db.collection("users").document(uid).setData(from: user) { error in
-                    if error == nil {
-                        UserDefaults.standard.set(uid, forKey: "uid")
-                        self.isLoggedIn = true
-                    }
-                }
-            } catch {
-                print("유저 저장 에러: \(error.localizedDescription)")
-            }
-        }
+    var duplicateErrorPublisher: Published<Bool>.Publisher{
+        $duplicateError
     }
+    
 }
