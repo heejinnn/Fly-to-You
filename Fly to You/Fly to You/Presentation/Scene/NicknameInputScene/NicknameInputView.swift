@@ -11,25 +11,21 @@ struct NicknameInputView: View {
     @StateObject private var viewModel = AuthViewModel()
     
     var body: some View {
-        VStack(spacing: 24) {
-            Text("닉네임을 입력해주세요")
-                .font(.title2)
-            
+        VStack(spacing: 20) {
             TextField("닉네임", text: $viewModel.nickname)
                 .padding()
                 .background(Color.gray.opacity(0.1))
                 .cornerRadius(10)
-                .padding(.horizontal)
+            
+            if viewModel.nicknameDuplicateError {
+                Text("이미 사용 중인 닉네임입니다.")
+                    .foregroundColor(.red)
+            }
             
             Button("시작하기") {
-                viewModel.signInAnonymouslyAndSaveUser()
+                viewModel.trySignUp()
             }
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .cornerRadius(10)
-            .padding(.horizontal)
+            .disabled(viewModel.nickname.isEmpty)
         }
         .padding()
     }
