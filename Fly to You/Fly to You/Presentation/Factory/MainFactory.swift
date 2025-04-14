@@ -17,7 +17,8 @@ struct MainFactoryDependency: RootDependency {
 // MARK: - MainFactory
 
 protocol MainFactory {
-    func makeCoordinator() -> AppCoordinator
+    associatedtype SomeView: View
+    func makeMainView() -> SomeView
 }
 
 // MARK: - DefaultMainFactory
@@ -29,7 +30,7 @@ final class DefaultMainFactory: MainFactory {
         self.mainViewModelWrapper = mainViewModelWrapper
     }
 
-    public func makeCoordinator() -> AppCoordinator { // some: "특정 타입만 반환"
-        return AppCoordinator(mainViewModelWrapper: mainViewModelWrapper)
+    public func makeMainView() -> some View { // some: "특정 타입만 반환"
+        return MainView(viewModelWrapper: mainViewModelWrapper)
     }
 }
