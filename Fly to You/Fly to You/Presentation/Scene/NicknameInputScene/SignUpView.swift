@@ -8,33 +8,39 @@
 import SwiftUI
 import Combine
 
-struct NicknameInputView: View {
-//    @StateObject private var viewModel = AuthViewModel()
+struct SignUpView: View {
+    
+    @ObservedObject var viewModelWrapper: AuthViewModelWrapper
+    @State private var nickname = ""
     
     var body: some View {
         VStack(spacing: 20) {
-            TextField("닉네임", text: $viewModel.nickname)
+            TextField("닉네임", text: $nickname)
                 .padding()
                 .background(Color.gray.opacity(0.1))
                 .cornerRadius(10)
             
-            if viewModel.nicknameDuplicateError {
+            if viewModelWrapper.duplicateError {
                 Text("이미 사용 중인 닉네임입니다.")
                     .foregroundColor(.red)
             }
             
             Button("시작하기") {
-                viewModel.trySignUp()
+                viewModelWrapper.viewModel.signUp(nickname: nickname){ result in
+                    if result{
+                        
+                    }
+                }
             }
-            .disabled(viewModel.nickname.isEmpty)
+            .disabled(nickname.isEmpty)
         }
         .padding()
     }
 }
 
 final class AuthViewModelWrapper: ObservableObject {
-    @Published var isLoggedIn: Bool
-    @Published var duplicateError: Bool
+    @Published var isLoggedIn: Bool = false
+    @Published var duplicateError: Bool = false
     
     var viewModel: AuthViewModel
     private var cancellables = Set<AnyCancellable>()
