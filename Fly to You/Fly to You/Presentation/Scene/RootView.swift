@@ -14,7 +14,8 @@ struct RootView: View {
         if appState.isLoggedIn {
             MainTabView()
         } else {
-            SignUpView(viewModelWrapper: AuthViewModelWrapper(viewModel: DefaultAuthViewModel(signUpUseCase: DefaultSignUpUseCase(repository: DefaultSignUpRepo()))))
+            AppComponent()
+                .makeSignUpView()
         }
     }
 }

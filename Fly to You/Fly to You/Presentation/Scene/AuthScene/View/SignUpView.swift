@@ -11,6 +11,7 @@ import Combine
 struct SignUpView: View {
     
     @ObservedObject var viewModelWrapper: AuthViewModelWrapper
+    @EnvironmentObject var appState: AppState
     @State private var nickname = ""
     
     var body: some View {
@@ -28,7 +29,7 @@ struct SignUpView: View {
             Button("시작하기") {
                 viewModelWrapper.viewModel.signUp(nickname: nickname){ result in
                     if result{
-                        
+                        appState.isLoggedIn = true
                     }
                 }
             }
