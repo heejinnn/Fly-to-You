@@ -23,7 +23,6 @@ final class RootComponent {
     }
 
     func makeMainView() -> some View {
-        let coordinator = dependency.mainFactory.makeCoordinator()
-        return NavigationRootView(coordinator: coordinator)
+        AnyView(dependency.mainFactory.makeMainView())
     }
 }

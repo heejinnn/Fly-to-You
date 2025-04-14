@@ -17,8 +17,18 @@ final class AppComponent {
         let mainFactory = mainSceneDIContainer.makeMainFactory()
         return rootComponent(mainFactory: mainFactory).makeMainView()
     }
+    
+    func makeSignUpView() -> some View {
+        let signUpSceneDIContainer = appDIContainer.makeSignUpSceneDIContainer()
+        let signUpFactory = signUpSceneDIContainer.makeSignUpFactory()
+        return authComponent(authFactory: signUpFactory).makeSignUpView()
+    }
 
     private func rootComponent(mainFactory: any MainFactory) -> RootComponent {
         RootComponent(dependency: MainFactoryDependency(mainFactory: mainFactory))
+    }
+    
+    private func authComponent(authFactory: any AuthFactory) -> AuthComponent {
+        AuthComponent(dependency: AuthFactoryDependency(authFactory: authFactory))
     }
 }
