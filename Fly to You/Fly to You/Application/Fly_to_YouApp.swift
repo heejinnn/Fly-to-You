@@ -29,9 +29,8 @@ struct YourApp: App {
                         }
                     }
             } else {
-//                RootView()
-//                    .environmentObject(appState)
-                SendLetter()
+                RootView()
+                    .environmentObject(appState)
             }
         }
     }

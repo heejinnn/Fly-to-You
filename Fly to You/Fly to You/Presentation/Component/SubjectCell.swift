@@ -7,38 +7,31 @@
 
 import SwiftUI
 
-struct SubjectCell: View{
-    
+struct SubjectCell: View {
     let text: String
-    
-    var body: some View{
-        ZStack{
-            
-            Button(action: {
-                
-            }, label: {
-                HStack{
-                    Text("“\(text)” ")
-                        .font(.pretendard(.light, size: 15))
-                        .foregroundColor(.gray1)
-                        .padding(.leading, 15)
-                    
-                    Spacer()
-                }
-                .frame(height: 55)
-                .frame(maxWidth: .infinity)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .inset(by: 0.5)
-                        .stroke(.gray1, lineWidth: 1)
-                )
-            })
-            .padding(.horizontal, 20)
-            .buttonStyle(.plain)
+    let isSelected: Bool
+
+    var body: some View {
+        HStack {
+            Text("“\(text)” ")
+                .font(.pretendard(.light, size: 15))
+                .foregroundColor(.black)
+                .padding(.leading, 15)
+
+            Spacer()
         }
+        .frame(height: 55)
+        .frame(maxWidth: .infinity)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .inset(by: 0.5)
+                .stroke(isSelected ? .blue1 : .gray1, lineWidth: 1)
+        )
+        .cornerRadius(10)
+        .padding(.horizontal, 20)
     }
 }
 
 #Preview {
-    SubjectCell(text: "응원 한마디")
+    SubjectCell(text: "응원 한마디", isSelected: false)
 }
