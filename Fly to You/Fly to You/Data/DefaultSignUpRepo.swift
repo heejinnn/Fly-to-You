@@ -46,7 +46,7 @@ final class DefaultSignUpRepo: SignUpRepo {
         Auth.auth().signInAnonymously { [weak self] result, error in
             guard let self = self, let uid = result?.user.uid else { return }
 
-            let user = UserModel(uid: uid, nickname: nickname, createdAt: Date())
+            let user = User(uid: uid, nickname: nickname, createdAt: Date())
 
             do {
                 try self.db.collection("users").document(uid).setData(from: user) { error in

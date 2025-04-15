@@ -9,22 +9,32 @@ import SwiftUI
 
 struct MainView: View {
     
-    @ObservedObject var viewModelWrapper: MainViewModelWrapper
+    @EnvironmentObject var viewModelWrapper: MainViewModelWrapper
     
     var body: some View {
-        ZStack {
-            Image("background_sky")
-                .resizable()
-                .ignoresSafeArea(edges: .top)
-            
-            mainContent
-        }
-        .edgesIgnoringSafeArea(.top)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("Fly to You")
-                    .font(.italiana(size: 20))
-                    .foregroundStyle(.gray3)
+        NavigationStack(path: $viewModelWrapper.path){
+            ZStack {
+                Image("background_sky")
+                    .resizable()
+                    .ignoresSafeArea(edges: .top)
+                
+                mainContent
+            }
+            .edgesIgnoringSafeArea(.top)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text("Fly to You")
+                        .font(.italiana(size: 20))
+                        .foregroundStyle(.gray3)
+                }
+            }
+            .navigationDestination(for: MainRoute.self) { route in
+                switch route {
+                case .selectSubject:
+                    SelectSubject()
+                case .sendLetter:
+                    SendLetter()
+                }
             }
         }
     }
@@ -41,7 +51,7 @@ struct MainView: View {
                 .foregroundColor(.gray3)
             
             Button(action: {
-                // TODO: 액션 구현
+                viewModelWrapper.path.append(.selectSubject)
             }, label: {
                 Text("비행기 날리기")
                     .font(.pretendard(.ultraLight, size: 18))
@@ -58,9 +68,15 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView(viewModelWrapper: MainViewModelWrapper())
+    MainView()
 }
 
 final class MainViewModelWrapper: ObservableObject {
+    @Published var path: [MainRoute] = []
    
+}
+
+enum MainRoute: Hashable {
+    case selectSubject
+    case sendLetter
 }
