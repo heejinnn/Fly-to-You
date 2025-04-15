@@ -12,5 +12,7 @@ struct Letter: Codable, Identifiable {
     var fromUID: String
     var toUID: String
     var message: String
+    var topic: String
+    var topicId: String
     var timestamp: Date
 }
