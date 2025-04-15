@@ -43,8 +43,8 @@ class SendLetterViewModel: ObservableObject{
                     "topicId": topicId
                 ]
 
-                flightRef.getDocument { snapshot, error in
-                    if let snapshot = snapshot, snapshot.exists {
+                flightRef.getDocument { document, error in
+                    if let document = document, document.exists {
                         // 이미 문서가 있으면 업데이트
                         flightRef.updateData([
                             "routes": FieldValue.arrayUnion([routeData])
