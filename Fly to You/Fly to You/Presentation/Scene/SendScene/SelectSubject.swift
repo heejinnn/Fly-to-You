@@ -20,13 +20,7 @@ struct SelectSubject: View {
             
             Spacer().frame(height: 25)
             
-            HStack{
-                Text("마음에 드는\n주제를 선택하세요")
-                    .font(.pretendard(.regular, size: 20))
-                    .foregroundStyle(.gray3)
-                Spacer()
-            }
-            .padding(.horizontal, 25)
+            ExplanationCell(text: "마음에 드는\n주제를 선택하세요")
             
             Spacer().frame(height: 25)
             
@@ -40,7 +34,7 @@ struct SelectSubject: View {
             }
             .onChange(of: customTopic) { newValue in
                 if !newValue.isEmpty {
-                    selectedTopic = "" // ✅ 커스텀 입력 시작 시 선택 셀 해제
+                    selectedTopic = ""
                 }
             }
             
