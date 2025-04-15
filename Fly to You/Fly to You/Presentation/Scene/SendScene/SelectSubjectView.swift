@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SelectSubject: View {
+struct SelectSubjectView: View {
     
     @EnvironmentObject var viewModelWrapper: MainViewModelWrapper
     @State private var selectedTopic: String = ""
@@ -18,11 +18,7 @@ struct SelectSubject: View {
     var body: some View {
         VStack {
             
-            Spacer().frame(height: 25)
-            
             ExplanationCell(text: "마음에 드는\n주제를 선택하세요")
-            
-            Spacer().frame(height: 25)
             
             ForEach(topicList, id: \.self) { topic in
                 Button(action: {
@@ -56,7 +52,6 @@ struct SelectSubject: View {
     }
     
     private var inputSubject: some View{
-
         HStack{
             TextField("직접 입력", text: $customTopic)
                 .font(.pretendard(.light, size: 15))
@@ -75,5 +70,5 @@ struct SelectSubject: View {
     }
 }
 #Preview {
-    SelectSubject()
+    SelectSubjectView()
 }

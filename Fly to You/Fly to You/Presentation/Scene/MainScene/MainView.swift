@@ -31,7 +31,7 @@ struct MainView: View {
             .navigationDestination(for: MainRoute.self) { route in
                 switch route {
                 case .selectSubject:
-                    SelectSubject()
+                    SelectSubjectView()
                 case .sendLetter:
                     SendLetter()
                 }

@@ -12,12 +12,19 @@ struct ExplanationCell: View {
     let text: String
     
     var body: some View {
-        HStack{
-            Text("\(text)")
-                .font(.pretendard(.regular, size: 20))
-                .foregroundStyle(.gray3)
-            Spacer()
+        
+        VStack{
+            Spacer().frame(height: 25)
+            
+            HStack{
+                Text("\(text)")
+                    .font(.pretendard(.regular, size: 20))
+                    .foregroundStyle(.gray3)
+                Spacer()
+            }
+            .padding(.horizontal, 25)
+            
+            Spacer().frame(height: 25)
         }
-        .padding(.horizontal, 25)
     }
 }
