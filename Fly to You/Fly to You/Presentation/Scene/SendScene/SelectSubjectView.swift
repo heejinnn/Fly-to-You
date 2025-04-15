@@ -18,7 +18,7 @@ struct SelectSubjectView: View {
     var body: some View {
         VStack {
             
-            ExplanationCell(text: "마음에 드는\n주제를 선택하세요")
+            ExplanationText(text: "마음에 드는\n주제를 선택하세요")
             
             ForEach(topicList, id: \.self) { topic in
                 Button(action: {

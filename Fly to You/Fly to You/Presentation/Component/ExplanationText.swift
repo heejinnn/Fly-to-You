@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ExplanationCell: View {
+struct ExplanationText: View {
     
     let text: String
     

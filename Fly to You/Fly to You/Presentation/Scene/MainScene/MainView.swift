@@ -33,7 +33,7 @@ struct MainView: View {
                 case .selectSubject:
                     SelectSubjectView()
                 case .sendLetter:
-                    SendLetter()
+                    SendLetterView()
                 }
             }
         }
