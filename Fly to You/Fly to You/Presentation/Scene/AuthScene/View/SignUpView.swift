@@ -9,7 +9,6 @@ import SwiftUI
 import Combine
 
 struct SignUpView: View {
-    
     @ObservedObject var viewModelWrapper: AuthViewModelWrapper
     @EnvironmentObject var appState: AppState
     @State private var nickname = ""

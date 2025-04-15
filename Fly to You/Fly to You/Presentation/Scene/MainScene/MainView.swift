@@ -33,7 +33,7 @@ struct MainView: View {
                 case .selectSubject:
                     SelectSubjectView()
                 case .sendLetter:
-                    SendLetterView()
+                    SendLetterView(topic: viewModelWrapper.topic)
                 }
             }
         }
@@ -73,7 +73,8 @@ struct MainView: View {
 
 final class MainViewModelWrapper: ObservableObject {
     @Published var path: [MainRoute] = []
-   
+    @Published var topic: String = ""
+
 }
 
 enum MainRoute: Hashable {

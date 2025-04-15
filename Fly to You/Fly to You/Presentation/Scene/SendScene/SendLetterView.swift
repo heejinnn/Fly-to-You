@@ -9,7 +9,9 @@ import SwiftUI
 
 struct SendLetterView: View{
     
-    var topic: String = "응원 한마디"
+    @EnvironmentObject var viewModelWrapper: MainViewModelWrapper
+    
+    let topic: String
     @State private var toText: String = ""
     @State private var fromText: String = ""
     @State private var message: String = ""
@@ -27,12 +29,16 @@ struct SendLetterView: View{
         }
         .toolbar{
             ToolbarItem(placement: .topBarTrailing){
-                Text("날리기􀈟")
+                HStack(spacing: 0){
+                    Text("날리기")
+                        .foregroundStyle(.blue1)
+                    Image(systemName: "paperplane")
+                }
             }
         }
     }
 }
 
 #Preview {
-    SendLetterView()
+    SendLetterView(topic: "")
 }
