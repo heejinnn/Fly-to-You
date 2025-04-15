@@ -13,19 +13,41 @@ struct SelectSubject: View {
     @State private var selectedTopic: String = ""
     @State private var customTopic: String = ""
     
+    private let topicList = ["응원 한마디", "오늘 가장 행복했던 순간은?", "오늘의 TMI", "칭찬 한마디", "최근에 본 영화 추천"]
+    
     var body: some View {
         VStack {
-            Text("주제를 선택하거나 입력하세요")
             
-            ForEach(["응원 한마디", "오늘 가장 행복했던 순간은?", "오늘의 TMI", "칭찬 한마디"], id: \.self) { topic in
-                
-                Button(action: {
-                    
-                }, label: {
-                    Text(topic)
-                })
+            Spacer().frame(height: 25)
+            
+            HStack{
+                Text("마음에 드는\n주제를 선택하세요")
+                    .font(.pretendard(.regular, size: 20))
+                    .foregroundStyle(.gray3)
+                Spacer()
             }
-            TextField("직접 입력", text: $customTopic)
+            .padding(.horizontal, 25)
+            
+            Spacer().frame(height: 25)
+            
+            ForEach(topicList, id: \.self) { topic in
+                Button(action: {
+                    selectedTopic = topic
+                    customTopic = ""
+                }) {
+                    SubjectCell(text: topic, isSelected: selectedTopic == topic)
+                }
+            }
+            .onChange(of: customTopic) { newValue in
+                if !newValue.isEmpty {
+                    selectedTopic = "" // ✅ 커스텀 입력 시작 시 선택 셀 해제
+                }
+            }
+            
+            inputSubject
+                .padding(.horizontal, 20)
+            
+            Spacer()
         }
         .toolbar{
             ToolbarItem(placement: .topBarTrailing){
@@ -33,8 +55,31 @@ struct SelectSubject: View {
                     viewModelWrapper.path.append(.sendLetter)
                 }, label: {
                     Text("다음")
+                        .foregroundStyle(.blue1)
                 })
             }
         }
     }
+    
+    private var inputSubject: some View{
+
+        HStack{
+            TextField("직접 입력", text: $customTopic)
+                .font(.pretendard(.light, size: 15))
+                .foregroundColor(.black)
+                .padding(.leading, 15)
+
+            Spacer()
+        }
+        .frame(height: 55)
+        .frame(maxWidth: .infinity)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .inset(by: 0.5)
+                .stroke(!customTopic.isEmpty ? .blue1 : .gray1, lineWidth: 1)
+        )
+    }
+}
+#Preview {
+    SelectSubject()
 }
