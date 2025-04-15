@@ -31,6 +31,7 @@ final class DefaultMainFactory: MainFactory {
     }
 
     public func makeMainView() -> some View { // some: "특정 타입만 반환"
-        return MainView(viewModelWrapper: mainViewModelWrapper)
+        return MainView()
+            .environmentObject(mainViewModelWrapper)
     }
 }
