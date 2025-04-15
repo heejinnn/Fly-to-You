@@ -31,9 +31,9 @@ struct MainView: View {
             .navigationDestination(for: MainRoute.self) { route in
                 switch route {
                 case .selectSubject:
-                    SelectSubject()
+                    SelectSubjectView()
                 case .sendLetter:
-                    SendLetter()
+                    SendLetterView(topic: viewModelWrapper.topic)
                 }
             }
         }
@@ -73,7 +73,8 @@ struct MainView: View {
 
 final class MainViewModelWrapper: ObservableObject {
     @Published var path: [MainRoute] = []
-   
+    @Published var topic: String = ""
+
 }
 
 enum MainRoute: Hashable {

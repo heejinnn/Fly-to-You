@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SelectSubject: View {
+struct SelectSubjectView: View {
     
     @EnvironmentObject var viewModelWrapper: MainViewModelWrapper
     @State private var selectedTopic: String = ""
@@ -18,17 +18,7 @@ struct SelectSubject: View {
     var body: some View {
         VStack {
             
-            Spacer().frame(height: 25)
-            
-            HStack{
-                Text("마음에 드는\n주제를 선택하세요")
-                    .font(.pretendard(.regular, size: 20))
-                    .foregroundStyle(.gray3)
-                Spacer()
-            }
-            .padding(.horizontal, 25)
-            
-            Spacer().frame(height: 25)
+            ExplanationText(text: "마음에 드는\n주제를 선택하세요")
             
             ForEach(topicList, id: \.self) { topic in
                 Button(action: {
@@ -40,7 +30,7 @@ struct SelectSubject: View {
             }
             .onChange(of: customTopic) { newValue in
                 if !newValue.isEmpty {
-                    selectedTopic = "" // ✅ 커스텀 입력 시작 시 선택 셀 해제
+                    selectedTopic = ""
                 }
             }
             
@@ -52,6 +42,7 @@ struct SelectSubject: View {
         .toolbar{
             ToolbarItem(placement: .topBarTrailing){
                 Button(action: {
+                    viewModelWrapper.topic = selectedTopic.isEmpty ? customTopic : selectedTopic
                     viewModelWrapper.path.append(.sendLetter)
                 }, label: {
                     Text("다음")
@@ -62,7 +53,6 @@ struct SelectSubject: View {
     }
     
     private var inputSubject: some View{
-
         HStack{
             TextField("직접 입력", text: $customTopic)
                 .font(.pretendard(.light, size: 15))
@@ -81,5 +71,5 @@ struct SelectSubject: View {
     }
 }
 #Preview {
-    SelectSubject()
+    SelectSubjectView()
 }
