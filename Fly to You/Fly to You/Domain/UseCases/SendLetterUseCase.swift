@@ -19,7 +19,6 @@ class DefaultSendLetterUseCase: SendLetterUseCase{
     }
     
     func sendLetter(toUID: String, topic: String, topicId: String, message: String, completion: @escaping (Error?) -> Void) {
-        repository.
+        repository.sendLetter(toUID: toUID, topic: topic, topicId: topicId, message: message, completion: completion)
     }
-    
 }
