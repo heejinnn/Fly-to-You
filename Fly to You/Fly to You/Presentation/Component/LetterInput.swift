@@ -31,51 +31,63 @@ struct LetterInput: View{
             }
             .background(.blue1)
             
-            VStack(alignment: .leading, spacing: 10) {
-                HStack{
-                    Text("To.")
-                        .font(.system(size: 18))
-                    TextField("전달할 대상을 입력하세요", text: $toText)
-                        .font(.system(size: 18))
-                }
-                .padding(.top, 10)
-
-                Text("From. \(fromText.isEmpty ? "나" : fromText)")
-                    .font(.system(size: 18))
-                    .foregroundColor(.black)
-                
-                Divider()
-                
-                TextEditor(text: $message)
-                    .frame(height: 300)
-                    .font(.system(size: 14))
-                    .background(Color.clear)
-                    .overlay(
-                        VStack {
-                            if message.isEmpty {
-                                Text("여기에 메시지를 입력하세요")
-                                    .foregroundColor(.gray1)
-    //                                        .padding(.top, 6)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                            }
-                            Spacer()
-                        }
-                    )
-                    .onChange(of: message) { newValue in
-                        if message.count > maxCharacters {
-                            message = String(message.prefix(maxCharacters))
-                        }
-                    }
-            }
-            .padding(.horizontal, 15)
-            .padding(.top, 5)
-            .background(.white)
+            content
+            
         }
         .cornerRadius(10)
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 20)
         .shadow(radius: 3)
         
+        textCount
+    }
+    
+    private var content: some View {
+        
+        
+        VStack(alignment: .leading, spacing: 10) {
+            HStack{
+                Text("To.")
+                    .font(.gaRamYeonGgoc(size: 18))
+                TextField("전달할 대상을 입력하세요", text: $toText)
+                    .font(.gaRamYeonGgoc(size: 18))
+            }
+            .padding(.top, 10)
+
+            Text("From. \(fromText.isEmpty ? "나" : fromText)")
+                .font(.gaRamYeonGgoc(size: 18))
+                .foregroundColor(.black)
+            
+            Divider()
+            
+            TextEditor(text: $message)
+                .frame(height: 300)
+                .font(.gaRamYeonGgoc(size: 20))
+                .background(Color.clear)
+                .overlay(
+                    VStack {
+                        if message.isEmpty {
+                            Text("여기에 메시지를 입력하세요")
+                                .foregroundColor(.gray1)
+                                .font(.gaRamYeonGgoc(size: 20))
+//                                        .padding(.top, 6)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        Spacer()
+                    }
+                )
+                .onChange(of: message) { newValue in
+                    if message.count > maxCharacters {
+                        message = String(message.prefix(maxCharacters))
+                    }
+                }
+        }
+        .padding(.horizontal, 15)
+        .padding(.top, 5)
+        .background(.white)
+    }
+    
+    private var textCount: some View{
         // 하단 글자 수 카운터
         HStack {
             Spacer()
@@ -84,6 +96,11 @@ struct LetterInput: View{
                 .foregroundColor(.gray)
         }
         .padding(.horizontal, 20)
-        
     }
 }
+
+#Preview {
+    LetterInput(topic: "ddd", toText: .constant("dd"), fromText: "ssss", message: .constant("aaa"))
+}
+
+

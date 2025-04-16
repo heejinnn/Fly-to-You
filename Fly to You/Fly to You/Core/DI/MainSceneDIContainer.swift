@@ -18,14 +18,38 @@ final class MainSceneDIContainer {
     }
 
     // MARK: - Use Cases
+    
+    private func makeSendLetterUseCase() -> SendLetterUseCase {
+        let makeUserRepo = makeUserRepo()
+        let makeLetterRepo = makeLetterRepo()
+        let makeFlightrRepo = makeFlightrRepo()
+        
+        return DefaultSendLetterUseCase(userRepo: makeUserRepo, letterRepo: makeLetterRepo, flightRepo: makeFlightrRepo)
+    }
 
     // MARK: - Repository
+    
+    func makeUserRepo() -> UserRepo {
+        return DefaultUserRepo()
+    }
+    func makeLetterRepo() -> LetterRepo {
+        return DefaultLetterRepo()
+    }
+    func makeFlightrRepo() -> FlightRepo {
+        return DefaultFlightRepo()
+    }
 
     // MARK: - View Model
+    
+    func makeSendLetterViewModel() -> SendLetterViewModel {
+        let useCase = makeSendLetterUseCase()
+        
+        return DefaultSendLetterViewModel(sendLetterUseCase: useCase)
+    }
 
     // MARK: - View Model Wrapper
 
     func makeMainViewModelWrapper() -> MainViewModelWrapper {
-        MainViewModelWrapper()
+        MainViewModelWrapper(viewModel: makeSendLetterViewModel())
     }
 }
