@@ -10,13 +10,13 @@ import SwiftUI
 
 struct PlaneCell: View{
     
-    let letter: ReceiveLetter = ReceiveLetter(id: "1", from: User(uid: "1", nickname: "누구", createdAt: Date()), to: User(uid: "2", nickname: "누구2", createdAt: Date()), message: "내용", topic: "주제", topicId: "2", timestamp: Date())
+    let letter: ReceiveLetter 
     
     var body: some View{
         ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .fill(.white)
-                .shadow(radius: 2)
+                .shadow(color: .gray3.opacity(0.3), radius: 1, x: 1, y: 2)
             
             HStack {
                 VStack(alignment: .leading, spacing: Spacing.xxxs) {
@@ -48,16 +48,6 @@ struct PlaneCell: View{
     }
 }
 
-#Preview {
-    PlaneCell()
-}
-
-struct ReceiveLetter: Codable {
-    let id: String
-    let from: User
-    let to: User
-    let message: String
-    let topic: String
-    let topicId: String
-    let timestamp: Date
-}
+//#Preview {
+//    PlaneCell()
+//}

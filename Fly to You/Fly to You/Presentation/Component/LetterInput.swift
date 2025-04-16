@@ -17,7 +17,7 @@ struct LetterInput: View{
     private let maxCharacters = 100
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 0) {            
             HStack{
                   Text("주제: \"\(topic)\"")
                       .font(.pretendard(.light, size: 15))
