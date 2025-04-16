@@ -8,7 +8,8 @@
 import SwiftUI
 import WebKit
 
-struct GifView: UIViewRepresentable {
+
+struct GifPlayer: UIViewRepresentable {
     let gifName: String
     var onLoadCompleted: (() -> Void)? = nil
 

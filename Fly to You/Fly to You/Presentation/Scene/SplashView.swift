@@ -14,7 +14,7 @@ struct SplashView: View {
 
     var body: some View {
         ZStack {
-            GifView(gifName: "earth_round") {
+            GifPlayer(gifName: "earth_round") {
                 gifReady = true
             }
             .frame(width: 600, height: 600)

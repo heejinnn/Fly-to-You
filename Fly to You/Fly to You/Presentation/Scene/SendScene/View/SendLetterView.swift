@@ -17,7 +17,7 @@ struct SendLetterView: View{
     @State private var message: String = ""
     
     var body: some View{
-        VStack{
+        ScrollView{
             
             ExplanationText(text: "주제에 맞는\n내용을 입력해 보세요")
             
@@ -25,15 +25,20 @@ struct SendLetterView: View{
         
             Spacer()
         }
+        .onTapGesture {
+            hideKeyboard()
+        }
         .toolbar{
             ToolbarItem(placement: .topBarTrailing){
-                
                 Button(action: {
                     viewModelWrapper.viewModel.sendLetter(toText: toText, topic: topicData.topic, topicId: topicData.topicId, message: message){ result in
                         
                         switch result{
                         case .success:
                             print("[SendLetterView] - 비행기 날리기 성공")
+                            DispatchQueue.main.async {
+                                viewModelWrapper.path.append(.flyAnimation)
+                            }
                         case .failure(let error):
                             print(error)
                         }
@@ -48,6 +53,15 @@ struct SendLetterView: View{
                 })
             }
         }
+    }
+    
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(
+            #selector(UIResponder.resignFirstResponder),
+            to: nil,
+            from: nil,
+            for: nil
+        )
     }
 }
 

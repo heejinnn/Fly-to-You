@@ -51,6 +51,7 @@ struct SelectSubjectView: View {
                 })
             }
         }
+        .toolbar(.hidden, for: .tabBar)
     }
     
     private var inputSubject: some View{
