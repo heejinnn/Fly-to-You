@@ -28,7 +28,6 @@ struct SendLetterView: View{
         .onTapGesture {
             hideKeyboard()
         }
-        
         .toolbar{
             ToolbarItem(placement: .topBarTrailing){
                 
