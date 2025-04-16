@@ -33,11 +33,8 @@ struct SendLetterView: View{
                         
                         switch result{
                         case .success:
-                            
                             print("[SendLetterView] - 비행기 날리기 성공")
-                            
                         case .failure(let error):
-                            
                             print(error)
                         }
                         
@@ -48,7 +45,6 @@ struct SendLetterView: View{
                             .foregroundStyle(.blue1)
                         Image(systemName: "paperplane")
                     }
-
                 })
             }
         }
