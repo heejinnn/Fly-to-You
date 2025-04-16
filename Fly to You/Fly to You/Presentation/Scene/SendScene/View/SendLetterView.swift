@@ -17,7 +17,7 @@ struct SendLetterView: View{
     @State private var message: String = ""
     
     var body: some View{
-        VStack{
+        ScrollView{
             
             ExplanationText(text: "주제에 맞는\n내용을 입력해 보세요")
             
@@ -25,6 +25,10 @@ struct SendLetterView: View{
         
             Spacer()
         }
+        .onTapGesture {
+            hideKeyboard()
+        }
+        
         .toolbar{
             ToolbarItem(placement: .topBarTrailing){
                 
@@ -48,6 +52,15 @@ struct SendLetterView: View{
                 })
             }
         }
+    }
+    
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(
+            #selector(UIResponder.resignFirstResponder),
+            to: nil,
+            from: nil,
+            for: nil
+        )
     }
 }
 

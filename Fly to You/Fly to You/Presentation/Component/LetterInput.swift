@@ -18,8 +18,7 @@ struct LetterInput: View{
     
     var body: some View {
         VStack(spacing: 0) {
-            // 상단 주제 영역
-            HStack{
+          HStack{
                 Text("주제: \"\(topic)\"")
                     .font(.pretendard(.light, size: 15))
                     .foregroundColor(.white)
@@ -43,8 +42,6 @@ struct LetterInput: View{
     }
     
     private var content: some View {
-        
-        
         VStack(alignment: .leading, spacing: 10) {
             HStack{
                 Text("To.")
@@ -70,7 +67,7 @@ struct LetterInput: View{
                             Text("여기에 메시지를 입력하세요")
                                 .foregroundColor(.gray1)
                                 .font(.gaRamYeonGgoc(size: 20))
-//                                        .padding(.top, 6)
+                                        .padding(.top, 6)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         Spacer()
