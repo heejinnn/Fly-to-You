@@ -76,7 +76,7 @@ final class MainViewModelWrapper: ObservableObject {
     }
 }
 
-enum MainRoute: Hashable {
+enum MainRoute {
     case selectSubject
     case sendLetter
     case flyAnimation

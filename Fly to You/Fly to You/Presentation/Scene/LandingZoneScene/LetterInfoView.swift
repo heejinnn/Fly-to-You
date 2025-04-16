@@ -12,11 +12,12 @@ struct LetterInfoView: View{
     let letter: ReceiveLetter
     
     var body: some View{
-        
         VStack{
             ExplanationText(text: "비행기를\n이어서 날려보세요")
             
             PaperPlaneCheck(letter: letter)
+            
+            Spacer()
         }
     }
 }
