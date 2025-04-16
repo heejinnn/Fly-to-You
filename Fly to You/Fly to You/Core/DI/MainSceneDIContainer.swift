@@ -18,14 +18,29 @@ final class MainSceneDIContainer {
     }
 
     // MARK: - Use Cases
+    
+    private func makeSendLetterUseCase() -> SendLetterUseCase {
+        let repository = makeSendLetterRepo()
+        return DefaultSendLetterUseCase(repository: repository)
+    }
 
     // MARK: - Repository
+    
+    func makeSendLetterRepo() -> SendLetterRepo {
+        return DefaultSendLetterRepo()
+    }
 
     // MARK: - View Model
+    
+    func makeSendLetterViewModel() -> SendLetterViewModel {
+        let useCase = makeSendLetterUseCase()
+        
+        return DefaultSendLetterViewModel(sendLetterUseCase: useCase)
+    }
 
     // MARK: - View Model Wrapper
 
     func makeMainViewModelWrapper() -> MainViewModelWrapper {
-        MainViewModelWrapper()
+        MainViewModelWrapper(viewModel: makeSendLetterViewModel())
     }
 }

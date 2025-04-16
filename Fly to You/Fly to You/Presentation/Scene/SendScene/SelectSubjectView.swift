@@ -42,7 +42,8 @@ struct SelectSubjectView: View {
         .toolbar{
             ToolbarItem(placement: .topBarTrailing){
                 Button(action: {
-                    viewModelWrapper.topic = selectedTopic.isEmpty ? customTopic : selectedTopic
+                    viewModelWrapper.topicData.topic = selectedTopic.isEmpty ? customTopic : selectedTopic
+                    viewModelWrapper.topicData.topicId = UUID().uuidString
                     viewModelWrapper.path.append(.sendLetter)
                 }, label: {
                     Text("다음")

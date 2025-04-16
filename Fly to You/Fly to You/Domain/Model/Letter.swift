@@ -9,8 +9,8 @@ import Foundation
 
 struct Letter: Codable, Identifiable {
     var id: String = UUID().uuidString
-    var fromUID: String
-    var toUID: String
+    var fromUid: String
+    var toUid: String
     var message: String
     var topic: String
     var topicId: String

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct MainView: View {
     
@@ -33,7 +34,7 @@ struct MainView: View {
                 case .selectSubject:
                     SelectSubjectView()
                 case .sendLetter:
-                    SendLetterView(topic: viewModelWrapper.topic)
+                    SendLetterView(topicData: Topic(topic: viewModelWrapper.topicData.topic, topicId: viewModelWrapper.topicData.topicId))
                 }
             }
         }
@@ -73,8 +74,14 @@ struct MainView: View {
 
 final class MainViewModelWrapper: ObservableObject {
     @Published var path: [MainRoute] = []
-    @Published var topic: String = ""
-
+    @Published var topicData: Topic = Topic(topic: "", topicId: "")
+    
+    var viewModel: SendLetterViewModel
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(viewModel: SendLetterViewModel) {
+        self.viewModel = viewModel
+    }
 }
 
 enum MainRoute: Hashable {

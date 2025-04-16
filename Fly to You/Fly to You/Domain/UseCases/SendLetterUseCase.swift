@@ -7,7 +7,7 @@
 
 
 protocol SendLetterUseCase{
-    func sendLetter(toUID: String, topic: String, topicId: String, message: String, completion: @escaping (Error?) -> Void)
+    func sendLetter(toText: String, topic: String, topicId: String, message: String, completion: @escaping (Result<String, Error>) -> Void)
 }
 
 class DefaultSendLetterUseCase: SendLetterUseCase{
@@ -18,7 +18,7 @@ class DefaultSendLetterUseCase: SendLetterUseCase{
         self.repository = repository
     }
     
-    func sendLetter(toUID: String, topic: String, topicId: String, message: String, completion: @escaping (Error?) -> Void) {
-        repository.sendLetter(toUID: toUID, topic: topic, topicId: topicId, message: message, completion: completion)
+    func sendLetter(toText: String, topic: String, topicId: String, message: String, completion: @escaping (Result<String, Error>) -> Void) {
+        repository.sendLetter(toText: toText, topic: topic, topicId: topicId, message: message, completion: completion)
     }
 }
