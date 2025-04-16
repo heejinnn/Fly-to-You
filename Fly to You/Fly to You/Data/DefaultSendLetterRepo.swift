@@ -8,103 +8,79 @@
 import FirebaseAuth
 import FirebaseFirestore
 
-final class DefaultSendLetterRepo: SendLetterRepo {
+struct DefaultUserRepo: UserRepo {
     
+    private let auth = Auth.auth()
     private let db = Firestore.firestore()
     
-    func sendLetter(toText: String, topic: String, topicId: String, message: String, completion: @escaping (Result<String, Error>) -> Void) {
-        guard let fromUid = Auth.auth().currentUser?.uid else {
-            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "로그인 필요"])))
-            return
-        }
-
-        fetchUID(fromNickname: toText) { result in
-            switch result {
-            case .success(let toUid):
-                
-                print("[DefaultSendLetterRepo] - uid 찾기 성공")
-                
-                self.saveLetter(fromUid: fromUid, toUid: toUid, topic: topic, topicId: topicId, message: message) { letterResult in
-                    switch letterResult {
-                    case .success(let letterData):
-                        
-                        print("[DefaultSendLetterRepo] - 비행기 저장 성공")
-                        
-                        self.saveFlightRoute(letterData: letterData) { error in
-                            if let error = error {
-                                completion(.failure(error))
-                            } else {
-                                completion(.success("success"))
-                                
-                                print("[DefaultSendLetterRepo] - 비행기 경로 저장 성공")
-                            }
-                        }
-
-                    case .failure(let error):
-                        completion(.failure(error))
-                    }
-                }
-
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
-    private func fetchUID(fromNickname nickname: String, completion: @escaping (Result<String, Error>) -> Void) {
-        db.collection("users")
+    func fetchUid(nickname: String) async throws -> String {
+        let query = db.collection("users")
             .whereField("nickname", isEqualTo: nickname)
             .limit(to: 1)
-            .getDocuments { snapshot, error in
-                if let error = error {
-                    completion(.failure(error))
-                    return
-                }
-
-                guard let document = snapshot?.documents.first else {
-                    completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "해당 닉네임의 사용자를 찾을 수 없습니다"])))
-                    return
-                }
-
-                completion(.success(document.documentID))
-            }
-    }
-
-    private func saveLetter(fromUid: String, toUid: String, topic: String, topicId: String, message: String, completion: @escaping (Result<[String: Any], Error>) -> Void) {
-        let letterRef = db.collection("letters").document()
-        let letterId = letterRef.documentID
-        let letterData: [String: Any] = [
-            "id": letterId,
-            "fromUid": fromUid,
-            "toUid": toUid,
-            "topic": topic,
-            "topicId": topicId,
-            "message": message,
-            "timestamp": Timestamp(date: Date())
-        ]
-
-        letterRef.setData(letterData) { error in
-            if let error = error {
-                completion(.failure(error))
-            } else {
-                completion(.success(letterData))
-            }
+        
+        let snapshot = try await query.getDocuments()
+        
+        guard let document = snapshot.documents.first else {
+            throw FirebaseError.validationError(message: "사용자를 찾을 수 없음")
         }
+        
+        return document.documentID
     }
+    
+    func currentUserUid() async throws -> String {
+        guard let user = auth.currentUser else {throw
+            FirebaseError.validationError(message: "로그인 필요")
+        }
+        return user.uid
+    }
+}
 
-    private func saveFlightRoute(letterData: [String:Any], completion: @escaping (Error?) -> Void) {
-        let flightRef = db.collection("flights").document(letterData["topicId"] as! String)
+public struct DefaultLetterRepo: LetterRepo {
+    private let auth = Auth.auth()
+    private let db = Firestore.firestore()
+    
+    func save(letter: Letter) async throws -> Letter {
+        let document = db.collection("letters").document(letter.topicId)
+        try await document.setData(letter.toFirestoreData())
+        return letter
+    }
+}
 
-        flightRef.getDocument { document, error in
-            if let document = document, document.exists {
-                flightRef.updateData([
-                    "routes": FieldValue.arrayUnion([letterData])
-                ], completion: completion)
-            } else {
-                flightRef.setData([
-                    "routes": [letterData]
-                ], completion: completion)
-            }
+public struct DefaultFlightRepo: FlightRepo {
+    private let auth = Auth.auth()
+    private let db = Firestore.firestore()
+    
+    func addRoute(flightId: String, letter: Letter) async throws {
+        let flightRef = db.collection("flights").document(flightId)
+        
+        let document = try await flightRef.getDocument()
+        let routeData = letter.toFirestoreData()
+        
+        if document.exists {
+            // 이미 있으면 updateData
+            try await flightRef.updateData([
+                "routes": FieldValue.arrayUnion([routeData])
+            ])
+        } else {
+            // 없으면 setData로 새로 생성
+            try await flightRef.setData([
+                "routes": [routeData]
+            ])
         }
     }
 }
+
+
+public enum FirebaseError: LocalizedError {
+    case validationError(message: String)
+    case repositoryError(cause: Error)
+    
+    public var errorDescription: String? {
+        switch self {
+        case .validationError(let msg): return msg
+        case .repositoryError(let cause): return cause.localizedDescription
+        }
+    }
+}
+
+

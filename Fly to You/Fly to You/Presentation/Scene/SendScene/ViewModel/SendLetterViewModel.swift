@@ -29,7 +29,20 @@ class DefaultSendLetterViewModel: SendLetterViewModel{
         self.sendLetterUseCase = sendLetterUseCase
     }
     
+    
     func sendLetter(toText: String, topic: String, topicId: String, message: String, completion: @escaping (Result<String, Error>) -> Void) {
-        sendLetterUseCase.sendLetter(toText: toText, topic: topic, topicId: topicId, message: message, completion: completion)
+        Task {
+            do {
+                let result = try await sendLetterUseCase.send(
+                    toNickname: toText,
+                    topic: topic,
+                    topicId: topicId,
+                    message: message
+                )
+                completion(.success("success"))
+            } catch {
+                completion(.failure(error))
+            }
+        }
     }
 }

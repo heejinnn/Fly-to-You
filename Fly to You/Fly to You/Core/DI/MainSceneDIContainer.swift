@@ -20,14 +20,23 @@ final class MainSceneDIContainer {
     // MARK: - Use Cases
     
     private func makeSendLetterUseCase() -> SendLetterUseCase {
-        let repository = makeSendLetterRepo()
-        return DefaultSendLetterUseCase(repository: repository)
+        let makeUserRepo = makeUserRepo()
+        let makeLetterRepo = makeLetterRepo()
+        let makeFlightrRepo = makeFlightrRepo()
+        
+        return DefaultSendLetterUseCase(userRepo: makeUserRepo, letterRepo: makeLetterRepo, flightRepo: makeFlightrRepo)
     }
 
     // MARK: - Repository
     
-    func makeSendLetterRepo() -> SendLetterRepo {
-        return DefaultSendLetterRepo()
+    func makeUserRepo() -> UserRepo {
+        return DefaultUserRepo()
+    }
+    func makeLetterRepo() -> LetterRepo {
+        return DefaultLetterRepo()
+    }
+    func makeFlightrRepo() -> FlightRepo {
+        return DefaultFlightRepo()
     }
 
     // MARK: - View Model

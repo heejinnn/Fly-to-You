@@ -16,3 +16,17 @@ struct Letter: Codable {
     let topicId: String
     let timestamp: Date
 }
+
+extension Letter {
+    func toFirestoreData() -> [String: Any] {
+        return [
+            "id": id,
+            "fromUid": fromUid,
+            "toUid": toUid,
+            "topic": topic,
+            "topicId": topicId,
+            "message": message,
+            "timestamp": timestamp
+        ]
+    }
+}
