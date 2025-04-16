@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct Letter: Codable, Identifiable {
-    var id: String = UUID().uuidString
-    var fromUid: String
-    var toUid: String
-    var message: String
-    var topic: String
-    var topicId: String
-    var timestamp: Date
+struct Letter: Codable {
+    let id: String
+    let fromUid: String
+    let toUid: String
+    let message: String
+    let topic: String
+    let topicId: String
+    let timestamp: Date
 }

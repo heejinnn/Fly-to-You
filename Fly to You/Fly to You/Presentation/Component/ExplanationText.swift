@@ -22,7 +22,7 @@ struct ExplanationText: View {
                     .foregroundStyle(.gray3)
                 Spacer()
             }
-            .padding(.horizontal, 25)
+            .padding(.horizontal, Spacing.md)
             
             Spacer().frame(height: 25)
         }
