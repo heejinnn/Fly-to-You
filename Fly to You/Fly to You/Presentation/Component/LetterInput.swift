@@ -18,17 +18,17 @@ struct LetterInput: View{
     
     var body: some View {
         VStack(spacing: 0) {
-          HStack{
-                Text("주제: \"\(topic)\"")
-                    .font(.pretendard(.light, size: 15))
-                    .foregroundColor(.white)
-                    .padding(.vertical, 15)
-                    .padding(.leading, 15)
-                    .background(.blue1)
-                
-                Spacer()
-            }
-            .background(.blue1)
+            HStack{
+                  Text("주제: \"\(topic)\"")
+                      .font(.pretendard(.light, size: 15))
+                      .foregroundColor(.white)
+                      .padding(.vertical, 15)
+                      .padding(.leading, 15)
+                      .background(.blue1)
+                  
+                  Spacer()
+              }
+              .background(.blue1)
             
             content
             
