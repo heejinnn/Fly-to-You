@@ -9,15 +9,26 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 
-class SendLetterViewModel: ObservableObject{
+
+protocol SendLetterViewModelInput{
+    func sendLetter(toUID: String, topic: String, topicId: String, message: String, completion: @escaping (Error?) -> Void)
+}
+
+protocol SendLetterViewModelOutput{
     
-    func sendLetter(toUID: String, topic: String, message: String, completion: @escaping (Error?) -> Void) {
+}
+
+protocol SendLetterViewModel: SendLetterViewModelInput, SendLetterViewModelOutput{}
+
+
+class DefaultSendLetterViewModel: SendLetterViewModel{
+    
+    func sendLetter(toUID: String, topic: String, topicId: String, message: String, completion: @escaping (Error?) -> Void) {
         guard let fromUID = Auth.auth().currentUser?.uid else {
             completion(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "로그인 필요"]))
             return
         }
 
-        let topicId = UUID().uuidString
         let db = Firestore.firestore()
         let letterRef = db.collection("letters").document()
 
