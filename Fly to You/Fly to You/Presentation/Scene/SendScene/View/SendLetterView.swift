@@ -21,7 +21,7 @@ struct SendLetterView: View{
             
             ExplanationText(text: "주제에 맞는\n내용을 입력해 보세요")
             
-            LetterInput(topic: topicData.topic, toText: $toText,fromText: fromText, message: $message)
+            PaperPlaneInput(topic: topicData.topic, toText: $toText,fromText: fromText, message: $message)
         
             Spacer()
         }

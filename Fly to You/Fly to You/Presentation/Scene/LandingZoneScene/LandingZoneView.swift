@@ -27,7 +27,17 @@ struct LandingZoneView: View {
                     PlaneCell(letter: letter)
                 }
             }
-            
+            .navigationDestination(for: LandingZoneRoute.self) { route in
+                switch route {
+                case .landingZoneInfo:
+                    LetterInfoView(letter: <#ReceiveLetter#>)
+                }
+            }
         }
     }
+}
+
+
+enum LandingZoneRoute: Hashable {
+    case landingZoneInfo
 }
