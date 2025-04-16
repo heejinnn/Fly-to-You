@@ -29,9 +29,8 @@ struct YourApp: App {
                         }
                     }
             } else {
-//                RootView()
-//                    .environmentObject(appState)
-                FlyAnimationView()
+                RootView()
+                    .environmentObject(appState)
             }
         }
     }

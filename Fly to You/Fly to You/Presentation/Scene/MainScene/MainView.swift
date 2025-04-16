@@ -35,6 +35,8 @@ struct MainView: View {
                     SelectSubjectView()
                 case .sendLetter:
                     SendLetterView(topicData: TopicModel(topic: viewModelWrapper.topicData.topic, topicId: viewModelWrapper.topicData.topicId))
+                case .flyAnimation:
+                    FlyAnimationView()
                 }
             }
         }
@@ -51,19 +53,9 @@ struct MainView: View {
                 .font(.pretendard(.ultraLight, size: 18))
                 .foregroundColor(.gray3)
             
-            Button(action: {
+            PlaneButton(title: "비행기 날리기", action: {
                 viewModelWrapper.path.append(.selectSubject)
-            }, label: {
-                Text("비행기 날리기")
-                    .font(.pretendard(.ultraLight, size: 18))
-                    .foregroundColor(.white)
-                    .frame(height: 55)
-                    .frame(maxWidth: .infinity)
-                    .background(.blue1)
-                    .cornerRadius(10)
             })
-            .padding(.horizontal, Spacing.md)
-            .buttonStyle(.plain)
         }
     }
 }
@@ -87,4 +79,5 @@ final class MainViewModelWrapper: ObservableObject {
 enum MainRoute: Hashable {
     case selectSubject
     case sendLetter
+    case flyAnimation
 }

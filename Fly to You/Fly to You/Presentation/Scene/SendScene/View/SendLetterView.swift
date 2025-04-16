@@ -30,13 +30,15 @@ struct SendLetterView: View{
         }
         .toolbar{
             ToolbarItem(placement: .topBarTrailing){
-                
                 Button(action: {
                     viewModelWrapper.viewModel.sendLetter(toText: toText, topic: topicData.topic, topicId: topicData.topicId, message: message){ result in
                         
                         switch result{
                         case .success:
                             print("[SendLetterView] - 비행기 날리기 성공")
+                            DispatchQueue.main.async {
+                                viewModelWrapper.path.append(.flyAnimation)
+                            }
                         case .failure(let error):
                             print(error)
                         }
