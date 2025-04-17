@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 
 protocol SendLetterViewModelInput{
-    func sendLetter(toText: String, topic: String, topicId: String, message: String, completion: @escaping (Result<String, Error>) -> Void)
+    func sendLetter(toText: String, topic: String, topicId: String, message: String, completion: @escaping (Result<Letter, Error>) -> Void)
 }
 
 protocol SendLetterViewModelOutput{
@@ -29,8 +29,7 @@ class DefaultSendLetterViewModel: SendLetterViewModel{
         self.sendLetterUseCase = sendLetterUseCase
     }
     
-    
-    func sendLetter(toText: String, topic: String, topicId: String, message: String, completion: @escaping (Result<String, Error>) -> Void) {
+    func sendLetter(toText: String, topic: String, topicId: String, message: String, completion: @escaping (Result<Letter, Error>) -> Void) {
         Task {
             do {
                 let result = try await sendLetterUseCase.send(
@@ -39,7 +38,7 @@ class DefaultSendLetterViewModel: SendLetterViewModel{
                     topicId: topicId,
                     message: message
                 )
-                completion(.success("success"))
+                completion(.success(result))
             } catch {
                 completion(.failure(error))
             }

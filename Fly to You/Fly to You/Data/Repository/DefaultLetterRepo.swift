@@ -17,4 +17,14 @@ public struct DefaultLetterRepo: LetterRepo {
         try await document.setData(letter.toFirestoreData())
         return letter
     }
+    
+    func fetchLetters(toUid: String) async throws -> [ReceiveLetterDto] {
+        let snapshot = try await db.collection("letters")
+            .whereField("toUid", isEqualTo: toUid)
+            .getDocuments()
+        
+        return snapshot.documents.compactMap { doc in
+            try? doc.data(as: ReceiveLetterDto.self)
+        }
+    }
 }

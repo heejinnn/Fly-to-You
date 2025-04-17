@@ -16,7 +16,8 @@ struct MainTabView: View {
                     Label("Home", systemImage: "house")
                 }
 
-            LandingZoneView()
+            AppComponent()
+                .makeLandingZoneView()
                 .tabItem {
                     Label("비행기 착륙장", systemImage: "tray")
                 }

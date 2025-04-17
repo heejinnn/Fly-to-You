@@ -6,16 +6,14 @@
 //
 
 import SwiftUI
+import Combine
 
 struct LandingZoneView: View {
     
-    @StateObject var viewModelWrapper = LandingZoneViewModelWrapper()
-    
-    let letters: [ReceiveLetter] = [ReceiveLetter(id: "1", from: User(uid: "1", nickname: "누구", createdAt: Date()), to: User(uid: "2", nickname: "누구2", createdAt: Date()), message: "내용", topic: "주제", topicId: "2", timestamp: Date()), ReceiveLetter(id: "1", from: User(uid: "1", nickname: "누구", createdAt: Date()), to: User(uid: "2", nickname: "누구2", createdAt: Date()), message: "내용", topic: "주제", topicId: "2", timestamp: Date()), ReceiveLetter(id: "1", from: User(uid: "1", nickname: "누구", createdAt: Date()), to: User(uid: "2", nickname: "누구2", createdAt: Date()), message: "내용", topic: "주제", topicId: "2", timestamp: Date()), ReceiveLetter(id: "1", from: User(uid: "1", nickname: "누구", createdAt: Date()), to: User(uid: "2", nickname: "누구2", createdAt: Date()), message: "내용", topic: "주제", topicId: "2", timestamp: Date()), ReceiveLetter(id: "1", from: User(uid: "1", nickname: "누구", createdAt: Date()), to: User(uid: "2", nickname: "누구2", createdAt: Date()), message: "내용", topic: "주제", topicId: "2", timestamp: Date())]
+    @EnvironmentObject var viewModelWrapper: LandingZoneViewModelWrapper
     
     var body: some View {
         NavigationStack(path: $viewModelWrapper.path) {
-            
             VStack{
                 Spacer().frame(height: Spacing.lg)
                 
@@ -26,17 +24,15 @@ struct LandingZoneView: View {
                 Spacer().frame(height: Spacing.lg)
                 
                 VStack(spacing: Spacing.xs){
-                    ForEach(letters, id: \.id){ letter in
+                    ForEach(viewModelWrapper.letters, id: \.id){ letter in
                         PlaneCell(letter: letter)
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                print("??")
                                 viewModelWrapper.letter = letter
                                 viewModelWrapper.path.append(.landingZoneInfo)
                             }
                     }
                 }
-                
                 Spacer()
             }
             .navigationDestination(for: LandingZoneRoute.self) { route in
@@ -50,12 +46,38 @@ struct LandingZoneView: View {
                 }
             }
         }
+        .onAppear{
+            viewModelWrapper.viewModel.fetchLetters{ result in
+                switch result {
+                case .success:
+                    print("[LandingZoneView] - 받은 비행기 가져오기 성공")
+                case .failure:
+                    print("[LandingZoneView] - 받은 비행기 가져오기 실패")
+                }
+            }
+        }
     }
 }
 
 final class LandingZoneViewModelWrapper: ObservableObject {
     @Published var path: [LandingZoneRoute] = []
-    @Published var letter: ReceiveLetter? = nil
+    @Published var letter: ReceiveLetterModel? = nil
+    @Published var letters: [ReceiveLetterModel] = []
+    
+    var viewModel: LandingZoneViewModel
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(viewModel: LandingZoneViewModel) {
+        self.viewModel = viewModel
+        bind()
+    }
+    
+    private func bind() {
+        viewModel.lettersPublisher
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.letters, on: self)
+            .store(in: &cancellables)
+    }
 }
 
 enum LandingZoneRoute {

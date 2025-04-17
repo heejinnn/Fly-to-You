@@ -23,12 +23,22 @@ final class AppComponent {
         let signUpFactory = signUpSceneDIContainer.makeSignUpFactory()
         return authComponent(authFactory: signUpFactory).makeSignUpView()
     }
-
+    
+    func makeLandingZoneView() -> some View {
+        let landingZoneSceneDIContainer = appDIContainer.makeLandingZoneSceneDIContainer()
+        let landingZoneFactory = landingZoneSceneDIContainer.makeLandingZoneFactory()
+        return randingZoneComponent(landingZoneFactory: landingZoneFactory).makeLandingZoneView()
+    }
+    
     private func rootComponent(mainFactory: any MainFactory) -> RootComponent {
         RootComponent(dependency: MainFactoryDependency(mainFactory: mainFactory))
     }
     
     private func authComponent(authFactory: any AuthFactory) -> AuthComponent {
         AuthComponent(dependency: AuthFactoryDependency(authFactory: authFactory))
+    }
+    
+    private func randingZoneComponent(landingZoneFactory: any LandingZoneFactory) -> LandingZoneComponent {
+        LandingZoneComponent(dependency: LandingZoneFactoryDependency(landingZoneFactory: landingZoneFactory))
     }
 }

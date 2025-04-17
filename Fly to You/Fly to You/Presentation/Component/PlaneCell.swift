@@ -10,7 +10,7 @@ import SwiftUI
 
 struct PlaneCell: View{
     
-    let letter: ReceiveLetter 
+    let letter: ReceiveLetterModel 
     
     var body: some View{
         ZStack {
@@ -35,7 +35,7 @@ struct PlaneCell: View{
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 30, height: 30)
                     Spacer()
-                    Text("2025.04.03")
+                    Text("\(DateUtil.formatLetterDate(letter.timestamp))")
                         .font(.pretendard(.thin, size: 13))
                 }
             }

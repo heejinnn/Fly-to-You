@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LetterInfoView: View{
     
-    let letter: ReceiveLetter
+    let letter: ReceiveLetterModel
     
     var body: some View{
         VStack{
