@@ -43,7 +43,8 @@ public struct DefaultSendLetterUseCase: SendLetterUseCase {
             message: message,
             topic: topic,
             topicId: topicId,
-            timestamp: Date()
+            timestamp: Date(),
+            isDelivered: false
         )
         
         let savedLetter = try await letterRepo.save(letter: letter)

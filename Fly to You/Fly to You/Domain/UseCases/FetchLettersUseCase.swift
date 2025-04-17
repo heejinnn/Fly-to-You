@@ -45,7 +45,8 @@ final class DefaultFetchLettersUseCase: FetchLettersUseCase{
                 message: dto.message,
                 topic: dto.topic,
                 topicId: dto.topicId,
-                timestamp: dto.timestamp
+                timestamp: dto.timestamp,
+                isDelivered: dto.isDelivered
             )
         }
         

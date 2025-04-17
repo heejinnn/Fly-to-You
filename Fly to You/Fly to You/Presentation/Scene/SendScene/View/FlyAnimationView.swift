@@ -47,7 +47,3 @@ enum GifName {
     static let flyPlane = "fly_plane"
     static let completeFlyPlane = "complete_fly_plane"
 }
-
-#Preview {
-    FlyAnimationView()
-}

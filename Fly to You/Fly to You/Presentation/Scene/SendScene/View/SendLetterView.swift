@@ -33,42 +33,7 @@ struct SendLetterView: View{
         .toolbar{
             ToolbarItem(placement: .topBarTrailing){
                 ToolbarFlyButton(action: {
-//                    viewModelWrapper.viewModel.sendLetter(toText: toText, topicData: topicData, message: message, route: route){ result in
-//                        switch result{
-//                        case .success:
-//                            print("[SendLetterView] - 비행기 날리기 성공")
-//                            DispatchQueue.main.async {
-//                                viewModelWrapper.path.append(.flyAnimation)
-//                            }
-//                        case .failure(let error):
-//                            print(error)
-//                        }
-//                    }
-                    if route == .start{
-                        viewModelWrapper.viewModel.sendLetter(toText: toText, topicData: topicData, message: message){ result in
-                            switch result{
-                            case .success:
-                                print("[SendLetterView] - 비행기 날리기 성공")
-                                DispatchQueue.main.async {
-                                    viewModelWrapper.path.append(.flyAnimation)
-                                }
-                            case .failure(let error):
-                                print(error)
-                            }
-                        }
-                    } else{
-                        landingZoneViewModelWrapper.viewModel.relayLetter(toText: toText, topicData: topicData, message: message){ result in
-                            switch result{
-                            case .success:
-                                print("[SendLetterView] - 비행기 이어서 날리기 성공")
-                                DispatchQueue.main.async {
-                                    landingZoneViewModelWrapper.path.append(.flyAnimation)
-                                }
-                            case .failure(let error):
-                                print(error)
-                            }
-                        }
-                    }
+                    sendLetter()
                 })
                                  
             }
@@ -82,6 +47,34 @@ struct SendLetterView: View{
             from: nil,
             for: nil
         )
+    }
+    
+    private func sendLetter(){
+        if route == .start{
+            viewModelWrapper.viewModel.sendLetter(toText: toText, topicData: topicData, message: message){ result in
+                switch result{
+                case .success:
+                    print("[SendLetterView] - 비행기 날리기 성공")
+                    DispatchQueue.main.async {
+                        viewModelWrapper.path.append(.flyAnimation)
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        } else{
+            landingZoneViewModelWrapper.viewModel.relayLetter(toText: toText, topicData: topicData, message: message){ result in
+                switch result{
+                case .success:
+                    print("[SendLetterView] - 비행기 이어서 날리기 성공")
+                    DispatchQueue.main.async {
+                        landingZoneViewModelWrapper.path.append(.flyAnimation)
+                    }
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
     }
 }
 

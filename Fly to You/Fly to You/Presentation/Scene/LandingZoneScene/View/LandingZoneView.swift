@@ -46,7 +46,9 @@ struct LandingZoneView: View {
                         SendLetterView(topicData: topic, route: .relay)
                     }
                 case .flyAnimation:
-                    FlyAnimationView()
+                    FlyAnimationView(onHome: {
+                        viewModelWrapper.path = []
+                    })
                 }
             }
         }

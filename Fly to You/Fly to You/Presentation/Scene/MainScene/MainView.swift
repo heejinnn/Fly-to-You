@@ -36,7 +36,9 @@ struct MainView: View {
                 case .sendLetter:
                     SendLetterView(topicData: TopicModel(topic: viewModelWrapper.topicData.topic, topicId: viewModelWrapper.topicData.topicId), route: .start)
                 case .flyAnimation:
-                    FlyAnimationView()
+                    FlyAnimationView(onHome: {
+                        viewModelWrapper.path = []
+                    })
                 }
             }
         }

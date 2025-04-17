@@ -15,4 +15,5 @@ struct ReceiveLetterModel: Identifiable, Codable {
     let topic: String
     let topicId: String
     let timestamp: Date
+    let isDelivered: Bool
 }

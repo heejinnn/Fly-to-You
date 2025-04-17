@@ -15,6 +15,7 @@ struct Letter: Codable {
     let topic: String
     let topicId: String
     let timestamp: Date
+    let isDelivered: Bool
 }
 
 extension Letter {
@@ -26,7 +27,8 @@ extension Letter {
             "topic": topic,
             "topicId": topicId,
             "message": message,
-            "timestamp": timestamp
+            "timestamp": timestamp,
+            "isDelivered": isDelivered
         ]
     }
 }

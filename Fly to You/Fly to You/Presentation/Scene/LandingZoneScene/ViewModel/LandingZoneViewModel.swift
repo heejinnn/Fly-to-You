@@ -50,9 +50,8 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
     func relayLetter(toText: String, topicData: TopicModel, message: String, completion: @escaping (Result<Void, Error>) -> Void){
         Task {
             do {
-                let result = try await relayLetterUseCase.send
+                try await relayLetterUseCase.send(toNickname: toText, topic: topicData.topic, topicId: topicData.topicId, message: message)
                 completion(.success(()))
-                
             } catch {
                 completion(.failure(error))
             }

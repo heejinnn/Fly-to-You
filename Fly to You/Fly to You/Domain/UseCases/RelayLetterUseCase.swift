@@ -39,7 +39,8 @@ public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
             message: message,
             topic: topic,
             topicId: topicId,
-            timestamp: Date()
+            timestamp: Date(),
+            isDelivered: true
         )
         
         try await flightRepo.addRoute(flightId: letter.topicId, letter: letter)
