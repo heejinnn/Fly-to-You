@@ -17,3 +17,18 @@ struct ReceiveLetter: Identifiable, Codable {
     let timestamp: Date
 }
 
+extension ReceiveLetter {
+    static func toReceiveLetterModels(letters: [ReceiveLetter]) -> [ReceiveLetterModel] {
+        letters.map { letter in
+            ReceiveLetterModel(
+                id: letter.id,
+                from: letter.from ?? User(uid: "", nickname: "", createdAt: Date()),
+                to: letter.to ?? User(uid: "", nickname: "", createdAt: Date()),
+                message: letter.message,
+                topic: letter.topic,
+                topicId: letter.topicId,
+                timestamp: letter.timestamp
+            )
+        }
+    }
+}

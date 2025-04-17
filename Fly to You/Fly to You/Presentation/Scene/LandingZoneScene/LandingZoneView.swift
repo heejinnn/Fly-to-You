@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
+import Combine
 
 struct LandingZoneView: View {
     
     @StateObject var viewModelWrapper = LandingZoneViewModelWrapper()
-    @StateObject var viewModel = LandingZoneViewModel()
     
     var body: some View {
         NavigationStack(path: $viewModelWrapper.path) {
@@ -49,7 +49,8 @@ struct LandingZoneView: View {
             }
         }
         .onAppear{
-            viewModel.fetchReceivedLetters()
+            viewModelWrapper.viewModel.fetchLetters{ result in
+            }
         }
     }
 }
@@ -57,6 +58,13 @@ struct LandingZoneView: View {
 final class LandingZoneViewModelWrapper: ObservableObject {
     @Published var path: [LandingZoneRoute] = []
     @Published var letter: ReceiveLetterModel? = nil
+    
+    var viewModel: LandingZoneViewModel
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(viewModel: LandingZoneViewModel) {
+        self.viewModel = viewModel
+    }
 }
 
 enum LandingZoneRoute {

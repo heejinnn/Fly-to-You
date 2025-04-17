@@ -10,7 +10,7 @@ import FirebaseFirestore
 
 
 protocol LandingZoneViewModelInput{
-    func fetchLetters(completion: @escaping () -> Void)
+    func fetchLetters(completion: @escaping (Result<Void, Error>) -> Void )
 }
 
 protocol LandingZoneViewModelOutput{
@@ -22,17 +22,26 @@ protocol LandingZoneViewModel: LandingZoneViewModelInput, LandingZoneViewModelOu
 
 class DafultLandingZoneViewModel: LandingZoneViewModel {
     @Published var letters: [ReceiveLetterModel] = []
-    @Published var isLoading = false
-    @Published var errorMessage: String?
-    
     private let fetchLetterUseCase: FetchLettersUseCase
     
     init(fetchLetterUseCase: FetchLettersUseCase) {
         self.fetchLetterUseCase = fetchLetterUseCase
     }
 
-    func fetchLetters(completion: @escaping () -> Void ) {
+    func fetchLetters(completion: @escaping (Result<Void, Error>) -> Void  ) {
+        guard let uid = UserDefaults.standard.string(forKey: "uid") else {
+            return
+        }
         
+        Task {
+            do {
+                let letterArr = try await fetchLetterUseCase.execute(toUid: uid)
+                letters = ReceiveLetter.toReceiveLetterModels(letters: letterArr)
+                completion(.success(()))
+            } catch {
+                completion(.failure(error))
+            }
+        }
     }
 //    func fetchReceivedLetters() {
 //        let currentUserUid = UserDefaults.standard.string(forKey: "uid") ?? ""
