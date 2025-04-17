@@ -9,9 +9,9 @@
 final class LandingZoneSceneDIContainer {
     // MARK: - Factory
 
-    func makeMainFactory() -> DefaultMainFactory { 
+    func makeLandingZoneFactory() -> DefaultLandingZoneFactory {
         let viewModelWrapper = makeLandingZoneViewModelWrapper()
-        return DefaultMainFactory(mainViewModelWrapper: viewModelWrapper)
+        return DefaultLandingZoneFactory(landingZoneViewModelWrapper: viewModelWrapper)
     }
 
     // MARK: - Use Cases

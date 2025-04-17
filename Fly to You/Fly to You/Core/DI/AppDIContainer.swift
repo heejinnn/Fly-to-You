@@ -19,4 +19,8 @@ final class AppDIContainer {
     func makeSignUpSceneDIContainer() -> AuthSceneDIContainer {
         return AuthSceneDIContainer()
     }
+    
+    func makeLandingZoneSceneDIContainer() -> LandingZoneSceneDIContainer {
+        return LandingZoneSceneDIContainer()
+    }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: - MainFactoryDependency
 
-struct LandingZoneFactoryDependency: RootDependency {
+struct LandingZoneFactoryDependency: LandingZoneDependency {
     let landingZoneFactory: any LandingZoneFactory
 }
 
@@ -17,7 +17,7 @@ struct LandingZoneFactoryDependency: RootDependency {
 
 protocol LandingZoneFactory {
     associatedtype SomeView: View
-    func makeMainView() -> SomeView
+    func makeLandingZoneView() -> SomeView
 }
 
 // MARK: - DefaultMainFactory
@@ -29,7 +29,7 @@ final class DefaultLandingZoneFactory: LandingZoneFactory {
         self.landingZoneViewModelWrapper = landingZoneViewModelWrapper
     }
 
-    public func makeMainView() -> some View { // some: "특정 타입만 반환"
+    public func makeLandingZoneView() -> some View { // some: "특정 타입만 반환"
         return LandingZoneView()
             .environmentObject(landingZoneViewModelWrapper)
     }
