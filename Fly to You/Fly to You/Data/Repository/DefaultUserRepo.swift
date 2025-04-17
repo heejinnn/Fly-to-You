@@ -41,7 +41,7 @@ struct DefaultUserRepo: UserRepo {
         var users: [User] = []
         
         for chunk in chunks {
-            let snapshot = try await db.collection("user")
+            let snapshot = try await db.collection("users")
                 .whereField("uid", in: chunk)
                 .getDocuments()
             

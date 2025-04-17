@@ -33,7 +33,6 @@ struct LandingZoneView: View {
                             }
                     }
                 }
-                
                 Spacer()
             }
             .navigationDestination(for: LandingZoneRoute.self) { route in
