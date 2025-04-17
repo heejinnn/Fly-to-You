@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LetterInfoView: View{
     
+    @EnvironmentObject var viewModelWrapper: LandingZoneViewModelWrapper
     let letter: ReceiveLetterModel
     
     var body: some View{
@@ -22,7 +23,8 @@ struct LetterInfoView: View{
         .toolbar{
             ToolbarItem(placement: .topBarTrailing){
                 ToolbarFlyButton(action: {
-                    
+                    viewModelWrapper.topic = TopicModel(topic: letter.topic, topicId: letter.topicId)
+                    viewModelWrapper.path.append(.relayLetter)
                 })
             }
         }

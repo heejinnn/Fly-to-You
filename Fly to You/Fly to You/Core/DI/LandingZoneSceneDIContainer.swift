@@ -22,22 +22,35 @@ final class LandingZoneSceneDIContainer {
         
         return DefaultFetchLettersUseCase(letterRepo: makeLetterRepo, userRepo: makeUserRepo)
     }
+    
+    private func makeRelayLetterUseCase() -> RelayLetterUseCase {
+        let userRepo = makeUserRepo()
+        let flightRepo = makeFlightRepo()
+        
+        return DefaultRelayLetterUseCase(userRepo: userRepo, flightRepo: flightRepo)
+    }
 
     // MARK: - Repository
     
     func makeUserRepo() -> UserRepo {
         return DefaultUserRepo()
     }
+    
     func makeLetterRepo() -> LetterRepo {
         return DefaultLetterRepo()
+    }
+    
+    func makeFlightRepo() -> FlightRepo {
+        return DefaultFlightRepo()
     }
 
     // MARK: - View Model
     
     func makeLandingZoneViewModel() -> LandingZoneViewModel {
         let useCase = makeFetchLettersUseCase()
+        let relayLetterUseCase = makeRelayLetterUseCase()
         
-        return DafultLandingZoneViewModel(fetchLetterUseCase: useCase)
+        return DafultLandingZoneViewModel(fetchLetterUseCase: useCase, relayLetterUseCase: relayLetterUseCase)
     }
 
     // MARK: - View Model Wrapper
