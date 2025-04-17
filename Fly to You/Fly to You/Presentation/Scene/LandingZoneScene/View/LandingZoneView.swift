@@ -10,11 +10,10 @@ import Combine
 
 struct LandingZoneView: View {
     
-    @StateObject var viewModelWrapper = LandingZoneViewModelWrapper()
+    @EnvironmentObject var viewModelWrapper: LandingZoneViewModelWrapper
     
     var body: some View {
         NavigationStack(path: $viewModelWrapper.path) {
-            
             VStack{
                 Spacer().frame(height: Spacing.lg)
                 
@@ -25,7 +24,7 @@ struct LandingZoneView: View {
                 Spacer().frame(height: Spacing.lg)
                 
                 VStack(spacing: Spacing.xs){
-                    ForEach(viewModel.letters, id: \.id){ letter in
+                    ForEach(viewModelWrapper.letters, id: \.id){ letter in
                         PlaneCell(letter: letter)
                             .contentShape(Rectangle())
                             .onTapGesture {
@@ -50,6 +49,12 @@ struct LandingZoneView: View {
         }
         .onAppear{
             viewModelWrapper.viewModel.fetchLetters{ result in
+                switch result {
+                case .success:
+                    print("[LandingZoneView] - 받은 비행기 가져오기 성공")
+                case .failure:
+                    print("[LandingZoneView] - 받은 비행기 가져오기 실패")
+                }
             }
         }
     }
@@ -58,12 +63,21 @@ struct LandingZoneView: View {
 final class LandingZoneViewModelWrapper: ObservableObject {
     @Published var path: [LandingZoneRoute] = []
     @Published var letter: ReceiveLetterModel? = nil
+    @Published var letters: [ReceiveLetterModel] = []
     
     var viewModel: LandingZoneViewModel
     private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: LandingZoneViewModel) {
         self.viewModel = viewModel
+        bind()
+    }
+    
+    private func bind() {
+        viewModel.lettersPublisher
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.letters, on: self)
+            .store(in: &cancellables)
     }
 }
 

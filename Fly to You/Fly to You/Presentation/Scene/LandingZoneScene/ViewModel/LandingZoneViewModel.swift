@@ -14,7 +14,7 @@ protocol LandingZoneViewModelInput{
 }
 
 protocol LandingZoneViewModelOutput{
-    
+    var lettersPublisher: Published<[ReceiveLetterModel]>.Publisher { get }
 }
 
 protocol LandingZoneViewModel: LandingZoneViewModelInput, LandingZoneViewModelOutput{}
@@ -108,4 +108,10 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
 //                completion(users)
 //            }
 //    }
+}
+
+extension DafultLandingZoneViewModel{
+    var lettersPublisher: Published<[ReceiveLetterModel]>.Publisher{
+        $letters
+    }
 }

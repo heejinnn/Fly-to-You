@@ -22,7 +22,7 @@ struct PlaneCell: View{
                 VStack(alignment: .leading, spacing: Spacing.xxxs) {
                     Text("\(letter.topic)")
                         .font(.pretendard(.medium, size: 18))
-                    Text("From: \(letter.from?.nickname ?? "")")
+                    Text("From: \(letter.from.nickname)")
                         .font(.pretendard(.regular, size: 13))
                     Spacer()
                 }
