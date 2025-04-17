@@ -52,6 +52,7 @@ final class DefaultSignUpRepo: SignUpRepo {
                 try self.db.collection("users").document(uid).setData(from: user) { error in
                     if error == nil {
                         UserDefaults.standard.set(uid, forKey: "uid")
+                        UserDefaults.standard.set(nickname, forKey: "nickname")
                         completion(true)
                     }
                 }

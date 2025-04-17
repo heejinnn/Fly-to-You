@@ -42,7 +42,7 @@ struct PaperPlaneCheck: View{
             }
             .padding(.top, 10)
 
-            Text("From. \(letter.from.nickname)")
+            Text("From.\(letter.from.nickname)")
                 .font(.gaRamYeonGgoc(size: 18))
                 .foregroundColor(.black)
             
