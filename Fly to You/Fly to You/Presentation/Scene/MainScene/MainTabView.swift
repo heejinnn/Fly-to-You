@@ -35,17 +35,6 @@ struct MainTabView: View {
     }
 }
 
-
-
-struct LandingZoneView: View {
-    var body: some View {
-        NavigationStack {
-            Text("비행기 착륙장 화면")
-                .navigationTitle("비행기 착륙장")
-        }
-    }
-}
-
 struct DepartureLogView: View {
     var body: some View {
         NavigationStack {

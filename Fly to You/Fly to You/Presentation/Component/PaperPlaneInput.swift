@@ -7,35 +7,34 @@
 
 import SwiftUI
 
-struct LetterInput: View{
+struct PaperPlaneInput: View{
     
     let topic: String
     @Binding var toText: String
     let fromText: String
     @Binding var message: String
-    
     private let maxCharacters = 100
     
     var body: some View {
         VStack(spacing: 0) {
-          HStack{
-                Text("주제: \"\(topic)\"")
-                    .font(.pretendard(.light, size: 15))
-                    .foregroundColor(.white)
-                    .padding(.vertical, 15)
-                    .padding(.leading, 15)
-                    .background(.blue1)
-                
-                Spacer()
-            }
-            .background(.blue1)
+            HStack{
+                  Text("주제: \"\(topic)\"")
+                      .font(.pretendard(.light, size: 15))
+                      .foregroundColor(.white)
+                      .padding(.vertical, 15)
+                      .padding(.leading, 15)
+                      .background(.blue1)
+                  
+                  Spacer()
+              }
+              .background(.blue1)
             
             content
             
         }
         .cornerRadius(10)
         .frame(maxWidth: .infinity)
-        .padding(.horizontal, 20)
+        .padding(.horizontal, Spacing.md)
         .shadow(radius: 3)
         
         textCount
@@ -46,6 +45,7 @@ struct LetterInput: View{
             HStack{
                 Text("To.")
                     .font(.gaRamYeonGgoc(size: 18))
+                
                 TextField("전달할 대상을 입력하세요", text: $toText)
                     .font(.gaRamYeonGgoc(size: 18))
             }
@@ -92,12 +92,12 @@ struct LetterInput: View{
                 .font(.pretendard(.regular, size: 12))
                 .foregroundColor(.gray)
         }
-        .padding(.horizontal, 20)
+        .padding(.horizontal, Spacing.md)
     }
 }
 
 #Preview {
-    LetterInput(topic: "ddd", toText: .constant("dd"), fromText: "ssss", message: .constant("aaa"))
+    PaperPlaneInput(topic: "ddd", toText: .constant("dd"), fromText: "ssss", message: .constant("aaa"))
 }
 
 
