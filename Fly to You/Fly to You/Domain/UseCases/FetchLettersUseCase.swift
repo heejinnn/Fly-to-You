@@ -46,7 +46,8 @@ final class DefaultFetchLettersUseCase: FetchLettersUseCase{
                 topic: dto.topic,
                 topicId: dto.topicId,
                 timestamp: dto.timestamp,
-                isDelivered: dto.isDelivered
+                isDelivered: dto.isDelivered,
+                isRelayStart: dto.isRelayStart
             )
         }
         

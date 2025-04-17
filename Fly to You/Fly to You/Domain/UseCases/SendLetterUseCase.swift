@@ -38,13 +38,14 @@ public struct DefaultSendLetterUseCase: SendLetterUseCase {
         
         let letter = Letter(
             id: UUID().uuidString,
-            fromUid: fromUid,
-            toUid: toUid,
+            fromUid: "n6F34VvWgvVdm8FHtaK4",
+            toUid: "8wwLegouGEQpzv3rXwkPyRcCA5S2",
             message: message,
             topic: topic,
             topicId: topicId,
             timestamp: Date(),
-            isDelivered: false
+            isDelivered: false,
+            isRelayStart: true
         )
         
         let savedLetter = try await letterRepo.save(letter: letter)

@@ -18,9 +18,17 @@ public struct DefaultLetterRepo: LetterRepo {
         return letter
     }
     
+    func updateIsDelivered(letter: Letter) async throws {
+        let document = db.collection("letters").document(letter.topicId)
+        try await document.updateData([
+            "isDelivered": true
+        ])
+    }
+    
     func fetchLetters(toUid: String) async throws -> [ReceiveLetterDto] {
         let snapshot = try await db.collection("letters")
             .whereField("toUid", isEqualTo: toUid)
+            .whereField("isDelivered", isEqualTo: false)
             .getDocuments()
         
         return snapshot.documents.compactMap { doc in

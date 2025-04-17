@@ -16,6 +16,7 @@ struct ReceiveLetter: Identifiable, Codable {
     let topicId: String
     let timestamp: Date
     let isDelivered: Bool
+    let isRelayStart: Bool
 }
 
 extension ReceiveLetter {
@@ -29,7 +30,8 @@ extension ReceiveLetter {
                 topic: letter.topic,
                 topicId: letter.topicId,
                 timestamp: letter.timestamp,
-                isDelivered: letter.isDelivered
+                isDelivered: letter.isDelivered,
+                isRelayStart: letter.isRelayStart
             )
         }
     }

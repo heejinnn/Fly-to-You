@@ -17,17 +17,18 @@ final class LandingZoneSceneDIContainer {
     // MARK: - Use Cases
     
     private func makeFetchLettersUseCase() -> FetchLettersUseCase {
-        let makeUserRepo = makeUserRepo()
-        let makeLetterRepo = makeLetterRepo()
+        let userRepo = makeUserRepo()
+        let letterRepo = makeLetterRepo()
         
-        return DefaultFetchLettersUseCase(letterRepo: makeLetterRepo, userRepo: makeUserRepo)
+        return DefaultFetchLettersUseCase(letterRepo: letterRepo, userRepo: userRepo)
     }
     
     private func makeRelayLetterUseCase() -> RelayLetterUseCase {
         let userRepo = makeUserRepo()
         let flightRepo = makeFlightRepo()
+        let letterRepo = makeLetterRepo()
         
-        return DefaultRelayLetterUseCase(userRepo: userRepo, flightRepo: flightRepo)
+        return DefaultRelayLetterUseCase(userRepo: userRepo, flightRepo: flightRepo, letterRepo: letterRepo)
     }
 
     // MARK: - Repository

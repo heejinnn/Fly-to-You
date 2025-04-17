@@ -14,13 +14,16 @@ protocol RelayLetterUseCase{
 public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
     private let userRepo: UserRepo
     private let flightRepo: FlightRepo
+    private let letterRepo: LetterRepo
     
     init(
         userRepo: UserRepo,
-        flightRepo: FlightRepo
+        flightRepo: FlightRepo,
+        letterRepo: LetterRepo
     ) {
         self.userRepo = userRepo
         self.flightRepo = flightRepo
+        self.letterRepo = letterRepo
     }
     
     func send(
@@ -40,10 +43,13 @@ public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
             topic: topic,
             topicId: topicId,
             timestamp: Date(),
-            isDelivered: true
+            isDelivered: true,
+            isRelayStart: false
         )
         
-        try await flightRepo.addRoute(flightId: letter.topicId, letter: letter)
+        let savedLetter = try await letterRepo.save(letter: letter)
+        try await letterRepo.updateIsDelivered(letter: savedLetter)
+        try await flightRepo.addRoute(flightId: letter.topicId, letter: savedLetter)
         
         return letter
     }

@@ -47,19 +47,23 @@ struct LandingZoneView: View {
                     }
                 case .flyAnimation:
                     FlyAnimationView(onHome: {
+                        fetchLetters()
                         viewModelWrapper.path = []
                     })
                 }
             }
         }
         .onAppear{
-            viewModelWrapper.viewModel.fetchLetters{ result in
-                switch result {
-                case .success:
-                    print("[LandingZoneView] - 받은 비행기 가져오기 성공")
-                case .failure:
-                    print("[LandingZoneView] - 받은 비행기 가져오기 실패")
-                }
+            fetchLetters()
+        }
+    }
+    private func fetchLetters(){
+        viewModelWrapper.viewModel.fetchLetters{ result in
+            switch result {
+            case .success:
+                print("[LandingZoneView] - 받은 비행기 가져오기 성공")
+            case .failure:
+                print("[LandingZoneView] - 받은 비행기 가져오기 실패")
             }
         }
     }

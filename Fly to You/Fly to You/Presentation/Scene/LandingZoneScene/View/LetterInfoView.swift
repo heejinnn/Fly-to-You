@@ -28,5 +28,6 @@ struct LetterInfoView: View{
                 })
             }
         }
+        .toolbar(.hidden, for: .tabBar)
     }
 }
