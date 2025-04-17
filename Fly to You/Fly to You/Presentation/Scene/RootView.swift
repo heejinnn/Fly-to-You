@@ -16,16 +16,6 @@ struct RootView: View {
         } else {
             AppComponent()
                 .makeSignUpView()
-                .onAppear(perform: checkfont)
-        }
-    }
-    
-    func checkfont(){
-        for family in UIFont.familyNames{
-            print(family)
-            for name in UIFont.fontNames(forFamilyName: family){
-                print(name)
-            }
         }
     }
 }

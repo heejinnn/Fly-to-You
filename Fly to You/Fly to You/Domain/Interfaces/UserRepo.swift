@@ -8,6 +8,7 @@
 protocol UserRepo{
     func fetchUid(nickname: String) async throws -> String
     func currentUserUid() async throws -> String
+    func fetchUsers(uids: [String]) async throws -> [User]
 }
 
 

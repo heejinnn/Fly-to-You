@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PaperPlaneCheck: View{
     
-    let letter: ReceiveLetter
+    let letter: ReceiveLetterModel
     
     var body: some View {
         VStack(spacing: 0) {
@@ -37,12 +37,12 @@ struct PaperPlaneCheck: View{
     private var content: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack{
-                Text("To.\(letter.to.nickname)")
+                Text("To.\(letter.to?.nickname ?? "")")
                     .font(.gaRamYeonGgoc(size: 18))
             }
             .padding(.top, 10)
 
-            Text("From.\(letter.from.nickname)")
+            Text("From.\(letter.from?.nickname ?? "")")
                 .font(.gaRamYeonGgoc(size: 18))
                 .foregroundColor(.black)
             

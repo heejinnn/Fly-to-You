@@ -10,8 +10,7 @@ import SwiftUI
 struct LandingZoneView: View {
     
     @StateObject var viewModelWrapper = LandingZoneViewModelWrapper()
-    
-    let letters: [ReceiveLetter] = [ReceiveLetter(id: "1", from: User(uid: "1", nickname: "누구", createdAt: Date()), to: User(uid: "2", nickname: "누구2", createdAt: Date()), message: "내용", topic: "주제", topicId: "2", timestamp: Date()), ReceiveLetter(id: "1", from: User(uid: "1", nickname: "누구", createdAt: Date()), to: User(uid: "2", nickname: "누구2", createdAt: Date()), message: "내용", topic: "주제", topicId: "2", timestamp: Date()), ReceiveLetter(id: "1", from: User(uid: "1", nickname: "누구", createdAt: Date()), to: User(uid: "2", nickname: "누구2", createdAt: Date()), message: "내용", topic: "주제", topicId: "2", timestamp: Date()), ReceiveLetter(id: "1", from: User(uid: "1", nickname: "누구", createdAt: Date()), to: User(uid: "2", nickname: "누구2", createdAt: Date()), message: "내용", topic: "주제", topicId: "2", timestamp: Date()), ReceiveLetter(id: "1", from: User(uid: "1", nickname: "누구", createdAt: Date()), to: User(uid: "2", nickname: "누구2", createdAt: Date()), message: "내용", topic: "주제", topicId: "2", timestamp: Date())]
+    @StateObject var viewModel = LandingZoneViewModel()
     
     var body: some View {
         NavigationStack(path: $viewModelWrapper.path) {
@@ -26,11 +25,10 @@ struct LandingZoneView: View {
                 Spacer().frame(height: Spacing.lg)
                 
                 VStack(spacing: Spacing.xs){
-                    ForEach(letters, id: \.id){ letter in
+                    ForEach(viewModel.letters, id: \.id){ letter in
                         PlaneCell(letter: letter)
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                print("??")
                                 viewModelWrapper.letter = letter
                                 viewModelWrapper.path.append(.landingZoneInfo)
                             }
@@ -50,12 +48,15 @@ struct LandingZoneView: View {
                 }
             }
         }
+        .onAppear{
+            viewModel.fetchReceivedLetters()
+        }
     }
 }
 
 final class LandingZoneViewModelWrapper: ObservableObject {
     @Published var path: [LandingZoneRoute] = []
-    @Published var letter: ReceiveLetter? = nil
+    @Published var letter: ReceiveLetterModel? = nil
 }
 
 enum LandingZoneRoute {

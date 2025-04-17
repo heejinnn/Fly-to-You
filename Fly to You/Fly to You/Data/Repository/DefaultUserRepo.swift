@@ -32,6 +32,34 @@ struct DefaultUserRepo: UserRepo {
         }
         return user.uid
     }
+    
+    func fetchUsers(uids: [String]) async throws -> [User] {
+        guard !uids.isEmpty else { return [] }
+        
+        // 10개씩 청크 분할
+        let chunks = uids.chunked(into: 10)
+        var users: [User] = []
+        
+        for chunk in chunks {
+            let snapshot = try await db.collection("user")
+                .whereField("uid", in: chunk)
+                .getDocuments()
+            
+            let chunkUsers = snapshot.documents.compactMap { doc in
+                try? doc.data(as: User.self)
+            }
+            users += chunkUsers
+        }
+        
+        return users
+    }
 }
 
+extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        stride(from: 0, to: count, by: size).map {
+            Array(self[$0..<Swift.min($0 + size, count)])
+        } 
+    }
+}
 
