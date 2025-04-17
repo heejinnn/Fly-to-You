@@ -19,5 +19,12 @@ struct LetterInfoView: View{
             
             Spacer()
         }
+        .toolbar{
+            ToolbarItem(placement: .topBarTrailing){
+                ToolbarFlyButton(action: {
+                    
+                })
+            }
+        }
     }
 }

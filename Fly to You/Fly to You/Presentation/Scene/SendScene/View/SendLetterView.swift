@@ -30,7 +30,7 @@ struct SendLetterView: View{
         }
         .toolbar{
             ToolbarItem(placement: .topBarTrailing){
-                Button(action: {
+                ToolbarFlyButton(action: {
                     viewModelWrapper.viewModel.sendLetter(toText: toText, topic: topicData.topic, topicId: topicData.topicId, message: message){ result in
                         
                         switch result{
@@ -42,13 +42,6 @@ struct SendLetterView: View{
                         case .failure(let error):
                             print(error)
                         }
-                        
-                    }
-                }, label: {
-                    HStack(spacing: 0){
-                        Text("날리기")
-                            .foregroundStyle(.blue1)
-                        Image(systemName: "paperplane")
                     }
                 })
             }
