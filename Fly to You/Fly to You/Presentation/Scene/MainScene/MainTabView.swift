@@ -36,15 +36,6 @@ struct MainTabView: View {
     }
 }
 
-struct DepartureLogView: View {
-    var body: some View {
-        NavigationStack {
-            Text("보낸 기록 화면")
-                .navigationTitle("보낸 기록")
-        }
-    }
-}
-
 struct FlightMapView: View{
     var body: some View{
         NavigationStack {
