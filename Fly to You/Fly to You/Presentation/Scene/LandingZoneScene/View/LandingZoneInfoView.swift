@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LetterInfoView: View{
+struct LandingZoneInfoView: View{
     
     @EnvironmentObject var viewModelWrapper: LandingZoneViewModelWrapper
     let letter: ReceiveLetterModel
