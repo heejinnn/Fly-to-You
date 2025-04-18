@@ -10,7 +10,8 @@ import SwiftUI
 
 struct PlaneCell: View{
     
-    let letter: ReceiveLetterModel 
+    let letter: ReceiveLetterModel
+    let route: PlaneCellRoute
     
     var body: some View{
         ZStack {
@@ -46,6 +47,11 @@ struct PlaneCell: View{
         .frame(height: 100)
         .padding(.horizontal, Spacing.md)
     }
+}
+
+enum PlaneCellRoute{
+    case receive
+    case send
 }
 
 //#Preview {

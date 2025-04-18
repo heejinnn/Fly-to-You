@@ -5,7 +5,7 @@
 //  Created by 최희진 on 4/18/25.
 //
 
-final class DepartureLogDIContainer{
+final class DepartureLogSceneDIContainer{
     
     func makeDepartureLogFactory() -> DefaultDepartureLogFactory {
         let viewModelWrapper = makeDepatureLogViewModelWrapper()

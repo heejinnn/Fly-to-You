@@ -25,7 +25,7 @@ struct LandingZoneView: View {
                 
                 VStack(spacing: Spacing.xs){
                     ForEach(viewModelWrapper.letters, id: \.id){ letter in
-                        PlaneCell(letter: letter)
+                        PlaneCell(letter: letter, route: .receive)
                             .contentShape(Rectangle())
                             .onTapGesture {
                                 viewModelWrapper.letter = letter
@@ -39,7 +39,7 @@ struct LandingZoneView: View {
                 switch route {
                 case .landingZoneInfo:
                     if let letter = viewModelWrapper.letter {
-                        LetterInfoView(letter: letter)
+                        LandingZoneInfoView(letter: letter)
                     }
                 case .relayLetter:
                     if let topic = viewModelWrapper.topic {

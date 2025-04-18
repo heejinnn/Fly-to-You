@@ -30,6 +30,12 @@ final class AppComponent {
         return randingZoneComponent(landingZoneFactory: landingZoneFactory).makeLandingZoneView()
     }
     
+    func makeDepartureLogView() -> some View {
+        let departureLogSceneDIContainer = appDIContainer.makeDepartureSceneDIContainer()
+        let departureLogFactory = departureLogSceneDIContainer.makeDepartureLogFactory()
+        return departureLogComponent(departureLogFactory: departureLogFactory).makeDepartureLogView()
+    }
+    
     private func rootComponent(mainFactory: any MainFactory) -> RootComponent {
         RootComponent(dependency: MainFactoryDependency(mainFactory: mainFactory))
     }
@@ -40,5 +46,9 @@ final class AppComponent {
     
     private func randingZoneComponent(landingZoneFactory: any LandingZoneFactory) -> LandingZoneComponent {
         LandingZoneComponent(dependency: LandingZoneFactoryDependency(landingZoneFactory: landingZoneFactory))
+    }
+    
+    private func departureLogComponent(departureLogFactory: any DepartureLogFactory) -> DepartureLogComponent{
+        DepartureLogComponent(dependency: DepartureLogFactoryDependency(departureLogFactory: departureLogFactory))
     }
 }
