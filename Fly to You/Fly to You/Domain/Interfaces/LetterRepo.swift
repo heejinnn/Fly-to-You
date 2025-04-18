@@ -7,5 +7,6 @@
 
 protocol LetterRepo{
     func save(letter: Letter) async throws -> Letter
+    func updateIsDelivered(letter: Letter) async throws
     func fetchLetters(toUid: String) async throws -> [ReceiveLetterDto]
 }

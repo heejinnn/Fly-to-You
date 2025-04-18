@@ -12,7 +12,7 @@ struct FlyAnimationView: View {
     @State private var text: String = "열심히 날라가는 중..."
     @State private var isPresented: Bool = false
     
-    @EnvironmentObject var viewModelWrapper: MainViewModelWrapper
+    let onHome: () -> Void
     
     var body: some View {
         VStack {
@@ -28,7 +28,7 @@ struct FlyAnimationView: View {
             
             if isPresented{
                 PlaneButton(title: "홈 화면으로", action: {
-                    viewModelWrapper.path = []
+                    onHome()
                 })
             }
         }
@@ -46,8 +46,4 @@ struct FlyAnimationView: View {
 enum GifName {
     static let flyPlane = "fly_plane"
     static let completeFlyPlane = "complete_fly_plane"
-}
-
-#Preview {
-    FlyAnimationView()
 }

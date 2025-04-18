@@ -40,20 +40,30 @@ struct LandingZoneView: View {
                 case .landingZoneInfo:
                     if let letter = viewModelWrapper.letter {
                         LetterInfoView(letter: letter)
-                    } else {
-                        Text("편지 정보가 없습니다.")
                     }
+                case .relayLetter:
+                    if let topic = viewModelWrapper.topic {
+                        SendLetterView(topicData: topic, route: .relay)
+                    }
+                case .flyAnimation:
+                    FlyAnimationView(onHome: {
+                        fetchLetters()
+                        viewModelWrapper.path = []
+                    })
                 }
             }
         }
         .onAppear{
-            viewModelWrapper.viewModel.fetchLetters{ result in
-                switch result {
-                case .success:
-                    print("[LandingZoneView] - 받은 비행기 가져오기 성공")
-                case .failure:
-                    print("[LandingZoneView] - 받은 비행기 가져오기 실패")
-                }
+            fetchLetters()
+        }
+    }
+    private func fetchLetters(){
+        viewModelWrapper.viewModel.fetchLetters{ result in
+            switch result {
+            case .success:
+                print("[LandingZoneView] - 받은 비행기 가져오기 성공")
+            case .failure:
+                print("[LandingZoneView] - 받은 비행기 가져오기 실패")
             }
         }
     }
@@ -62,6 +72,7 @@ struct LandingZoneView: View {
 final class LandingZoneViewModelWrapper: ObservableObject {
     @Published var path: [LandingZoneRoute] = []
     @Published var letter: ReceiveLetterModel? = nil
+    @Published var topic: TopicModel? = nil
     @Published var letters: [ReceiveLetterModel] = []
     
     var viewModel: LandingZoneViewModel
@@ -82,4 +93,6 @@ final class LandingZoneViewModelWrapper: ObservableObject {
 
 enum LandingZoneRoute {
     case landingZoneInfo
+    case relayLetter
+    case flyAnimation
 }

@@ -1,30 +1,29 @@
 //
-//  SendLetterUseCase.swift
+//  RelayLetterUseCase.swift
 //  Fly to You
 //
-//  Created by 최희진 on 4/16/25.
+//  Created by 최희진 on 4/17/25.
 //
 
 import Foundation
 
-
-protocol SendLetterUseCase{
+protocol RelayLetterUseCase{
     func send(toNickname: String, topic: String, topicId: String, message: String) async throws -> Letter
 }
 
-public struct DefaultSendLetterUseCase: SendLetterUseCase {
+public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
     private let userRepo: UserRepo
-    private let letterRepo: LetterRepo
     private let flightRepo: FlightRepo
+    private let letterRepo: LetterRepo
     
     init(
         userRepo: UserRepo,
-        letterRepo: LetterRepo,
-        flightRepo: FlightRepo
+        flightRepo: FlightRepo,
+        letterRepo: LetterRepo
     ) {
         self.userRepo = userRepo
-        self.letterRepo = letterRepo
         self.flightRepo = flightRepo
+        self.letterRepo = letterRepo
     }
     
     func send(
@@ -38,19 +37,20 @@ public struct DefaultSendLetterUseCase: SendLetterUseCase {
         
         let letter = Letter(
             id: UUID().uuidString,
-            fromUid: "n6F34VvWgvVdm8FHtaK4",
-            toUid: "8wwLegouGEQpzv3rXwkPyRcCA5S2",
+            fromUid: fromUid,
+            toUid: toUid,
             message: message,
             topic: topic,
             topicId: topicId,
             timestamp: Date(),
-            isDelivered: false,
-            isRelayStart: true
+            isDelivered: true,
+            isRelayStart: false
         )
         
         let savedLetter = try await letterRepo.save(letter: letter)
-        try await flightRepo.addRoute(flightId: savedLetter.topicId, letter: savedLetter)
+        try await letterRepo.updateIsDelivered(letter: savedLetter)
+        try await flightRepo.addRoute(flightId: letter.topicId, letter: savedLetter)
         
-        return savedLetter
+        return letter
     }
 }

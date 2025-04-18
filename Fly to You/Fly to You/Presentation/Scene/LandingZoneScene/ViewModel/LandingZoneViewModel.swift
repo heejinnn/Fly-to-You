@@ -10,7 +10,8 @@ import FirebaseFirestore
 
 
 protocol LandingZoneViewModelInput{
-    func fetchLetters(completion: @escaping (Result<Void, Error>) -> Void )
+    func fetchLetters(completion: @escaping (Result<Void, Error>) -> Void)
+    func relayLetter(toText: String, topicData: TopicModel, message: String, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 protocol LandingZoneViewModelOutput{
@@ -23,9 +24,11 @@ protocol LandingZoneViewModel: LandingZoneViewModelInput, LandingZoneViewModelOu
 class DafultLandingZoneViewModel: LandingZoneViewModel {
     @Published var letters: [ReceiveLetterModel] = []
     private let fetchLetterUseCase: FetchLettersUseCase
+    private let relayLetterUseCase: RelayLetterUseCase
     
-    init(fetchLetterUseCase: FetchLettersUseCase) {
+    init(fetchLetterUseCase: FetchLettersUseCase, relayLetterUseCase: RelayLetterUseCase) {
         self.fetchLetterUseCase = fetchLetterUseCase
+        self.relayLetterUseCase = relayLetterUseCase
     }
 
     func fetchLetters(completion: @escaping (Result<Void, Error>) -> Void  ) {
@@ -37,6 +40,17 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
             do {
                 let letterArr = try await fetchLetterUseCase.execute(toUid: uid)
                 letters = ReceiveLetter.toReceiveLetterModels(letters: letterArr)
+                completion(.success(()))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func relayLetter(toText: String, topicData: TopicModel, message: String, completion: @escaping (Result<Void, Error>) -> Void){
+        Task {
+            do {
+                try await relayLetterUseCase.send(toNickname: toText, topic: topicData.topic, topicId: topicData.topicId, message: message)
                 completion(.success(()))
             } catch {
                 completion(.failure(error))

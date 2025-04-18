@@ -17,7 +17,7 @@ public struct DefaultFlightRepo: FlightRepo {
         
         let document = try await flightRef.getDocument()
         let routeData = letter.toFirestoreData()
-        
+
         if document.exists {
             // 이미 있으면 updateData
             try await flightRef.updateData([
