@@ -5,6 +5,8 @@
 //  Created by 최희진 on 4/18/25.
 //
 
+import SwiftUI
+
 
 // MARK: - RootDependency
 
@@ -22,6 +24,6 @@ final class DepartureLogComponent {
     }
 
     func makeDepartureLogView() -> some View {
-        AnyView(dependency.landingZoneFactory.makeLandingZoneView())
+        AnyView(dependency.departureLogFactory.makeDepartureLogView())
     }
 }

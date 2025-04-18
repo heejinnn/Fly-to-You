@@ -33,4 +33,5 @@ final class DefaultDepartureLogFactory: DepartureLogFactory {
         return DepartureLogView()
             .environmentObject(depatureLogViewModelWrapper)
     }
+    
 }
