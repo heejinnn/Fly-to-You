@@ -22,7 +22,8 @@ struct MainTabView: View {
                     Label("비행기 착륙장", systemImage: "tray")
                 }
 
-            DepartureLogView()
+            AppComponent()
+                .makeDepartureLogView()
                 .tabItem {
                     Label("보낸 기록", systemImage: "doc")
                 }

@@ -10,51 +10,83 @@ import SwiftUI
 
 struct DepartureLogInfoView: View{
     
+    @EnvironmentObject var viewModelWrapper: DepatureLogViewModelWrapper
     let letter: ReceiveLetterModel
+    @State private var isEditMode: Bool = false
     
     var body: some View{
         VStack{
-            PaperPlaneCheck(letter: letter)
+            ExplanationText(text: "비행기를\n새로 날려보세요")
             
-            Menu(content: {
-                Button("수정하기", action: {})
-                Button("삭제하기", action: {})
-            }, label: {
-                Image("kebabmenu")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-            })
+            PaperPlaneCheck(letter: letter)
+            Spacer()
         }
+        .navigationBarBackButtonHidden()
+        .toolbar(.hidden, for: .tabBar)
         .toolbar{
-            ToolbarItem(placement: .topBarTrailing){
-                
-                Menu(content: {
-                    Button(action: {
-                        
-                    }, label: {
-                        HStack{
-                            Text("수정하기")
-                            Image(systemName: "pencil")
-                        }
-                    })
-                    
-                    Button(action: {
-                        
-                    }, label: {
-                        HStack{
-                            Group{
-                                Text("삭제하기")
-                                Image(systemName: "trash")
-                            }
-                            .foregroundStyle(.red)
-                        }
-                    })
-                }, label: {
-                    Image("kebabmenu")
+            ToolbarItem(placement: .topBarLeading) {
+                leadingToolbarButton
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                trailingToolbarButton
+            }
+        }
+    }
+    
+    private var leadingToolbarButton: some View {
+        Group {
+            if isEditMode {
+                Button(action: { isEditMode = false }) {
+                    Text("취소")
+                        .foregroundStyle(.gray3)
+                }
+            } else {
+                Button(action: {
+                    viewModelWrapper.path.removeLast()
+                }) {
+                    Image("arrow_left")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                })
+                        .frame(width: 24, height: 24)
+                }
             }
+        }
+    }
+    
+    private var trailingToolbarButton: some View {
+        Group {
+            if isEditMode {
+                Button(action: { isEditMode = false }) {
+                    Text("저장")
+                        .foregroundStyle(.blue1)
+                }
+            } else {
+                menuButton
+            }
+        }
+    }
+    
+    private var menuButton: some View {
+        Menu {
+            Button(action: { isEditMode = true }) {
+                HStack {
+                    Text("수정하기")
+                    Image(systemName: "pencil")
+                }
+            }
+            Button(role: .destructive, action: {
+                // 삭제 액션 구현
+            }) {
+                HStack {
+                    Text("삭제하기")
+                    Image(systemName: "trash")
+                }
+            }
+        } label: {
+            Image("kebabmenu")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24, height: 24)
         }
     }
 }
