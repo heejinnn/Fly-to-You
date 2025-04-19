@@ -5,11 +5,9 @@
 //  Created by 최희진 on 4/16/25.
 //
 
-import FirebaseAuth
 import FirebaseFirestore
 
 public struct DefaultLetterRepo: LetterRepo {
-    private let auth = Auth.auth()
     private let db = Firestore.firestore()
     
     func save(letter: Letter) async throws -> Letter {

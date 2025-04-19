@@ -38,8 +38,8 @@ public struct DefaultSendLetterUseCase: SendLetterUseCase {
         
         let letter = Letter(
             id: UUID().uuidString,
-            fromUid: "n6F34VvWgvVdm8FHtaK4",
-            toUid: "8wwLegouGEQpzv3rXwkPyRcCA5S2",
+            fromUid: fromUid,
+            toUid: toUid,
             message: message,
             topic: topic,
             topicId: topicId,
