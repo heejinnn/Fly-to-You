@@ -5,11 +5,9 @@
 //  Created by 최희진 on 4/16/25.
 //
 
-import FirebaseAuth
 import FirebaseFirestore
 
 public struct DefaultLetterRepo: LetterRepo {
-    private let auth = Auth.auth()
     private let db = Firestore.firestore()
     
     func save(letter: Letter) async throws -> Letter {
@@ -25,10 +23,20 @@ public struct DefaultLetterRepo: LetterRepo {
         ])
     }
     
-    func fetchLetters(toUid: String) async throws -> [ReceiveLetterDto] {
+    func fetchReceivedLetters(toUid: String) async throws -> [ReceiveLetterDto] {
         let snapshot = try await db.collection("letters")
             .whereField("toUid", isEqualTo: toUid)
             .whereField("isDelivered", isEqualTo: false)
+            .getDocuments()
+        
+        return snapshot.documents.compactMap { doc in
+            try? doc.data(as: ReceiveLetterDto.self)
+        }
+    }
+    
+    func fetchSentLetters(fromUid: String) async throws -> [ReceiveLetterDto] {
+        let snapshot = try await db.collection("letters")
+            .whereField("fromUid", isEqualTo: fromUid)
             .getDocuments()
         
         return snapshot.documents.compactMap { doc in

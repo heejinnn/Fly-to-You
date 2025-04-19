@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import Combine
 
 struct DepartureLogView: View {
     
     @EnvironmentObject var viewModelWrapper: DepatureLogViewModelWrapper
+    private let currentUid = UserDefaults.standard.string(forKey: "uid") ?? ""
      
     var body: some View {
         NavigationStack(path: $viewModelWrapper.path) {
@@ -26,6 +28,7 @@ struct DepartureLogView: View {
                     ForEach(viewModelWrapper.letters, id: \.id){ letter in
                         PlaneCell(letter: letter, route: .send)
                             .onTapGesture {
+                                viewModelWrapper.letter = letter
                                 viewModelWrapper.path.append(.departureLogInfo)
                             }
                     }
@@ -36,17 +39,45 @@ struct DepartureLogView: View {
             .navigationDestination(for: DepartureLogRoute.self, destination: { route in
                 switch route{
                     case .departureLogInfo:
-                    DepartureLogInfoView(letter: viewModelWrapper.letter)
+                    if let letter = viewModelWrapper.letter {
+                        DepartureLogInfoView(letter: letter)
+                    }
                 }
             })
+        }
+        .onAppear{
+            viewModelWrapper.viewModel.fetchLetters(fromUid: currentUid){ result in
+                switch result {
+                case .success():
+                    print("[DepartureLogView] - 보낸 기록 조회 성공")
+                case .failure(_):
+                    print("[DepartureLogView] - 보낸 기록 조회 실패")
+                }
+                
+            }
         }
     }
 }
 
 class DepatureLogViewModelWrapper: ObservableObject {
     @Published var path: [DepartureLogRoute] = []
-    @Published var letter: ReceiveLetterModel = ReceiveLetterModel(id: "1", from: User(uid: "1", nickname: "nick", createdAt: Date()), to: User(uid: "1", nickname: "nick", createdAt: Date()), message: "ddd", topic: "topic", topicId: "11", timestamp: Date(), isDelivered: true, isRelayStart: true)
-    @Published var letters: [ReceiveLetterModel] = [ReceiveLetterModel(id: "1", from: User(uid: "1", nickname: "nick", createdAt: Date()), to: User(uid: "1", nickname: "nick", createdAt: Date()), message: "ddd", topic: "topic", topicId: "11", timestamp: Date(), isDelivered: true, isRelayStart: true), ReceiveLetterModel(id: "1", from: User(uid: "1", nickname: "nick", createdAt: Date()), to: User(uid: "1", nickname: "nick", createdAt: Date()), message: "ddd", topic: "topic", topicId: "11", timestamp: Date(), isDelivered: true, isRelayStart: true)]
+    @Published var letter: ReceiveLetterModel? = nil
+    @Published var letters: [ReceiveLetterModel] = []
+    
+    var viewModel: DepartureLogViewModel
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(viewModel: DepartureLogViewModel){
+        self.viewModel = viewModel
+        bind()
+    }
+    
+    func bind(){
+        viewModel.lettersPublisher
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.letters, on: self)
+            .store(in: &cancellables)
+    }
 }
 
 #Preview {
