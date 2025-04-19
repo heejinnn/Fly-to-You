@@ -129,6 +129,17 @@ struct DepartureLogInfoView: View{
                 }
             }
             Button(role: .destructive, action: {
+                viewModelWrapper.viewModel.deleteSentLetter(letter: letter.toLetter(data: letter)){ result in
+                    switch result {
+                    case .success():
+                        DispatchQueue.main.async {
+                            viewModelWrapper.path.removeLast()
+                        }
+                        print("[DepartureLogInfoView] - 삭제 성공")
+                    case .failure(_):
+                        print("[DepartureLogInfoView] - 삭제 실패")
+                    }
+                }
             }) {
                 HStack {
                     Text("삭제하기")
@@ -143,8 +154,3 @@ struct DepartureLogInfoView: View{
         }
     }
 }
-
-//#Preview {
-//    DepartureLogInfoView(letter: ReceiveLetterModel(id: "1", from: User(uid: "1", nickname: "nick", createdAt: Date()), to: User(uid: "1", nickname: "nick", createdAt: Date()), message: "ddd", topic: "topic", topicId: "11", timestamp: Date(), isDelivered: true, isRelayStart: true)
-//    )
-//}

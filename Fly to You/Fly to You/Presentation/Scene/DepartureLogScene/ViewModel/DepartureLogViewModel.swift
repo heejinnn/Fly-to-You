@@ -71,6 +71,11 @@ class DefaultDepartureLogViewModel: DepartureLogViewModel {
         Task{
             do{
                 try await deleteLetterUseCase.deleteSentLetter(letter: letter)
+                
+                if let index = letters.firstIndex(where: { $0.id == letter.id }) {
+                    letters.remove(at: index)
+                }
+                
                 completion(.success(()))
             } catch{
                 completion(.failure(error))
