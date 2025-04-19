@@ -22,7 +22,6 @@ protocol DepartureLogViewModel: DepartureLogViewModelInput, DepartureLogViewMode
 
 
 class DefaultDepartureLogViewModel: DepartureLogViewModel {
-    
     @Published var letters: [ReceiveLetterModel] = []
     
     private let useCase: FetchLettersUseCase

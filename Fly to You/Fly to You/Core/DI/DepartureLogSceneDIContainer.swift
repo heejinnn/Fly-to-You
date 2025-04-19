@@ -13,15 +13,35 @@ final class DepartureLogSceneDIContainer{
     }
 
     // MARK: - Use Cases
+    
+    func makeFetchLettersUseCase() -> FetchLettersUseCase {
+        let letterRepo = makeLetterRepo()
+        let userRepo = makeUserRepo()
+        
+        return DefaultFetchLettersUseCase(letterRepo: letterRepo, userRepo: userRepo)
+    }
 
     // MARK: - Repository
+    
+    func makeUserRepo() -> UserRepo {
+        return DefaultUserRepo()
+    }
+    
+    func makeLetterRepo() -> LetterRepo {
+        return DefaultLetterRepo()
+    }
+
 
     // MARK: - View Model
+    
+    func makeDepartureLogViewModel() -> DepartureLogViewModel {
+        return DefaultDepartureLogViewModel(useCase: makeFetchLettersUseCase())
+    }
 
     // MARK: - View Model Wrapper
 
     func makeDepatureLogViewModelWrapper() -> DepatureLogViewModelWrapper {
-        DepatureLogViewModelWrapper()
+        DepatureLogViewModelWrapper(viewModel: makeDepartureLogViewModel())
     }
     
 }

@@ -11,6 +11,7 @@ import Combine
 struct DepartureLogView: View {
     
     @EnvironmentObject var viewModelWrapper: DepatureLogViewModelWrapper
+    private let currentUid = UserDefaults.standard.string(forKey: "uid") ?? ""
      
     var body: some View {
         NavigationStack(path: $viewModelWrapper.path) {
@@ -27,6 +28,7 @@ struct DepartureLogView: View {
                     ForEach(viewModelWrapper.letters, id: \.id){ letter in
                         PlaneCell(letter: letter, route: .send)
                             .onTapGesture {
+                                viewModelWrapper.letter = letter
                                 viewModelWrapper.path.append(.departureLogInfo)
                             }
                     }
@@ -43,6 +45,17 @@ struct DepartureLogView: View {
                 }
             })
         }
+        .onAppear{
+            viewModelWrapper.viewModel.fetchLetters(fromUid: currentUid){ result in
+                switch result {
+                case .success():
+                    print("[DepartureLogView] - 보낸 기록 조회 성공")
+                case .failure(_):
+                    print("[DepartureLogView] - 보낸 기록 조회 실패")
+                }
+                
+            }
+        }
     }
 }
 
@@ -56,6 +69,7 @@ class DepatureLogViewModelWrapper: ObservableObject {
     
     init(viewModel: DepartureLogViewModel){
         self.viewModel = viewModel
+        bind()
     }
     
     func bind(){
@@ -73,67 +87,3 @@ class DepatureLogViewModelWrapper: ObservableObject {
 enum DepartureLogRoute {
     case departureLogInfo
 }
-
-//import FirebaseFirestore
-//
-//struct SentLettersView: View {
-//    @State private var sentLetters: [SentLetter] = []
-//
-//    var body: some View {
-//        VStack {
-//            Text("내가 보낸 비행기")
-//                .font(.headline)
-//            List {
-//                        ForEach(sentLetters) { letter in
-//                            HStack {
-//                                VStack(alignment: .leading) {
-//                                    Text(letter.topic)
-//                                        .font(.headline)
-//                                    Text("To: \(letter.toUid)") // .toUid 대신 .to.nickname 사용
-//                                        .font(.subheadline)
-//                                }
-//                                Spacer()
-//                                Text(DateUtil.formatLetterDate(letter.timestamp))
-//                                    .font(.caption)
-//                            }
-//                        }
-//                    }
-//        }
-//        .onAppear {
-//            fetchSentLetters(for: UserDefaults.standard.string(forKey: "uid") ?? "") { letters in
-//                self.sentLetters = letters
-//            }
-//        }
-//    }
-//    func fetchSentLetters(for uid: String, completion: @escaping ([SentLetter]) -> Void) {
-//        let db = Firestore.firestore()
-//        db.collection("letters")
-//            .whereField("fromUid", isEqualTo: uid)
-//            .getDocuments { snapshot, error in
-//                guard let documents = snapshot?.documents, error == nil else {
-//                    completion([])
-//                    return
-//                }
-//                let letters = documents.compactMap { doc in
-//                    try? doc.data(as: SentLetter.self)
-//                }
-//                completion(letters)
-//            }
-//    }
-//}
-//
-//struct SentLetter: Codable, Identifiable {
-//    let id: String
-//    let fromUid: String
-//    let toUid: String
-//    let message: String
-//    let topic: String
-//    let topicId: String
-//    let timestamp: Date
-//    let isDelivered: Bool
-//    let isRelayStart: Bool
-//}
-//
-//
-//
-//
