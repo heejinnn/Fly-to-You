@@ -12,10 +12,7 @@ struct ExplanationText: View {
     let text: String
     
     var body: some View {
-        
         VStack{
-            Spacer().frame(height: 25)
-            
             HStack{
                 Text("\(text)")
                     .font(.pretendard(.regular, size: 20))
@@ -23,8 +20,7 @@ struct ExplanationText: View {
                 Spacer()
             }
             .padding(.horizontal, Spacing.md)
-            
-            Spacer().frame(height: 25)
         }
+        .padding(.vertical, 25)
     }
 }

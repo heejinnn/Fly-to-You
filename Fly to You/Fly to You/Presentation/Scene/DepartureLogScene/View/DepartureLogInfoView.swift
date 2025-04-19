@@ -16,7 +16,6 @@ struct DepartureLogInfoView: View{
     @State private var toText: String = ""
     @State private var fromText: String = ""
     @State private var message: String = ""
-    
     @State private var isLoading: Bool = false
     
     var body: some View{
@@ -130,7 +129,6 @@ struct DepartureLogInfoView: View{
                 }
             }
             Button(role: .destructive, action: {
-                // 삭제 액션 구현
             }) {
                 HStack {
                     Text("삭제하기")

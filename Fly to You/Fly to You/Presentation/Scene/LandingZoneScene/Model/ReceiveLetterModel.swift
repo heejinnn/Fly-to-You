@@ -20,7 +20,7 @@ struct ReceiveLetterModel: Identifiable, Codable {
 }
 
 extension ReceiveLetterModel {
-    static func toLetter(data: ReceiveLetterModel) -> Letter {
+    func toLetter(data: ReceiveLetterModel) -> Letter {
         return Letter(
             id: data.id,
             fromUid: data.from.uid,
