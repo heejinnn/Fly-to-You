@@ -6,7 +6,7 @@
 //
 
 protocol EditLetterUseCase {
-    func editSentLetter(letter: Letter) async throws -> ReceiveLetter
+    func editSentLetter(letter: Letter, toNickname: String) async throws -> ReceiveLetter
 }
 
 final class DefaultEditLetterUseCase: EditLetterUseCase {
@@ -19,9 +19,10 @@ final class DefaultEditLetterUseCase: EditLetterUseCase {
         self.userRepo = userRepo
     }
     
-    func editSentLetter(letter: Letter) async throws -> ReceiveLetter {
+    func editSentLetter(letter: Letter, toNickname: String) async throws -> ReceiveLetter {
         let newLetter = try await letterRepo.editSentLetter(letter: letter)
-        let userIDs: Set<String> = [letter.fromUid, letter.toUid]
+        let toUid = try await userRepo.fetchUid(nickname: toNickname)
+        let userIDs: Set<String> = [letter.fromUid, toUid]
         let users: [User] = try! await userRepo.fetchUsers(uids: Array(userIDs))
         let usersByID = Dictionary(uniqueKeysWithValues: users.map { ($0.uid, $0) })
         

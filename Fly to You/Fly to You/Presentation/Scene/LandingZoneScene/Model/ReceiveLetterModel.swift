@@ -18,3 +18,19 @@ struct ReceiveLetterModel: Identifiable, Codable {
     let isDelivered: Bool
     let isRelayStart: Bool
 }
+
+extension ReceiveLetterModel {
+    static func toLetter(data: ReceiveLetterModel) -> Letter {
+        return Letter(
+            id: data.id,
+            fromUid: data.from.uid,
+            toUid: data.to.uid,
+            message: data.message,
+            topic: data.topic,
+            topicId: data.topicId,
+            timestamp: data.timestamp,
+            isDelivered: data.isDelivered,
+            isRelayStart: data.isRelayStart
+        )
+    }
+}

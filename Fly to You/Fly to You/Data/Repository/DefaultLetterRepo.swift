@@ -49,6 +49,7 @@ public struct DefaultLetterRepo: LetterRepo {
         let letterRef = db.collection("letters").document(letter.topicId)
         let document = try await letterRef.getDocument()
         let newLetter = letter.toFirestoreData()
+        print(newLetter)
 
         if document.exists {
             try await letterRef.updateData(newLetter)
