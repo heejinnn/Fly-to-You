@@ -35,4 +35,19 @@ extension ReceiveLetter {
             )
         }
     }
+    
+    static func toReceiveLetterModel(letter: ReceiveLetter) -> ReceiveLetterModel {
+        return ReceiveLetterModel(
+            id: letter.id,
+            from: letter.from ?? User(uid: "", nickname: "", createdAt: Date()),
+            to: letter.to ?? User(uid: "", nickname: "", createdAt: Date()),
+            message: letter.message,
+            topic: letter.topic,
+            topicId: letter.topicId,
+            timestamp: letter.timestamp,
+            isDelivered: letter.isDelivered,
+            isRelayStart: letter.isRelayStart
+        )
+        
+    }
 }

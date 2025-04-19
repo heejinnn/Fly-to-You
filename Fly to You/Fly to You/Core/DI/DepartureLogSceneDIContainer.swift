@@ -20,6 +20,13 @@ final class DepartureLogSceneDIContainer{
         
         return DefaultFetchLettersUseCase(letterRepo: letterRepo, userRepo: userRepo)
     }
+    
+    func makeEditLettersUseCase() -> EditLetterUseCase {
+        let letterRepo = makeLetterRepo()
+        let userRepo = makeUserRepo()
+        
+        return DefaultEditLetterUseCase(letterRepo: letterRepo, userRepo: userRepo)
+    }
 
     // MARK: - Repository
     
@@ -35,7 +42,7 @@ final class DepartureLogSceneDIContainer{
     // MARK: - View Model
     
     func makeDepartureLogViewModel() -> DepartureLogViewModel {
-        return DefaultDepartureLogViewModel(useCase: makeFetchLettersUseCase())
+        return DefaultDepartureLogViewModel(useCase: makeFetchLettersUseCase(), editLetterUseCase: makeEditLettersUseCase())
     }
 
     // MARK: - View Model Wrapper

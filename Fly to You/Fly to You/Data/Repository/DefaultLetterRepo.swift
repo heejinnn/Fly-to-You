@@ -43,4 +43,16 @@ public struct DefaultLetterRepo: LetterRepo {
             try? doc.data(as: ReceiveLetterDto.self)
         }
     }
+    
+    func editSentLetter(letter: Letter) async throws -> Letter {
+        
+        let letterRef = db.collection("letters").document(letter.topicId)
+        let document = try await letterRef.getDocument()
+        let newLetter = letter.toFirestoreData()
+
+        if document.exists {
+            try await letterRef.updateData(newLetter)
+        }
+        return letter
+    }
 }

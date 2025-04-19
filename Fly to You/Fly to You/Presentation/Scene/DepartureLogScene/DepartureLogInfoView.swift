@@ -19,6 +19,16 @@ struct DepartureLogInfoView: View{
             ExplanationText(text: "비행기를\n새로 날려보세요")
             
             PaperPlaneCheck(letter: letter)
+            
+            Spacer().frame(height: 40)
+            
+            if letter.isDelivered{
+                Text("릴레이가 진행중이므로\n수정이나 삭제는 불가능합니다")
+                    .font(.pretendard(.regular, size: 15))
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.gray3)
+            }
+            
             Spacer()
         }
         .navigationBarBackButtonHidden()
@@ -28,7 +38,9 @@ struct DepartureLogInfoView: View{
                 leadingToolbarButton
             }
             ToolbarItem(placement: .topBarTrailing) {
-                trailingToolbarButton
+                if !letter.isDelivered{
+                    trailingToolbarButton
+                }
             }
         }
     }

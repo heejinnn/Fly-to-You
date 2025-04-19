@@ -10,4 +10,5 @@ protocol LetterRepo{
     func updateIsDelivered(letter: Letter) async throws
     func fetchReceivedLetters(toUid: String) async throws -> [ReceiveLetterDto]
     func fetchSentLetters(fromUid: String) async throws -> [ReceiveLetterDto]
+    func editSentLetter(letter: Letter) async throws -> Letter
 }

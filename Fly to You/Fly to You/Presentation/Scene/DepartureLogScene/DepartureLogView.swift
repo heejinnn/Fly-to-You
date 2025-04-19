@@ -33,7 +33,6 @@ struct DepartureLogView: View {
                             }
                     }
                 }
-                
                 Spacer()
             }
             .navigationDestination(for: DepartureLogRoute.self, destination: { route in
@@ -76,6 +75,11 @@ class DepatureLogViewModelWrapper: ObservableObject {
         viewModel.lettersPublisher
             .receive(on: DispatchQueue.main)
             .assign(to: \.letters, on: self)
+            .store(in: &cancellables)
+        
+        viewModel.letterPublisher
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.letter, on: self)
             .store(in: &cancellables)
     }
 }
