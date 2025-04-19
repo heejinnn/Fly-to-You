@@ -12,8 +12,7 @@ struct RootView: View {
 
     var body: some View {
         if appState.isLoggedIn {
-//            MainTabView()
-            SentLettersView()
+            MainTabView()
         } else {
             AppComponent()
                 .makeSignUpView()

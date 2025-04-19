@@ -38,7 +38,7 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
         
         Task {
             do {
-                let letterArr = try await fetchLetterUseCase.execute(toUid: uid)
+                let letterArr = try await fetchLetterUseCase.fetchReceivedLetters(toUid: uid)
                 letters = ReceiveLetter.toReceiveLetterModels(letters: letterArr)
                 completion(.success(()))
             } catch {
