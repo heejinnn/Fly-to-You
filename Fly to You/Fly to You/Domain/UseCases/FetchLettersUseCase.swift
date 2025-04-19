@@ -59,17 +59,13 @@ final class DefaultFetchLettersUseCase: FetchLettersUseCase{
         // 1. 편지 목록을 가져옴 (fromUid, toUid 정보만 있는 임시 모델)
         let letterDTOs = try await letterRepo.fetchSentLetters(fromUid: fromUid)
         guard !letterDTOs.isEmpty else { return [] }
-        
-        print(letterDTOs)
-        
+
         // 2. 관련된 모든 UID 추출
         let userIDs = Set(letterDTOs.flatMap { [$0.fromUid, $0.toUid] })
         
         // 3. 유저 정보 일괄 조회
         let users = try await userRepo.fetchUsers(uids: Array(userIDs))
         let usersByID = Dictionary(uniqueKeysWithValues: users.map { ($0.uid, $0) })
-        
-        print(usersByID)
         
         // 4. ReceiveLetter로 변환
         let letters: [ReceiveLetter] = letterDTOs.map { dto in
