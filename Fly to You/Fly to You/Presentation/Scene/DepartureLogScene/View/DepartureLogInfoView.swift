@@ -69,14 +69,9 @@ struct DepartureLogInfoView: View{
                         .foregroundStyle(.gray3)
                 }
             } else {
-                Button(action: {
+                BackButton(action: {
                     viewModelWrapper.path.removeLast()
-                }) {
-                    Image(.arrowLeft)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                }
+                })
             }
         }
     }

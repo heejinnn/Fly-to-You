@@ -39,7 +39,15 @@ struct SelectSubjectView: View {
             
             Spacer()
         }
+        .navigationBarBackButtonHidden()
+        .toolbar(.hidden, for: .tabBar)
         .toolbar{
+            ToolbarItem(placement: .topBarLeading) {
+                BackButton(action: {
+                    viewModelWrapper.path.removeLast()
+                })
+            }
+            
             ToolbarItem(placement: .topBarTrailing){
                 Button(action: {
                     viewModelWrapper.topicData.topic = selectedTopic.isEmpty ? customTopic : selectedTopic
@@ -51,7 +59,6 @@ struct SelectSubjectView: View {
                 })
             }
         }
-        .toolbar(.hidden, for: .tabBar)
     }
     
     private var inputSubject: some View{
