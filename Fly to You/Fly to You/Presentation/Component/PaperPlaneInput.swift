@@ -46,9 +46,14 @@ struct PaperPlaneInput: View{
                 Text("To.")
                     .font(.gaRamYeonGgoc(size: 18))
                 
-                TextField("전달할 대상을 입력하세요", text: $toText)
-                    .font(.gaRamYeonGgoc(size: 18))
-                    .foregroundColor(.gray1)
+                TextField(
+                    "",
+                    text: $toText,
+                    prompt: Text("전달할 대상을 입력하세요")
+                        .foregroundColor(.gray1)
+                        .font(.gaRamYeonGgoc(size: 18))
+                )
+                .font(.gaRamYeonGgoc(size: 18))
             }
             .padding(.top, 10)
 
@@ -68,7 +73,8 @@ struct PaperPlaneInput: View{
                             Text("여기에 메시지를 입력하세요")
                                 .foregroundColor(.gray1)
                                 .font(.gaRamYeonGgoc(size: 20))
-                                        .padding(.top, 6)
+                                .padding(.top, 6)
+                                .padding(.leading, Spacing.xxs)
                                 .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         Spacer()
@@ -101,7 +107,7 @@ struct PaperPlaneInput: View{
 }
 
 #Preview {
-    PaperPlaneInput(topic: "ddd", toText: .constant("dd"), fromText: "ssss", message: .constant(""))
+    PaperPlaneInput(topic: "ddd", toText: .constant(""), fromText: "ssss", message: .constant(""))
 }
 
 
