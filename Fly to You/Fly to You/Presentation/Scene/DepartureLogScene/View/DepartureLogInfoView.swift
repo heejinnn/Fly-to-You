@@ -72,7 +72,7 @@ struct DepartureLogInfoView: View{
                 Button(action: {
                     viewModelWrapper.path.removeLast()
                 }) {
-                    Image("arrow_left")
+                    Image(.arrowLeft)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 24, height: 24)
@@ -147,7 +147,7 @@ struct DepartureLogInfoView: View{
                 }
             }
         } label: {
-            Image("kebabmenu")
+            Image(.kebabmenu)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)

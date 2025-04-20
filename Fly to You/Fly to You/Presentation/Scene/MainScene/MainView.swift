@@ -15,7 +15,7 @@ struct MainView: View {
     var body: some View {
         NavigationStack(path: $viewModelWrapper.path){
             ZStack {
-                Image("background_sky")
+                Image(.backgroundSky)
                     .resizable()
                     .ignoresSafeArea(edges: .top)
                 
@@ -46,7 +46,7 @@ struct MainView: View {
     
     private var mainContent: some View {
         VStack(spacing: 40) {
-            Image("paperplane")
+            Image(.paperplane)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 200, height: 200)

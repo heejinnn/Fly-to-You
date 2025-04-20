@@ -48,6 +48,7 @@ struct PaperPlaneInput: View{
                 
                 TextField("전달할 대상을 입력하세요", text: $toText)
                     .font(.gaRamYeonGgoc(size: 18))
+                    .foregroundColor(.gray1)
             }
             .padding(.top, 10)
 
@@ -60,7 +61,7 @@ struct PaperPlaneInput: View{
             TextEditor(text: $message)
                 .frame(height: 300)
                 .font(.gaRamYeonGgoc(size: 20))
-                .background(Color.clear)
+                .scrollContentBackground(.hidden)
                 .overlay(
                     VStack {
                         if message.isEmpty {
@@ -81,7 +82,10 @@ struct PaperPlaneInput: View{
         }
         .padding(.horizontal, 15)
         .padding(.top, 5)
-        .background(.white)
+        .background{
+            Image(.backgroundPaper)
+                .resizable()
+        }
     }
     
     private var textCount: some View{
@@ -97,7 +101,7 @@ struct PaperPlaneInput: View{
 }
 
 #Preview {
-    PaperPlaneInput(topic: "ddd", toText: .constant("dd"), fromText: "ssss", message: .constant("aaa"))
+    PaperPlaneInput(topic: "ddd", toText: .constant("dd"), fromText: "ssss", message: .constant(""))
 }
 
 
