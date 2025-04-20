@@ -18,7 +18,11 @@ struct FlyAnimationView: View {
         VStack {
             
             GifPlayer(gifName: gifName)
-                .frame(width: 300, height: 300)
+                .frame(
+                    width: isPresented ? 300 : .infinity,
+                    height: isPresented ? 300 : 350
+                )
+                .padding(isPresented ? 50 : 0)
             
             Text("\(text)")
                 .font(.pretendard(.regular, size: 20))
@@ -47,3 +51,4 @@ enum GifName {
     static let flyPlane = "fly_plane"
     static let completeFlyPlane = "complete_fly_plane"
 }
+
