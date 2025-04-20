@@ -14,7 +14,6 @@ struct YourApp: App {
     @State private var showSplash = true
     @State private var gifReady = false
 
-
     var body: some Scene {
         WindowGroup {
             if showSplash {

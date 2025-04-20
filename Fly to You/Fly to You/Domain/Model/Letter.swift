@@ -33,4 +33,17 @@ extension Letter {
             "isRelayStart": isRelayStart
         ]
     }
+    
+    func toReceiveLetterDto(data: Letter) -> ReceiveLetterDto {
+        return ReceiveLetterDto(
+            id: data.id,
+            fromUid: data.fromUid,
+            toUid: data.toUid,
+            message: data.message,
+            topic: data.topic,
+            topicId: data.topicId,
+            timestamp: data.timestamp,
+            isDelivered: data.isDelivered,
+            isRelayStart: data.isRelayStart)
+    }
 }

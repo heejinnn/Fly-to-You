@@ -1,0 +1,156 @@
+//
+//  Untitled.swift
+//  Fly to You
+//
+//  Created by 최희진 on 4/18/25.
+//
+
+
+import SwiftUI
+
+struct DepartureLogInfoView: View{
+    
+    @EnvironmentObject var viewModelWrapper: DepatureLogViewModelWrapper
+    @State var letter: ReceiveLetterModel
+    @State private var isEditMode: Bool = false
+    @State private var toText: String = ""
+    @State private var fromText: String = ""
+    @State private var message: String = ""
+    @State private var isLoading: Bool = false
+    
+    var body: some View{
+        ZStack{
+            
+            VStack{
+                ExplanationText(text: "비행기를\n새로 날려보세요")
+                
+                if !isEditMode{
+                    PaperPlaneCheck(letter: letter)
+                } else{
+                    PaperPlaneInput(topic: letter.topic, toText: $toText, fromText: fromText, message: $message)
+                }
+                
+                Spacer().frame(height: 40)
+                
+                if letter.isDelivered{
+                    Text("릴레이가 진행중이므로\n수정이나 삭제는 불가능합니다")
+                        .font(.pretendard(.regular, size: 15))
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.gray3)
+                }
+                
+                Spacer()
+            }
+            
+            if isLoading {
+                ProgressView()
+                    .controlSize(.regular)
+            }
+        }
+        .navigationBarBackButtonHidden()
+        .toolbar(.hidden, for: .tabBar)
+        .toolbar{
+            ToolbarItem(placement: .topBarLeading) {
+                leadingToolbarButton
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                if !letter.isDelivered{
+                    trailingToolbarButton
+                }
+            }
+        }
+    }
+    
+    private var leadingToolbarButton: some View {
+        Group {
+            if isEditMode {
+                Button(action: { isEditMode = false }) {
+                    Text("취소")
+                        .foregroundStyle(.gray3)
+                }
+            } else {
+                Button(action: {
+                    viewModelWrapper.path.removeLast()
+                }) {
+                    Image("arrow_left")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                }
+            }
+        }
+    }
+    
+    private var trailingToolbarButton: some View {
+        Group {
+            if isEditMode {
+                Button(action: {
+                    isEditMode = false
+                    isLoading = true
+                    
+                    let newLetter = ReceiveLetterModel(
+                        id: letter.id,
+                        from: letter.from,
+                        to: letter.to,
+                        message: message,
+                        topic: letter.topic,
+                        topicId: letter.topicId,
+                        timestamp: letter.timestamp,
+                        isDelivered: letter.isDelivered,
+                        isRelayStart: letter.isRelayStart)
+                    
+                    viewModelWrapper.viewModel.editSentLetter(letter: newLetter, toText: toText){
+                        result in
+                        switch result {
+                        case .success(let data):
+                            letter = data
+                            isLoading = false
+                            print("[DepartureLogInfoView] - 수정 성공")
+                        case .failure(_):
+                            print("[DepartureLogInfoView] - 수정 실패")
+                        }
+                    }
+                }) {
+                    Text("저장")
+                        .foregroundStyle(.blue1)
+                }
+            } else {
+                menuButton
+            }
+        }
+    }
+    
+    private var menuButton: some View {
+        Menu {
+            Button(action: { isEditMode = true }) {
+                HStack {
+                    Text("수정하기")
+                    Image(systemName: "pencil")
+                }
+            }
+            Button(role: .destructive, action: {
+                viewModelWrapper.viewModel.deleteSentLetter(letter: letter.toLetter(data: letter)){ result in
+                    switch result {
+                    case .success():
+                        DispatchQueue.main.async {
+                            viewModelWrapper.path.removeLast()
+                        }
+                        print("[DepartureLogInfoView] - 삭제 성공")
+                    case .failure(_):
+                        print("[DepartureLogInfoView] - 삭제 실패")
+                    }
+                }
+            }) {
+                HStack {
+                    Text("삭제하기")
+                    Image(systemName: "trash")
+                }
+            }
+        } label: {
+            Image("kebabmenu")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 24, height: 24)
+        }
+    }
+}

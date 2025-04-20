@@ -13,7 +13,7 @@ struct PaperPlaneInput: View{
     @Binding var toText: String
     let fromText: String
     @Binding var message: String
-    private let maxCharacters = 100
+    private let maxCharacters = 200
     
     var body: some View {
         VStack(spacing: 0) {

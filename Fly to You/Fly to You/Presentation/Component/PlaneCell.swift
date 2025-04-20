@@ -23,8 +23,15 @@ struct PlaneCell: View{
                 VStack(alignment: .leading, spacing: Spacing.xxxs) {
                     Text("\(letter.topic)")
                         .font(.pretendard(.medium, size: 18))
-                    Text("From: \(letter.from.nickname)")
-                        .font(.pretendard(.regular, size: 13))
+                    
+                    if route == .receive {
+                        Text("From: \(letter.from.nickname)")
+                            .font(.pretendard(.regular, size: 13))
+                    } else{
+                        Text("To: \(letter.to.nickname)")
+                            .font(.pretendard(.regular, size: 13))
+                    }
+                    
                     Spacer()
                 }
                 

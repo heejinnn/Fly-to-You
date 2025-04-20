@@ -18,3 +18,4 @@ struct ReceiveLetterDto: Identifiable, Codable {
     let isDelivered: Bool
     let isRelayStart: Bool
 }
+
