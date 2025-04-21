@@ -45,7 +45,7 @@ public struct DefaultLetterRepo: LetterRepo {
     }
     
     func editSentLetter(letter: Letter) async throws -> ReceiveLetterDto {
-        let letterRef = db.collection("letters").document(letter.topicId)
+        let letterRef = db.collection("letters").document(letter.id)
         let document = try await letterRef.getDocument()
         let newLetter = letter.toFirestoreData()
 
@@ -57,25 +57,32 @@ public struct DefaultLetterRepo: LetterRepo {
     
     func deleteSentLetter(letter: Letter) async throws {
         // 1. letters 컬렉션에서 해당 편지 삭제
-        let letterRef = db.collection("letters").document(letter.topicId)
+        let letterRef = db.collection("letters").document(letter.id)
         try await letterRef.delete()
-        
-        // 2. 해당 letter를 가진 flights 문서들 찾기 (직접 쿼리할 수 있는 인덱스가 있다면)
-        let flightsQuery = db.collection("flights")
-        let flightsDocs = try await flightsQuery.getDocuments()
-        
-        // 편지 데이터를 Firestore 형식으로 변환
-        let routeData = letter.toFirestoreData()
+
+        // 2. flights 컬렉션에서 해당 flight 문서(routes 배열만 필요)
+        let flightRef = db.collection("flights").document(letter.topicId)
+        let flightDoc = try await flightRef.getDocument()
+        guard var routes = flightDoc.data()?["routes"] as? [[String: Any]] else { return }
         
         if letter.isRelayStart {
-            let flightRef = db.collection("flights").document(letter.topicId)
+            // 릴레이 시작점이면 flight 문서 자체 삭제
             try await flightRef.delete()
-        } else{
-            // 3. 각 flight 문서에서 해당 route 제거
-            for document in flightsDocs.documents {
-                try await document.reference.updateData([
-                    "routes": FieldValue.arrayRemove([routeData])
-                ])
+        } else {
+            // 3. routes 배열에서 해당 routeData 삭제
+            try await flightDoc.reference.updateData([
+                "routes": routes.removeLast()
+            ])
+            
+            // 4. 삭제한 routeData 앞 순서에 저장된 routes 경로가 있으면 isDelivered 필드 수정
+            if let currentIndex = routes.firstIndex(where: { ($0["id"] as? String) == letter.id }), currentIndex > 0 {
+                let previousRoute = routes[currentIndex - 1]
+                if let previousLetterId = previousRoute["id"] as? String {
+                    let previousLetterRef = db.collection("letters").document(previousLetterId)
+                    try await previousLetterRef.updateData([
+                        "isDelivered": false
+                    ])
+                }
             }
         }
     }

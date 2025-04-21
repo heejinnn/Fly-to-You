@@ -44,12 +44,11 @@ public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
             topic: topic,
             topicId: topicId,
             timestamp: Date(),
-            isDelivered: true,
+            isDelivered: false,
             isRelayStart: false
         )
         
         let savedLetter = try await letterRepo.save(letter: letter)
-        try await letterRepo.updateIsDelivered(letter: savedLetter)
         try await letterRepo.updateIsDelivered(letter: previousLetter)
         try await flightRepo.addRoute(flightId: letter.topicId, letter: savedLetter)
         
