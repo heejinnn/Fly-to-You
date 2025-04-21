@@ -14,7 +14,7 @@ final class DefaultUserRepo: UserRepo {
     
     func fetchUid(nickname: String) async throws -> String {
         let query = db.collection("users")
-            .whereField("nickname", isEqualTo: nickname)
+            .whereField("nickname", isEqualTo: nickname.lowercased())
             .limit(to: 1)
         
         let snapshot = try await query.getDocuments()
