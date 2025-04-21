@@ -39,7 +39,7 @@ struct MainView: View {
                 case .selectSubject:
                     SelectSubjectView(visibliity: $visibility)
                 case .sendLetter:
-                    SendLetterView(topicData: TopicModel(topic: viewModelWrapper.topicData.topic, topicId: viewModelWrapper.topicData.topicId), route: .start)
+                    SendLetterView(topicData: TopicModel(topic: viewModelWrapper.topicData.topic, topicId: viewModelWrapper.topicData.topicId), route: .start, letter: nil)
                 case .flyAnimation:
                     FlyAnimationView(onHome: {
                         viewModelWrapper.path = []

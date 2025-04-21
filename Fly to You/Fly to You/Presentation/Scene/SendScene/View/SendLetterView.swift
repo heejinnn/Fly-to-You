@@ -14,6 +14,7 @@ struct SendLetterView: View{
     
     let topicData: TopicModel
     let route: SendLetterRoute
+    let letter: Letter?
     @State private var toText: String = ""
     @State private var fromText: String = ""
     @State private var message: String = ""
@@ -31,7 +32,6 @@ struct SendLetterView: View{
             hideKeyboard()
         }
         .navigationBarBackButtonHidden()
-//        .toolbar(.hidden, for: .tabBar)
         .toolbar{
             ToolbarItem(placement: .topBarLeading) {
                 BackButton(action: {
@@ -75,15 +75,17 @@ struct SendLetterView: View{
                 }
             }
         } else{
-            landingZoneViewModelWrapper.viewModel.relayLetter(toText: toText, topicData: topicData, message: message){ result in
-                switch result{
-                case .success:
-                    print("[SendLetterView] - 비행기 이어서 날리기 성공")
-                    DispatchQueue.main.async {
-                        landingZoneViewModelWrapper.path.append(.flyAnimation)
+            if let letter = self.letter{
+                landingZoneViewModelWrapper.viewModel.relayLetter(toText: toText, topicData: topicData, message: message, letter: letter){ result in
+                    switch result{
+                    case .success:
+                        print("[SendLetterView] - 비행기 이어서 날리기 성공")
+                        DispatchQueue.main.async {
+                            landingZoneViewModelWrapper.path.append(.flyAnimation)
+                        }
+                    case .failure(let error):
+                        print(error)
                     }
-                case .failure(let error):
-                    print(error)
                 }
             }
         }

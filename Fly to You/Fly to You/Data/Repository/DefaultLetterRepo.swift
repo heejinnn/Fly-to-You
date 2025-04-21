@@ -11,13 +11,13 @@ public struct DefaultLetterRepo: LetterRepo {
     private let db = Firestore.firestore()
     
     func save(letter: Letter) async throws -> Letter {
-        let document = db.collection("letters").document(letter.topicId)
+        let document = db.collection("letters").document(letter.id)
         try await document.setData(letter.toFirestoreData())
         return letter
     }
     
     func updateIsDelivered(letter: Letter) async throws {
-        let document = db.collection("letters").document(letter.topicId)
+        let document = db.collection("letters").document(letter.id)
         try await document.updateData([
             "isDelivered": true
         ])

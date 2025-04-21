@@ -8,7 +8,7 @@
 import Foundation
 
 protocol RelayLetterUseCase{
-    func send(toNickname: String, topic: String, topicId: String, message: String) async throws -> Letter
+    func send(toNickname: String, topic: String, topicId: String, message: String, previousLetter: Letter) async throws -> Letter
 }
 
 public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
@@ -30,7 +30,8 @@ public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
         toNickname: String,
         topic: String,
         topicId: String,
-        message: String
+        message: String,
+        previousLetter: Letter
     ) async throws -> Letter {
         let fromUid = try await userRepo.currentUserUid()
         let toUid = try await userRepo.fetchUid(nickname: toNickname)
@@ -49,6 +50,7 @@ public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
         
         let savedLetter = try await letterRepo.save(letter: letter)
         try await letterRepo.updateIsDelivered(letter: savedLetter)
+        try await letterRepo.updateIsDelivered(letter: previousLetter)
         try await flightRepo.addRoute(flightId: letter.topicId, letter: savedLetter)
         
         return letter
