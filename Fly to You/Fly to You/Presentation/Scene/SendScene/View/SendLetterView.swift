@@ -46,8 +46,7 @@ struct SendLetterView: View{
             ToolbarItem(placement: .topBarTrailing){
                 ToolbarFlyButton(action: {
                     sendLetter()
-                })
-                                 
+                })               
             }
         }
     }

@@ -10,7 +10,6 @@ import SwiftUI
 @main
 struct YourApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @StateObject private var appState = AppState()
     @State private var showSplash = true
     @State private var gifReady = false
 
@@ -29,7 +28,6 @@ struct YourApp: App {
                     }
             } else {
                 RootView()
-                    .environmentObject(appState)
             }
         }
     }

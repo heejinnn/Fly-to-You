@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import FirebaseAuth
+
+
 
 struct RootView: View {
-    @EnvironmentObject var appState: AppState
 
     var body: some View {
-        if appState.isLoggedIn {
+        if let user = Auth.auth().currentUser {
             MainTabView()
         } else {
             AppComponent()
@@ -19,3 +21,4 @@ struct RootView: View {
         }
     }
 }
+
