@@ -49,8 +49,9 @@ public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
         )
         
         let savedLetter = try await letterRepo.save(letter: letter)
-        try await letterRepo.updateIsDelivered(letter: previousLetter)
-        try await flightRepo.addRoute(flightId: letter.topicId, letter: savedLetter)
+        try await letterRepo.updateIsDelivered(letterId: previousLetter.id, isDelivered: true)
+        try await flightRepo.addRoute(flightId: savedLetter.topicId, letter: savedLetter)
+        try await flightRepo.updateRoute(letter: previousLetter)
         
         return letter
     }

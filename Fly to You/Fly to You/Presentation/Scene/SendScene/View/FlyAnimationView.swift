@@ -20,7 +20,7 @@ struct FlyAnimationView: View {
             Spacer()
             
             GifPlayer(gifName: gifName)
-                .frame(width: isPresented ? 250 : .nan, height: isPresented ? 250 : 300)
+                .frame(width: isPresented ? 250 : nil, height: isPresented ? 250 : 300)
                 .padding(isPresented ? 50 : 0)
             
             Text("\(text)")

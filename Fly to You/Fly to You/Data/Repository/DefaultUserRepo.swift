@@ -8,7 +8,7 @@
 import FirebaseAuth
 import FirebaseFirestore
 
-struct DefaultUserRepo: UserRepo {
+final class DefaultUserRepo: UserRepo {
     private let auth = Auth.auth()
     private let db = Firestore.firestore()
     
