@@ -34,6 +34,20 @@ extension Letter {
         ]
     }
     
+    func toFirestoreDataDeliver() -> [String: Any] {
+        return [
+            "id": id,
+            "fromUid": fromUid,
+            "toUid": toUid,
+            "topic": topic,
+            "topicId": topicId,
+            "message": message,
+            "timestamp": timestamp,
+            "isDelivered": true,
+            "isRelayStart": isRelayStart
+        ]
+    }
+    
     func toReceiveLetterDto(data: Letter) -> ReceiveLetterDto {
         return ReceiveLetterDto(
             id: data.id,

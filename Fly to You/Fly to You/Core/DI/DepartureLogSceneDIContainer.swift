@@ -30,8 +30,9 @@ final class DepartureLogSceneDIContainer{
     
     func makeDeleteLettersUseCase() -> DeleteLetterUseCase {
         let letterRepo = makeLetterRepo()
+        let flightRepo = makeFlightRepo()
         
-        return DefaultDeleteLetterUseCase(letterRepo: letterRepo)
+        return DefaultDeleteLetterUseCase(letterRepo: letterRepo, flightRepo: flightRepo)
     }
 
     // MARK: - Repository
@@ -42,6 +43,10 @@ final class DepartureLogSceneDIContainer{
     
     func makeLetterRepo() -> LetterRepo {
         return DefaultLetterRepo()
+    }
+    
+    func makeFlightRepo() -> FlightRepo {
+        return DefaultFlightRepo()
     }
 
 

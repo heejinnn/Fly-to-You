@@ -42,8 +42,8 @@ struct LandingZoneView: View {
                         LandingZoneInfoView(letter: letter)
                     }
                 case .relayLetter:
-                    if let topic = viewModelWrapper.topic {
-                        SendLetterView(topicData: topic, route: .relay)
+                    if let topic = viewModelWrapper.topic, let letter = viewModelWrapper.letter {
+                        SendLetterView(topicData: topic, route: .relay, letter: letter.toLetter(data: letter))
                     }
                 case .flyAnimation:
                     FlyAnimationView(onHome: {
