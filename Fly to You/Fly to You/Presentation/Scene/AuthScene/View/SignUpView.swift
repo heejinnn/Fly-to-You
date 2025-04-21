@@ -14,27 +14,54 @@ struct SignUpView: View {
     @State private var nickname = ""
     
     var body: some View {
-        VStack(spacing: 20) {
-            TextField("닉네임", text: $nickname)
-                .padding()
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(10)
-            
-            if viewModelWrapper.duplicateError {
-                Text("이미 사용 중인 닉네임입니다.")
-                    .foregroundColor(.red)
-            }
-            
-            Button("시작하기") {
-                viewModelWrapper.viewModel.signUp(nickname: nickname){ result in
-                    if result{
-                        appState.isLoggedIn = true
+        NavigationStack{
+            VStack(alignment: .leading) {
+                ExplanationText(text: "앱에서 사용할 \n닉네임을 입력하세요")
+                
+                Group{
+                    HStack{
+                        TextField("닉네임을 입력하세요", text: $nickname)
+                            .font(.pretendard(.light, size: 15))
+                            .foregroundColor(.black)
+                            .padding(.leading, 15)
+                        
+                        Spacer()
+                    }
+                    .frame(height: 55)
+                    .frame(maxWidth: .infinity)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10)
+                            .inset(by: 0.5)
+                            .stroke(!nickname.isEmpty ? .blue1 : .gray1, lineWidth: 1)
+                    )
+                    
+                    if viewModelWrapper.duplicateError {
+                        Text("이미 사용 중인 닉네임입니다.")
+                            .font(.pretendard(.light, size: 13))
+                            .foregroundColor(.red)
+                            .padding(.top, Spacing.xxs)
                     }
                 }
+                .padding(.horizontal, Spacing.md)
+                
+                Spacer()
             }
-            .disabled(nickname.isEmpty)
+            .toolbar{
+                ToolbarItem(placement: .topBarTrailing){
+                    Button(action: {
+                        viewModelWrapper.viewModel.signUp(nickname: nickname){ result in
+                            if result{
+                                appState.isLoggedIn = true
+                            }
+                        }
+                    }, label: {
+                        Text("완료")
+                            .foregroundStyle(.blue1)
+                    })
+                    .disabled(nickname.isEmpty)
+                }
+            }
         }
-        .padding()
     }
 }
 
