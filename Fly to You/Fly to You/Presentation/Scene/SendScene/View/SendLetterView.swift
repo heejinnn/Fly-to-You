@@ -30,7 +30,19 @@ struct SendLetterView: View{
         .onTapGesture {
             hideKeyboard()
         }
+        .navigationBarBackButtonHidden()
+//        .toolbar(.hidden, for: .tabBar)
         .toolbar{
+            ToolbarItem(placement: .topBarLeading) {
+                BackButton(action: {
+                    if route == .start{
+                        viewModelWrapper.path.removeLast()
+                    } else{
+                        landingZoneViewModelWrapper.path.removeLast()
+                    }
+                })
+            }
+            
             ToolbarItem(placement: .topBarTrailing){
                 ToolbarFlyButton(action: {
                     sendLetter()

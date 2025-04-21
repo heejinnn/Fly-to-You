@@ -13,6 +13,7 @@ struct DepartureLogInfoView: View{
     @EnvironmentObject var viewModelWrapper: DepatureLogViewModelWrapper
     @State var letter: ReceiveLetterModel
     @State private var isEditMode: Bool = false
+    @State private var showAlert: Bool = false
     @State private var toText: String = ""
     @State private var fromText: String = ""
     @State private var message: String = ""
@@ -59,6 +60,24 @@ struct DepartureLogInfoView: View{
                 }
             }
         }
+        .alert("비행기를 삭제할까요?", isPresented: $showAlert) {
+            Button("삭제", role: .destructive) {
+                viewModelWrapper.viewModel.deleteSentLetter(letter: letter.toLetter(data: letter)){ result in
+                    switch result {
+                    case .success():
+                        DispatchQueue.main.async {
+                            viewModelWrapper.path.removeLast()
+                        }
+                        print("[DepartureLogInfoView] - 삭제 성공")
+                    case .failure(_):
+                        print("[DepartureLogInfoView] - 삭제 실패")
+                    }
+                }
+            }
+            Button("취소", role: .cancel) { }
+        } message: {
+            Text("보낸 기록이 사라져요 🥲")
+        }
     }
     
     private var leadingToolbarButton: some View {
@@ -69,14 +88,9 @@ struct DepartureLogInfoView: View{
                         .foregroundStyle(.gray3)
                 }
             } else {
-                Button(action: {
+                BackButton(action: {
                     viewModelWrapper.path.removeLast()
-                }) {
-                    Image("arrow_left")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 24, height: 24)
-                }
+                })
             }
         }
     }
@@ -129,17 +143,7 @@ struct DepartureLogInfoView: View{
                 }
             }
             Button(role: .destructive, action: {
-                viewModelWrapper.viewModel.deleteSentLetter(letter: letter.toLetter(data: letter)){ result in
-                    switch result {
-                    case .success():
-                        DispatchQueue.main.async {
-                            viewModelWrapper.path.removeLast()
-                        }
-                        print("[DepartureLogInfoView] - 삭제 성공")
-                    case .failure(_):
-                        print("[DepartureLogInfoView] - 삭제 실패")
-                    }
-                }
+                showAlert = true
             }) {
                 HStack {
                     Text("삭제하기")
@@ -147,7 +151,7 @@ struct DepartureLogInfoView: View{
                 }
             }
         } label: {
-            Image("kebabmenu")
+            Image(.kebabmenu)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)

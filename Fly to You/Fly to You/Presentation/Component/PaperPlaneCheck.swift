@@ -55,10 +55,13 @@ struct PaperPlaneCheck: View{
         }
         .padding(.horizontal, 15)
         .padding(.top, 5)
-        .background(.white)
+        .background{
+            Image(.backgroundPaper)
+                .resizable()
+        }
     }
 }
 
-//#Preview {
-//    PaperPlaneCheck(letter: ReceiveLetterModel(id: "1", from: User(uid: "", nickname: "ddd", createdAt: Date()), to: User(uid: "", nickname: "ddd", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date()))
-//}
+#Preview {
+    PaperPlaneCheck(letter: ReceiveLetterModel(id: "1", from: User(uid: "", nickname: "ddd", createdAt: Date()), to: User(uid: "", nickname: "ddd", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false))
+}

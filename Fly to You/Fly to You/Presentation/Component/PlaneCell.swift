@@ -38,7 +38,7 @@ struct PlaneCell: View{
                 Spacer()
                 
                 VStack(alignment: .trailing) {
-                    Image("paperplane")
+                    Image(.paperplane)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 30, height: 30)

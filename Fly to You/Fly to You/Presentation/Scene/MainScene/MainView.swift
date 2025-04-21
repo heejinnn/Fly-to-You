@@ -11,11 +11,16 @@ import Combine
 struct MainView: View {
     
     @EnvironmentObject var viewModelWrapper: MainViewModelWrapper
+    @State var visibility: Visibility = .automatic
+        
+    init() {
+        UITabBar.appearance().backgroundColor = UIColor.white
+    }
     
     var body: some View {
         NavigationStack(path: $viewModelWrapper.path){
             ZStack {
-                Image("background_sky")
+                Image(.backgroundSky)
                     .resizable()
                     .ignoresSafeArea(edges: .top)
                 
@@ -32,7 +37,7 @@ struct MainView: View {
             .navigationDestination(for: MainRoute.self) { route in
                 switch route {
                 case .selectSubject:
-                    SelectSubjectView()
+                    SelectSubjectView(visibliity: $visibility)
                 case .sendLetter:
                     SendLetterView(topicData: TopicModel(topic: viewModelWrapper.topicData.topic, topicId: viewModelWrapper.topicData.topicId), route: .start)
                 case .flyAnimation:
@@ -41,12 +46,18 @@ struct MainView: View {
                     })
                 }
             }
+            .toolbar(visibility, for: .tabBar)
+            .onAppear {
+                withAnimation {
+                    visibility = .visible
+                }
+            }
         }
     }
     
     private var mainContent: some View {
         VStack(spacing: 40) {
-            Image("paperplane")
+            Image(.paperplane)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 200, height: 200)

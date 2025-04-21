@@ -20,7 +20,14 @@ struct LandingZoneInfoView: View{
             
             Spacer()
         }
+        .navigationBarBackButtonHidden()
+        .toolbar(.hidden, for: .tabBar)
         .toolbar{
+            ToolbarItem(placement: .topBarLeading) {
+                BackButton(action: {
+                    viewModelWrapper.path.removeLast()
+                })
+            }
             ToolbarItem(placement: .topBarTrailing){
                 ToolbarFlyButton(action: {
                     viewModelWrapper.topic = TopicModel(topic: letter.topic, topicId: letter.topicId)
@@ -28,6 +35,5 @@ struct LandingZoneInfoView: View{
                 })
             }
         }
-        .toolbar(.hidden, for: .tabBar)
     }
 }
