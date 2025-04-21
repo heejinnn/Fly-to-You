@@ -12,6 +12,7 @@ struct SelectSubjectView: View {
     @EnvironmentObject var viewModelWrapper: MainViewModelWrapper
     @State private var selectedTopic: String = ""
     @State private var customTopic: String = ""
+    @Binding var visibliity: Visibility
     
     private let topicList = ["응원 한마디", "오늘 가장 행복했던 순간은?", "오늘의 TMI", "칭찬 한마디", "최근에 본 영화 추천"]
     
@@ -40,7 +41,6 @@ struct SelectSubjectView: View {
             Spacer()
         }
         .navigationBarBackButtonHidden()
-        .toolbar(.hidden, for: .tabBar)
         .toolbar{
             ToolbarItem(placement: .topBarLeading) {
                 BackButton(action: {
@@ -57,6 +57,11 @@ struct SelectSubjectView: View {
                     Text("다음")
                         .foregroundStyle(.blue1)
                 })
+            }
+        }
+        .onAppear {
+            withAnimation {
+                visibliity = .hidden
             }
         }
     }
@@ -79,6 +84,5 @@ struct SelectSubjectView: View {
         )
     }
 }
-#Preview {
-    SelectSubjectView()
-}
+
+

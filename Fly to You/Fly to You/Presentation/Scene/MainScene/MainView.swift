@@ -11,6 +11,11 @@ import Combine
 struct MainView: View {
     
     @EnvironmentObject var viewModelWrapper: MainViewModelWrapper
+    @State var visibility: Visibility = .automatic
+        
+    init() {
+        UITabBar.appearance().backgroundColor = UIColor.white
+    }
     
     var body: some View {
         NavigationStack(path: $viewModelWrapper.path){
@@ -32,13 +37,19 @@ struct MainView: View {
             .navigationDestination(for: MainRoute.self) { route in
                 switch route {
                 case .selectSubject:
-                    SelectSubjectView()
+                    SelectSubjectView(visibliity: $visibility)
                 case .sendLetter:
                     SendLetterView(topicData: TopicModel(topic: viewModelWrapper.topicData.topic, topicId: viewModelWrapper.topicData.topicId), route: .start)
                 case .flyAnimation:
                     FlyAnimationView(onHome: {
                         viewModelWrapper.path = []
                     })
+                }
+            }
+            .toolbar(visibility, for: .tabBar)
+            .onAppear {
+                withAnimation {
+                    visibility = .visible
                 }
             }
         }

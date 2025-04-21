@@ -17,18 +17,17 @@ struct FlyAnimationView: View {
     var body: some View {
         VStack {
             
+            Spacer()
+            
             GifPlayer(gifName: gifName)
-                .frame(
-                    width: isPresented ? 300 : .infinity,
-                    height: isPresented ? 300 : 350
-                )
+                .frame(width: isPresented ? 250 : .nan, height: isPresented ? 250 : 300)
                 .padding(isPresented ? 50 : 0)
             
             Text("\(text)")
                 .font(.pretendard(.regular, size: 20))
                 .foregroundStyle(.gray3)
             
-            Spacer().frame(height: 100)
+            Spacer()
             
             if isPresented{
                 PlaneButton(title: "홈 화면으로", action: {
@@ -51,4 +50,3 @@ enum GifName {
     static let flyPlane = "fly_plane"
     static let completeFlyPlane = "complete_fly_plane"
 }
-

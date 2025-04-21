@@ -31,7 +31,7 @@ struct SendLetterView: View{
             hideKeyboard()
         }
         .navigationBarBackButtonHidden()
-        .toolbar(.hidden, for: .tabBar)
+//        .toolbar(.hidden, for: .tabBar)
         .toolbar{
             ToolbarItem(placement: .topBarLeading) {
                 BackButton(action: {
