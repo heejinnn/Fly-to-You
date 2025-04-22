@@ -36,6 +36,12 @@ final class AppComponent {
         return departureLogComponent(departureLogFactory: departureLogFactory).makeDepartureLogView()
     }
     
+//    func makeFlightMapView() -> some View {
+//        let departureLogSceneDIContainer = appDIContainer.makeFlightMapSceneDIContainer()
+//        let departureLogFactory = departureLogSceneDIContainer.makeDepartureLogFactory()
+//        return departureLogComponent(departureLogFactory: departureLogFactory).makeDepartureLogView()
+//    }
+    
     private func rootComponent(mainFactory: any MainFactory) -> RootComponent {
         RootComponent(dependency: MainFactoryDependency(mainFactory: mainFactory))
     }

@@ -19,7 +19,7 @@ struct SplashView: View {
             }
             .frame(width: 600, height: 600)
             .clipped()
-            .opacity(0.7)
+            .opacity(0.8)
             
             if gifReady{
                 HStack(spacing: 5) {
@@ -33,7 +33,7 @@ struct SplashView: View {
                 }
                 
                 Text("“마음을 담은 종이비행기를 접어서, \n누군가에게 날려보내는 감정 표현\"")
-                    .font(.pretendard(.ultraLight, size: 20))
+                    .font(.pretendard(.light, size: 20))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.white)
                     .offset(y: 200)

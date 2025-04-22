@@ -9,16 +9,22 @@ import SwiftUI
 import FirebaseAuth
 
 
-
 struct RootView: View {
+    @EnvironmentObject var appState: AppState
 
     var body: some View {
-        if let user = Auth.auth().currentUser {
-            MainTabView()
-        } else {
-            AppComponent()
-                .makeSignUpView()
+        Group {
+            if appState.isLoggedIn {
+                MainTabView()
+            } else {
+                AppComponent()
+                    .makeSignUpView()
+            }
+        }
+        .onAppear {
+            if let user = Auth.auth().currentUser {
+                appState.isLoggedIn = true
+            }
         }
     }
 }
-
