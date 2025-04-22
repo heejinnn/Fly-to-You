@@ -36,12 +36,3 @@ struct MainTabView: View {
         .background(.white)
     }
 }
-
-struct FlightMapView: View{
-    var body: some View{
-        NavigationStack {
-            Text("항공 맵 화면")
-                .navigationTitle("항공 맵")
-        }
-    }
-}

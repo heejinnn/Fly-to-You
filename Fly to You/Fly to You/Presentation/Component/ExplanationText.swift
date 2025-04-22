@@ -9,18 +9,47 @@ import SwiftUI
 
 struct ExplanationText: View {
     
-    let text: String
+    let originalText: String
+    let boldSubstring: String
     
     var body: some View {
         VStack{
             HStack{
-                Text("\(text)")
-                    .font(.pretendard(.regular, size: 20))
-                    .foregroundStyle(.gray3)
+                TextWithBoldSubstring(originalText: originalText, boldSubstring: boldSubstring)
                 Spacer()
             }
             .padding(.horizontal, Spacing.md)
         }
         .padding(.vertical, 25)
     }
+}
+
+struct TextWithBoldSubstring: View {
+    var originalText: String
+    var boldSubstring: String
+    
+    var body: some View {
+        if let coloredRange = originalText.range(of: boldSubstring) {
+            let beforeRange = originalText[..<coloredRange.lowerBound]
+            let coloredText = originalText[coloredRange]
+            let afterRange = originalText[coloredRange.upperBound...]
+            
+            return Text(beforeRange)
+                    .font(.pretendard(.regular, size: 20))
+                    .foregroundStyle(.gray3)
+                + Text(coloredText)
+                    .font(.pretendard(.bold, size: 20))
+                    .foregroundStyle(.gray3)
+                + Text(afterRange)
+                    .font(.pretendard(.regular, size: 20))
+                    .foregroundStyle(.gray3)
+        } else {
+            return Text(originalText)
+                .foregroundColor(.black)
+        }
+    }
+}
+
+#Preview{
+    TextWithBoldSubstring(originalText: "마음에 드는 주제를 선택하세요", boldSubstring: "주제")
 }

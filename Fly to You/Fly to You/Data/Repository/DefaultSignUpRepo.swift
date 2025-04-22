@@ -45,9 +45,9 @@ final class DefaultSignUpRepo: SignUpRepo {
     private func signInAnonymouslyAndSaveUser(nickname: String, completion: @escaping (Bool) -> Void) {
         Auth.auth().signInAnonymously { [weak self] result, error in
             guard let self = self, let uid = result?.user.uid else { return }
-
+            
             let user = User(uid: uid, nickname: nickname.lowercased(), createdAt: Date())
-
+            
             do {
                 try self.db.collection("users").document(uid).setData(from: user) { error in
                     if error == nil {

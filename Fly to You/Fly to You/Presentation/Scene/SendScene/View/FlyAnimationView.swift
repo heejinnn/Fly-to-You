@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FlyAnimationView: View {
     @State private var gifName: String = GifName.flyPlane
-    @State private var text: String = "열심히 날라가는 중..."
+    @State private var text: String = "열심히 날아가는 중..."
     @State private var isPresented: Bool = false
     
     let onHome: () -> Void

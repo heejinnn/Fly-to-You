@@ -19,11 +19,23 @@ struct DepartureLogInfoView: View{
     @State private var message: String = ""
     @State private var isLoading: Bool = false
     
+    init(letter: ReceiveLetterModel) {
+        self._letter = State(initialValue: letter)
+        self._toText = State(initialValue: letter.to.nickname)
+        self._fromText = State(initialValue: letter.from.nickname)
+        self._message = State(initialValue: letter.message)
+    }
+    
     var body: some View{
         ZStack{
             
             VStack{
-                ExplanationText(text: "비행기를\n새로 날려보세요")
+                 
+                if letter.isDelivered{
+                    ExplanationText(originalText: "비행기를\n새로 날려보세요", boldSubstring: "새로 날려보세요")
+                } else{
+                    ExplanationText(originalText: "날아간 비행기를\n수정할 수 있어요", boldSubstring: "수정할 수 있어요")
+                }
                 
                 if !isEditMode{
                     PaperPlaneCheck(letter: letter)
@@ -47,6 +59,9 @@ struct DepartureLogInfoView: View{
                 ProgressView()
                     .controlSize(.regular)
             }
+        }
+        .onTapGesture {
+            hideKeyboard()
         }
         .navigationBarBackButtonHidden()
         .toolbar(.hidden, for: .tabBar)
@@ -99,29 +114,34 @@ struct DepartureLogInfoView: View{
         Group {
             if isEditMode {
                 Button(action: {
-                    isEditMode = false
-                    isLoading = true
                     
-                    let newLetter = ReceiveLetterModel(
-                        id: letter.id,
-                        from: letter.from,
-                        to: letter.to,
-                        message: message,
-                        topic: letter.topic,
-                        topicId: letter.topicId,
-                        timestamp: letter.timestamp,
-                        isDelivered: letter.isDelivered,
-                        isRelayStart: letter.isRelayStart)
+                    print(toText, message)
                     
-                    viewModelWrapper.viewModel.editSentLetter(letter: newLetter, toText: toText){
-                        result in
-                        switch result {
-                        case .success(let data):
-                            letter = data
-                            isLoading = false
-                            print("[DepartureLogInfoView] - 수정 성공")
-                        case .failure(_):
-                            print("[DepartureLogInfoView] - 수정 실패")
+                    if !toText.isEmpty, !message.isEmpty {
+                        isEditMode = false
+                        isLoading = true
+                        
+                        let newLetter = ReceiveLetterModel(
+                            id: letter.id,
+                            from: letter.from,
+                            to: letter.to,
+                            message: message,
+                            topic: letter.topic,
+                            topicId: letter.topicId,
+                            timestamp: letter.timestamp,
+                            isDelivered: letter.isDelivered,
+                            isRelayStart: letter.isRelayStart)
+                        
+                        viewModelWrapper.viewModel.editSentLetter(letter: newLetter, toText: toText){
+                            result in
+                            switch result {
+                            case .success(let data):
+                                letter = data
+                                isLoading = false
+                                print("[DepartureLogInfoView] - 수정 성공")
+                            case .failure(_):
+                                print("[DepartureLogInfoView] - 수정 실패")
+                            }
                         }
                     }
                 }) {
@@ -156,5 +176,13 @@ struct DepartureLogInfoView: View{
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)
         }
+    }
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(
+            #selector(UIResponder.resignFirstResponder),
+            to: nil,
+            from: nil,
+            for: nil
+        )
     }
 }
