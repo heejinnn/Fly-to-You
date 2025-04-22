@@ -60,6 +60,10 @@ struct FlightMapView: View{
     FlightMapView()
 }
 
+final class FlightMapViewModelWrapper: ObservableObject{
+    
+}
+
 
 import FirebaseFirestore
 

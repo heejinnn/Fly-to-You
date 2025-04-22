@@ -7,20 +7,20 @@
 
 import SwiftUI
 
-// MARK: - MainFactoryDependency
+// MARK: - LandingZoneFactoryDependency
 
 struct LandingZoneFactoryDependency: LandingZoneDependency {
     let landingZoneFactory: any LandingZoneFactory
 }
 
-// MARK: - MainFactory
+// MARK: - LandingZoneFactory
 
 protocol LandingZoneFactory {
     associatedtype SomeView: View
     func makeLandingZoneView() -> SomeView
 }
 
-// MARK: - DefaultMainFactory
+// MARK: - DefaultLandingZoneFactory
 
 final class DefaultLandingZoneFactory: LandingZoneFactory {
     private let landingZoneViewModelWrapper: LandingZoneViewModelWrapper

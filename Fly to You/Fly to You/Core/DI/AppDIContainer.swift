@@ -28,7 +28,7 @@ final class AppDIContainer {
         return DepartureLogSceneDIContainer()
     }
     
-    func makeFlightMapSceneDIContainer() -> DepartureLogSceneDIContainer {
-        return DepartureLogSceneDIContainer()
+    func makeFlightMapSceneDIContainer() -> FlightMapSceneDIContainer {
+        return FlightMapSceneDIContainer()
     }
 }
