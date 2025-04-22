@@ -19,6 +19,13 @@ struct DepartureLogInfoView: View{
     @State private var message: String = ""
     @State private var isLoading: Bool = false
     
+    init(letter: ReceiveLetterModel) {
+        self._letter = State(initialValue: letter)
+        self._toText = State(initialValue: letter.to.nickname)
+        self._fromText = State(initialValue: letter.from.nickname)
+        self._message = State(initialValue: letter.message)
+    }
+    
     var body: some View{
         ZStack{
             
