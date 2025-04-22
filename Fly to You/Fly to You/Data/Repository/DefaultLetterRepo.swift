@@ -9,6 +9,7 @@ import FirebaseFirestore
 
 final class DefaultLetterRepo: LetterRepo {
     private let db = Firestore.firestore()
+    private var listener: ListenerRegistration?
     
     func save(letter: Letter) async throws -> Letter {
         let document = db.collection("letters").document(letter.id)

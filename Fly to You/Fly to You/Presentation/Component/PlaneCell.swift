@@ -17,7 +17,8 @@ struct PlaneCell: View{
         ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .fill(.white)
-                .shadow(color: .gray3.opacity(0.3), radius: 1, x: 1, y: 2)
+//                .shadow(color: .gray3.opacity(0.3), radius: 1, x: 1, y: 2)
+                .shadow(radius: 2)
             
             HStack {
                 VStack(alignment: .leading, spacing: Spacing.xxxs) {

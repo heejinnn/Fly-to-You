@@ -26,6 +26,8 @@ final class DefaultFlightRepo: FlightRepo {
         } else {
             // 없으면 setData로 새로 생성
             try await flightRef.setData([
+                "topic": letter.topic,
+                "startDate": letter.timestamp,
                 "routes": [routeData]
             ])
         }
