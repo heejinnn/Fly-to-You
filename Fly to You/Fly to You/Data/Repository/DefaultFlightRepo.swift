@@ -74,4 +74,12 @@ final class DefaultFlightRepo: FlightRepo {
         let flightDoc = try await flightRef.getDocument()
         return flightDoc.data()?["routes"] as? [[String: Any]] ?? []
     }
+    
+    func fetchAllFlights() async throws -> [FlightDto]{
+        let snapshot = try await db.collection("flights").getDocuments()
+        let flightDTOs: [FlightDto] = snapshot.documents.compactMap {
+            try? $0.data(as: FlightDto.self)
+        }
+        return flightDTOs
+    }
 }

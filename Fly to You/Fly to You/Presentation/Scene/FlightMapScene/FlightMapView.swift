@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct FlightMapView: View{
     
@@ -86,6 +87,20 @@ struct FlightMapView: View{
 
 final class FlightMapViewModelWrapper: ObservableObject{
     
+    var viewModel: FlightMapViewModel
+    private var cancellables = Set<AnyCancellable>()
+    
+    init(viewModel: FlightMapViewModel) {
+        self.viewModel = viewModel
+        bind()
+    }
+    
+    private func bind() {
+        viewModel.flightsPublisher
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.letters, on: self)
+            .store(in: &cancellables)
+    }
 }
 
 

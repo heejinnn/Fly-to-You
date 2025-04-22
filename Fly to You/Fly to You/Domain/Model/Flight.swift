@@ -5,6 +5,8 @@
 //  Created by 최희진 on 4/22/25.
 //
 
+import Foundation
+
 struct Flight {
     let id: String
     let topic: String
