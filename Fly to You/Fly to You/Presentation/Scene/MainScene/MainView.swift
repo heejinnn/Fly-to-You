@@ -57,10 +57,7 @@ struct MainView: View {
     
     private var mainContent: some View {
         VStack(spacing: 40) {
-            Image(.paperplane)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 200, height: 200)
+            ShakingImage()
             
             Text("메세지를 접어서 날려보세요!")
                 .font(.pretendard(.ultraLight, size: 18))
@@ -70,6 +67,26 @@ struct MainView: View {
                 viewModelWrapper.path.append(.selectSubject)
             })
         }
+    }
+}
+
+struct ShakingImage: View {
+    @State private var isShaking = false
+
+    var body: some View {
+        Image(.paperplane)
+            .resizable()
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 200, height: 200)
+            .rotationEffect(.degrees(isShaking ? 5 : -5)) // 좌우로 흔들기
+            .animation(
+                Animation.easeInOut(duration: 1)
+                    .repeatForever(autoreverses: true),
+                value: isShaking
+            )
+            .onAppear {
+                isShaking = true
+            }
     }
 }
 

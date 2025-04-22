@@ -26,7 +26,6 @@ final class MainSceneDIContainer {
         
         return DefaultSendLetterUseCase(userRepo: userRepo, letterRepo: letterRepo, flightRepo: flightRepo)
     }
-    
 
     // MARK: - Repository
     

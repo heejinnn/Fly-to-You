@@ -28,7 +28,8 @@ struct MainTabView: View {
                     Label("보낸 기록", systemImage: "doc")
                 }
             
-            FlightMapView()
+            AppComponent()
+                .makeFlightMapView()
                 .tabItem{
                     Label("항로 맵", systemImage: "map")
                 }

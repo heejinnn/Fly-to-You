@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FlightMapCell: View{
     let flight: FlightModel
+    let onSpotTap: (ReceiveLetterModel) -> Void
     
     var body: some View{
         ZStack {
@@ -21,7 +22,7 @@ struct FlightMapCell: View{
                 Text(flight.topic)
                     .font(.pretendard(.semibold, size: 15))
                 HStack(spacing: Spacing.xxs){
-                    Text("시작일: \(DateUtil.formatLetterDate(flight.stratDate))")
+                    Text("시작일: \(DateUtil.formatLetterDate(flight.startDate))")
                         .font(.pretendard(.medium
                                           , size: 12))
                     Text("참여자: \(flight.routes.count)명")
@@ -38,25 +39,16 @@ struct FlightMapCell: View{
                             ForEach(Array(flight.routes.enumerated()), id: \.element.id) { index, route in
                                 VStack {
                                     if index % 2 == 0 {
-                                        Image(.iconMap)
-                                            .resizable()
-                                            .frame(width: 37, height: 37)
-                                        
-                                        Text(route.from.nickname)
-                                            .font(.pretendard(.regular, size: 12))
+                                        SpotButton(route: route) {
+                                            onSpotTap(route)
+                                        }
                                         Spacer()
                                     } else{
                                         Spacer()
-                                        
-                                        Image(.iconMap)
-                                            .resizable()
-                                            .frame(width: 37, height: 37)
-                                        
-                                        Text(route.from.nickname)
-                                            .font(.pretendard(.regular, size: 12))
-                                       
+                                        SpotButton(route: route) {
+                                            onSpotTap(route)
+                                        }
                                     }
-                                    
                                 }
                                 .frame(height: 150)
                             }
@@ -76,6 +68,23 @@ struct FlightMapCell: View{
     }
 }
 
-#Preview {
-    FlightMapCell(flight: FlightModel(id: UUID().uuidString, topic: "응원", stratDate: Date(), routes: [ReceiveLetterModel(id: "1", from: User(uid: "", nickname: "happy", createdAt: Date()), to: User(uid: "", nickname: "ddd", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: true, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "ddd", createdAt: Date()), to: User(uid: "", nickname: "sad", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "sad", createdAt: Date()), to: User(uid: "", nickname: "sss", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "sss", createdAt: Date()), to: User(uid: "", nickname: "sad", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "sss", createdAt: Date()), to: User(uid: "", nickname: "sad", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "sss", createdAt: Date()), to: User(uid: "", nickname: "sad", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false)]))
+struct SpotButton: View {
+    
+    let route: ReceiveLetterModel
+    let onTap: () -> Void
+    
+    var body: some View {
+        Button(action: onTap) {
+            VStack {
+                Image(.iconMap)
+                    .resizable()
+                    .frame(width: 37, height: 37)
+                Text(route.from.nickname)
+                    .font(.pretendard(.regular, size: 12))
+            }
+        }
+        .buttonStyle(.plain)
+    }
 }
+
+

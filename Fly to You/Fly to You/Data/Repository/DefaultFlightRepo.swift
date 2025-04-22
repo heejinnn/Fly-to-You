@@ -26,6 +26,7 @@ final class DefaultFlightRepo: FlightRepo {
         } else {
             // 없으면 setData로 새로 생성
             try await flightRef.setData([
+                "id": letter.topicId,
                 "topic": letter.topic,
                 "startDate": letter.timestamp,
                 "routes": [routeData]
@@ -72,5 +73,13 @@ final class DefaultFlightRepo: FlightRepo {
         let flightRef = db.collection("flights").document(topicId)
         let flightDoc = try await flightRef.getDocument()
         return flightDoc.data()?["routes"] as? [[String: Any]] ?? []
+    }
+    
+    func fetchAllFlights() async throws -> [FlightDto]{
+        let snapshot = try await db.collection("flights").getDocuments()
+        let flightDTOs: [FlightDto] = snapshot.documents.compactMap {
+            try? $0.data(as: FlightDto.self)
+        }
+        return flightDTOs
     }
 }

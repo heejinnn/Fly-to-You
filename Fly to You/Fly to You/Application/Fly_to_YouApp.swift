@@ -12,6 +12,7 @@ struct YourApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @State private var showSplash = true
     @State private var gifReady = false
+    @StateObject private var appState = AppState()
 
     var body: some Scene {
         WindowGroup {
@@ -28,6 +29,7 @@ struct YourApp: App {
                     }
             } else {
                 RootView()
+                    .environmentObject(appState)
             }
         }
     }

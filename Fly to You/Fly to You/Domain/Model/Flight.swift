@@ -1,5 +1,5 @@
 //
-//  FlightModel.swift
+//  Flight.swift
 //  Fly to You
 //
 //  Created by 최희진 on 4/22/25.
@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct FlightModel: Identifiable, Codable {
+struct Flight {
     let id: String
     let topic: String
     let startDate: Date
-    let routes: [ReceiveLetterModel]
+    let routes: [ReceiveLetter]
 }
