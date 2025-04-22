@@ -52,7 +52,9 @@ struct SelectSubjectView: View {
                 Button(action: {
                     viewModelWrapper.topicData.topic = selectedTopic.isEmpty ? customTopic : selectedTopic
                     viewModelWrapper.topicData.topicId = UUID().uuidString
-                    viewModelWrapper.path.append(.sendLetter)
+                    if !viewModelWrapper.topicData.topic.isEmpty{
+                        viewModelWrapper.path.append(.sendLetter)
+                    }
                 }, label: {
                     Text("다음")
                         .foregroundStyle(.blue1)

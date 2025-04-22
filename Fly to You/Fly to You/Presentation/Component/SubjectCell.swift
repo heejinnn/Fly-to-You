@@ -28,7 +28,7 @@ struct SubjectCell: View {
                 .stroke(isSelected ? .blue1 : .gray1, lineWidth: 1)
         )
         .cornerRadius(10)
-        .padding(.horizontal, 20)
+        .padding(.horizontal, Spacing.md)
     }
 }
 

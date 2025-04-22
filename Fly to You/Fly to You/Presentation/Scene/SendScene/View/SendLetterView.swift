@@ -24,7 +24,7 @@ struct SendLetterView: View{
             
             ExplanationText(text: "주제에 맞는\n내용을 입력해 보세요")
             
-            PaperPlaneInput(topic: topicData.topic, toText: $toText,fromText: fromText, message: $message)
+            PaperPlaneInput(topic: topicData.topic, toText: $toText, fromText: fromText, message: $message)
         
             Spacer()
         }
@@ -45,8 +45,10 @@ struct SendLetterView: View{
             
             ToolbarItem(placement: .topBarTrailing){
                 ToolbarFlyButton(action: {
-                    sendLetter()
-                })               
+                    if !toText.isEmpty, !message.isEmpty{
+                        sendLetter()
+                    }
+                })
             }
         }
     }
