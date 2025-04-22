@@ -16,14 +16,33 @@ final class FlightMapSceneDIContainer {
 
     // MARK: - Use Cases
     
+    func makeFetchFlightsUseCase() -> FetchFlightsUseCase {
+        let userRepo = makeUserRepo()
+        let flightRepo = makeFlightRepo()
+        
+        return DefaultFetchFlightsUseCase(userRepo: userRepo, flightRepo: flightRepo)
+    }
+   
  
     // MARK: - Repository
     
+    func makeUserRepo() -> UserRepo {
+        return DefaultUserRepo()
+    }
+    
+    func makeFlightRepo() -> FlightRepo {
+        return DefaultFlightRepo()
+    }
+    
     // MARK: - View Model
+    
+    func makeFlightMapViewModel() -> DefaultFlightMapViewModel{
+        return DefaultFlightMapViewModel(useCase: makeFetchFlightsUseCase())
+    }
     
     // MARK: - View Model Wrapper
 
     func makeFlightMapViewModelWrapper() -> FlightMapViewModelWrapper {
-        FlightMapViewModelWrapper()
+        FlightMapViewModelWrapper(viewModel: makeFlightMapViewModel())
     }
 }

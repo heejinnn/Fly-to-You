@@ -22,7 +22,7 @@ struct FlightMapCell: View{
                 Text(flight.topic)
                     .font(.pretendard(.semibold, size: 15))
                 HStack(spacing: Spacing.xxs){
-                    Text("시작일: \(DateUtil.formatLetterDate(flight.stratDate))")
+                    Text("시작일: \(DateUtil.formatLetterDate(flight.startDate))")
                         .font(.pretendard(.medium
                                           , size: 12))
                     Text("참여자: \(flight.routes.count)명")

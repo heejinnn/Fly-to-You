@@ -10,10 +10,11 @@ import Combine
 
 struct FlightMapView: View{
     
+    @EnvironmentObject var viewModelWrapper: FlightMapViewModelWrapper
+    
     private let segmentedMenu = ["진행 중인 항로", "완료된 항로"]
     @State private var selectedTab = "진행 중인 항로"
     @State private var selectedFlightId: String? = nil
-    @StateObject var viewModel = FlightViewModel()
     @State private var showPopup = false
     
     @State private var selectedRoute: ReceiveLetterModel? = nil
@@ -38,7 +39,7 @@ struct FlightMapView: View{
                     .padding(.horizontal, Spacing.md)
                     
                     
-                    ForEach(viewModel.flights, id: \.id) { flight in
+                    ForEach(viewModelWrapper.flights, id: \.id) { flight in
                         PlaneCell(letter: flight.routes[0], participantCount: flight.routes.count, route: .map)
                             .onTapGesture {
                                 withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
@@ -75,7 +76,16 @@ struct FlightMapView: View{
             }
         }
         .onAppear{
-            viewModel.fetchAllFlights()
+            viewModelWrapper.viewModel.fetchAllFlights{ result in
+                switch result{
+                case .success():
+                    print("[FlightMapView] - 항로 맵 경로 조회 성공")
+                case .failure(let error):
+                    print("[FlightMapView] - 항로 맵 경로 조회 실패")
+                    print(error)
+                }
+                
+            }
         }
         .animation(.easeInOut, value: showPopup)
     }
@@ -86,6 +96,7 @@ struct FlightMapView: View{
 }
 
 final class FlightMapViewModelWrapper: ObservableObject{
+    @Published var flights: [FlightModel] = []
     
     var viewModel: FlightMapViewModel
     private var cancellables = Set<AnyCancellable>()
@@ -98,7 +109,7 @@ final class FlightMapViewModelWrapper: ObservableObject{
     private func bind() {
         viewModel.flightsPublisher
             .receive(on: DispatchQueue.main)
-            .assign(to: \.letters, on: self)
+            .assign(to: \.flights, on: self)
             .store(in: &cancellables)
     }
 }
