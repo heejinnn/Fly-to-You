@@ -22,7 +22,7 @@ struct SendLetterView: View{
     var body: some View{
         ScrollView{
             
-            ExplanationText(text: "주제에 맞는\n내용을 입력해 보세요")
+            ExplanationText(originalText: "주제에 맞는\n내용을 입력해 보세요", boldSubstring: "주제에 맞는")
             
             PaperPlaneInput(topic: topicData.topic, toText: $toText, fromText: fromText, message: $message)
         

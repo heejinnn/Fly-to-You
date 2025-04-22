@@ -30,7 +30,12 @@ struct DepartureLogInfoView: View{
         ZStack{
             
             VStack{
-                ExplanationText(text: "비행기를\n새로 날려보세요")
+                 
+                if letter.isDelivered{
+                    ExplanationText(originalText: "비행기를\n새로 날려보세요", boldSubstring: "새로 날려보세요")
+                } else{
+                    ExplanationText(originalText: "날아간 비행기를\n수정할 수 있어요", boldSubstring: "수정할 수 있어요")
+                }
                 
                 if !isEditMode{
                     PaperPlaneCheck(letter: letter)

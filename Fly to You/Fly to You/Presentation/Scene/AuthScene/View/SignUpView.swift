@@ -15,7 +15,7 @@ struct SignUpView: View {
     var body: some View {
         NavigationStack{
             VStack(alignment: .leading) {
-                ExplanationText(text: "앱에서 사용할 \n닉네임을 입력하세요")
+                ExplanationText(originalText: "앱에서 사용할 \n닉네임을 입력하세요", boldSubstring: "닉네임")
                 
                 Group{
                     HStack{
