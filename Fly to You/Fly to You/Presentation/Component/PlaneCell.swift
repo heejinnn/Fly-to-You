@@ -11,13 +11,13 @@ import SwiftUI
 struct PlaneCell: View{
     
     let letter: ReceiveLetterModel
+    var participantCount: Int = 0
     let route: PlaneCellRoute
     
     var body: some View{
         ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .fill(.white)
-//                .shadow(color: .gray3.opacity(0.3), radius: 1, x: 1, y: 2)
                 .shadow(radius: 2)
             
             HStack {
@@ -25,11 +25,15 @@ struct PlaneCell: View{
                     Text("\(letter.topic)")
                         .font(.pretendard(.medium, size: 18))
                     
-                    if route == .receive {
+                    switch route {
+                    case .receive:
                         Text("From: \(letter.from.nickname)")
                             .font(.pretendard(.regular, size: 13))
-                    } else{
+                    case .send:
                         Text("To: \(letter.to.nickname)")
+                            .font(.pretendard(.regular, size: 13))
+                    case .map:
+                        Text("참가자: \(participantCount)명")
                             .font(.pretendard(.regular, size: 13))
                     }
                     
@@ -60,6 +64,7 @@ struct PlaneCell: View{
 enum PlaneCellRoute{
     case receive
     case send
+    case map
 }
 
 //#Preview {
