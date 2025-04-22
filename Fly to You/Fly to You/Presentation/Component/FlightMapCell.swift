@@ -67,8 +67,10 @@ struct FlightMapCell: View{
                 
                 Text("이 릴레이는 현재 진행 중입니다. 참여하려면 비행기를 받아보세요!")
                     .font(.pretendard(.regular, size: 12))
+                    .padding(.top, 10)
             }
         }
+        .frame(height: 350)
         .frame(maxWidth: .infinity)
         .padding(.horizontal, Spacing.md)
     }
