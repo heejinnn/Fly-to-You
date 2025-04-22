@@ -51,5 +51,5 @@ struct TextWithBoldSubstring: View {
 }
 
 #Preview{
-    TextWithColoredSubstring(originalText: "마음에 드는 주제를 선택하세요", boldSubstring: "주제")
+    TextWithBoldSubstring(originalText: "마음에 드는 주제를 선택하세요", boldSubstring: "주제")
 }

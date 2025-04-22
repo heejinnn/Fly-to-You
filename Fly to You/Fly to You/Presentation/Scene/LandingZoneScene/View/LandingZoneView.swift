@@ -17,7 +17,7 @@ struct LandingZoneView: View {
             VStack{
                 Spacer().frame(height: Spacing.lg)
                 
-                Text("도착한 종이 비행기들이 여기에 착륙해요")
+                Text("도착한 종이 비행기들이 여기에 착륙해요🛬")
                     .font(.pretendard(.medium, size: 15))
                     .foregroundStyle(.gray3)
                 

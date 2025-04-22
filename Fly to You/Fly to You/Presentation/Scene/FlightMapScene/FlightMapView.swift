@@ -15,33 +15,43 @@ struct FlightMapView: View{
     
     let flights = [FlightModel(id: UUID().uuidString, topic: "응원", stratDate: Date(), routes: [ReceiveLetterModel(id: "1", from: User(uid: "", nickname: "happy", createdAt: Date()), to: User(uid: "", nickname: "ddd", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: true, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "ddd", createdAt: Date()), to: User(uid: "", nickname: "sad", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "sad", createdAt: Date()), to: User(uid: "", nickname: "sss", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "sss", createdAt: Date()), to: User(uid: "", nickname: "sad", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "sss", createdAt: Date()), to: User(uid: "", nickname: "sad", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "sss", createdAt: Date()), to: User(uid: "", nickname: "sad", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false)]), FlightModel(id: UUID().uuidString, topic: "응원 한마디", stratDate: Date(), routes: [ReceiveLetterModel(id: "1", from: User(uid: "", nickname: "happy", createdAt: Date()), to: User(uid: "", nickname: "ddd", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: true, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "ddd", createdAt: Date()), to: User(uid: "", nickname: "sad", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "sad", createdAt: Date()), to: User(uid: "", nickname: "sss", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "sss", createdAt: Date()), to: User(uid: "", nickname: "sad", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "sss", createdAt: Date()), to: User(uid: "", nickname: "sad", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), ReceiveLetterModel(id:  UUID().uuidString, from: User(uid: "", nickname: "sss", createdAt: Date()), to: User(uid: "", nickname: "sad", createdAt: Date()), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false)])]
     
+    @State private var selectedFlightId: String? = nil
+    
     var body: some View{
-        NavigationStack{
-            ScrollView{
-                VStack(spacing: Spacing.md){
-                    
-                    Spacer()
-                    
-                    Text("도착한 종이 비행기들이 여기에 착륙해요")
-                        .font(.pretendard(.medium, size: 15))
-                        .foregroundStyle(.gray3)
-                    
-                    Picker("", selection: $selectedTab){
-                        ForEach(segmentedMenu, id: \.self){
-                            Text($0)
-                        }
+        ScrollView{
+            VStack(spacing: Spacing.md){
+                
+                Spacer()
+                
+                Text("종이 비행기의 여행 경로를 확인해 보세요")
+                    .font(.pretendard(.medium, size: 15))
+                    .foregroundStyle(.gray3)
+                
+                Picker("", selection: $selectedTab){
+                    ForEach(segmentedMenu, id: \.self){
+                        Text($0)
                     }
-                    .pickerStyle(.segmented)
-                    .padding(.horizontal, Spacing.md)
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal, Spacing.md)
+                
+                
+                ForEach(flights, id: \.id) { flight in
+                    PlaneCell(letter: flight.routes[0], route: .receive)
+                        .onTapGesture {
+                            if selectedFlightId == flight.id {
+                                selectedFlightId = nil
+                            } else {
+                                selectedFlightId = flight.id
+                            }
+                        }
                     
-                    
-                    ForEach(flights, id: \.id){ flight in
-                        PlaneCell(letter: flight.routes[0], route: .receive)
+                    if selectedFlightId == flight.id {
                         FlightMapCell(flight: flight)
                     }
-                    
-                    Spacer()
                 }
+                
+                Spacer()
             }
         }
     }

@@ -18,7 +18,7 @@ struct DepartureLogView: View {
             VStack{
                 Spacer().frame(height: Spacing.lg)
                 
-                Text("내가 보낸 종이 비행기들을 확인할 수 있어요")
+                Text("내가 보낸 종이 비행기들을 확인할 수 있어요🧐")
                     .font(.pretendard(.medium, size: 15))
                     .foregroundStyle(.gray3)
                 
