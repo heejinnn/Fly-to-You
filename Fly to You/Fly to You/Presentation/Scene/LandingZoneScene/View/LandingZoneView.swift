@@ -14,26 +14,28 @@ struct LandingZoneView: View {
     
     var body: some View {
         NavigationStack(path: $viewModelWrapper.path) {
-            VStack{
-                Spacer().frame(height: Spacing.lg)
-                
-                Text("도착한 종이 비행기들이 여기에 착륙해요🛬")
-                    .font(.pretendard(.medium, size: 15))
-                    .foregroundStyle(.gray3)
-                
-                Spacer().frame(height: Spacing.lg)
-                
-                VStack(spacing: Spacing.xs){
-                    ForEach(viewModelWrapper.letters, id: \.id){ letter in
-                        PlaneCell(letter: letter, route: .receive)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                viewModelWrapper.letter = letter
-                                viewModelWrapper.path.append(.landingZoneInfo)
-                            }
+            ScrollView{
+                VStack{
+                    Spacer().frame(height: Spacing.lg)
+                    
+                    Text("도착한 종이 비행기들이 여기에 착륙해요 🛬")
+                        .font(.pretendard(.medium, size: 15))
+                        .foregroundStyle(.gray3)
+                    
+                    Spacer().frame(height: Spacing.lg)
+                    
+                    VStack(spacing: Spacing.xs){
+                        ForEach(viewModelWrapper.letters, id: \.id){ letter in
+                            PlaneCell(letter: letter, route: .receive)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    viewModelWrapper.letter = letter
+                                    viewModelWrapper.path.append(.landingZoneInfo)
+                                }
+                        }
                     }
+                    Spacer()
                 }
-                Spacer()
             }
             .navigationDestination(for: LandingZoneRoute.self) { route in
                 switch route {

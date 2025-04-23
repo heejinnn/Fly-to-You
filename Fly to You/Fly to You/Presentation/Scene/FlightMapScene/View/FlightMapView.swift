@@ -26,18 +26,11 @@ struct FlightMapView: View{
                     
                     Spacer()
                     
-                    Text("종이 비행기의 여행 경로를 확인해 보세요")
+                    Text("종이 비행기의 여행 경로를 확인해 보세요 🗺️")
                         .font(.pretendard(.medium, size: 15))
                         .foregroundStyle(.gray3)
                     
-                    Picker("", selection: $selectedTab){
-                        ForEach(segmentedMenu, id: \.self){
-                            Text($0)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                    .padding(.horizontal, Spacing.md)
-                    
+                    segmentedControl
                     
                     ForEach(viewModelWrapper.flights, id: \.id) { flight in
                         PlaneCell(letter: flight.routes[0], participantCount: flight.routes.count, route: .map)
@@ -63,6 +56,7 @@ struct FlightMapView: View{
                     Spacer()
                 }
             }
+        
             if let route = selectedRoute, showPopup {
                 Color.black.opacity(0.4)
                     .ignoresSafeArea()
@@ -76,19 +70,33 @@ struct FlightMapView: View{
             }
         }
         .onAppear{
-            viewModelWrapper.viewModel.fetchAllFlights{ result in
-                switch result{
-                case .success():
-                    print("[FlightMapView] - 항로 맵 경로 조회 성공")
-                case .failure(let error):
-                    print("[FlightMapView] - 항로 맵 경로 조회 실패")
-                    print(error)
-                }
-                
-            }
+            fechAllFlights()
         }
         .animation(.easeInOut, value: showPopup)
     }
+    
+    private var segmentedControl: some View {
+        Picker("", selection: $selectedTab){
+            ForEach(segmentedMenu, id: \.self){
+                Text($0)
+            }
+        }
+        .pickerStyle(.segmented)
+        .padding(.horizontal, Spacing.md)
+    }
+    
+    func fechAllFlights() {
+        viewModelWrapper.viewModel.fetchAllFlights{ result in
+            switch result{
+            case .success():
+                print("[FlightMapView] - 항로 맵 경로 조회 성공")
+            case .failure(let error):
+                print("[FlightMapView] - 항로 맵 경로 조회 실패")
+                print(error)
+            }
+        }
+    }
+    
 }
 
 #Preview {

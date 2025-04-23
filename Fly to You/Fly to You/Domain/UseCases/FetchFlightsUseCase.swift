@@ -23,9 +23,11 @@ final class DefaultFetchFlightsUseCase: FetchFlightsUseCase {
         // 1. FlightDTO 목록 가져오기
         let flightDtos = try await flightRepo.fetchAllFlights()
         
+        let sortedDtos = flightDtos.sorted { $0.startDate < $1.startDate }
+        
         // 2. 모든 사용자 ID 추출
         let userIDs = Set(
-            flightDtos.flatMap { $0.routes.flatMap { [$0.fromUid, $0.toUid] } }
+            sortedDtos.flatMap { $0.routes.flatMap { [$0.fromUid, $0.toUid] } }
         )
         
         // 3. 사용자 정보 일괄 조회
@@ -33,7 +35,7 @@ final class DefaultFetchFlightsUseCase: FetchFlightsUseCase {
         let usersByID = Dictionary(uniqueKeysWithValues: users.map { ($0.uid, $0) })
         
         // 4. DTO → Model 변환
-        return flightDtos.map { dto in
+        return sortedDtos.map { dto in
             let sortedRoutes = dto.routes.sorted { $0.timestamp < $1.timestamp }
             
             let routeModels = sortedRoutes.map { routeDTO in
