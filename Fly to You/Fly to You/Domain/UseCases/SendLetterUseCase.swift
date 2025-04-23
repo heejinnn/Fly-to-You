@@ -9,7 +9,7 @@ import Foundation
 
 
 protocol SendLetterUseCase{
-    func send(toNickname: String, topic: String, topicId: String, message: String) async throws -> Letter
+    func send(toUid: String, topic: String, topicId: String, message: String) async throws -> Letter
 }
 
 public struct DefaultSendLetterUseCase: SendLetterUseCase {
@@ -28,13 +28,12 @@ public struct DefaultSendLetterUseCase: SendLetterUseCase {
     }
     
     func send(
-        toNickname: String,
+        toUid: String,
         topic: String,
         topicId: String,
         message: String
     ) async throws -> Letter {
         let fromUid = try await userRepo.currentUserUid()
-        let toUid = try await userRepo.fetchUid(nickname: toNickname)
         
         let letter = Letter(
             id: UUID().uuidString,

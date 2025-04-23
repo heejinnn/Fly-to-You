@@ -103,7 +103,6 @@ struct DepartureLogInfoView: View{
             if isEditMode {
                 Button(action: {
                     isEditMode = false
-//                    self.toText = letter.to.nickname
                     self.fromText = letter.from.nickname
                     self.message = letter.message
                 }) {
@@ -122,17 +121,14 @@ struct DepartureLogInfoView: View{
         Group {
             if isEditMode {
                 Button(action: {
-                    
-                    print(toUser, message)
-                    
-                    if toUser == nil, !message.isEmpty {
+                    if let toUser, !message.isEmpty {
                         isEditMode = false
                         isLoading = true
                         
                         let newLetter = ReceiveLetterModel(
                             id: letter.id,
                             from: letter.from,
-                            to: letter.to,
+                            to: toUser,
                             message: message,
                             topic: letter.topic,
                             topicId: letter.topicId,
@@ -140,11 +136,12 @@ struct DepartureLogInfoView: View{
                             isDelivered: letter.isDelivered,
                             isRelayStart: letter.isRelayStart)
                         
-                        viewModelWrapper.viewModel.editSentLetter(letter: newLetter, toUid: toUser?.uid ?? ""){
+                        viewModelWrapper.viewModel.editSentLetter(letter: newLetter, toUid: toUser.uid){
                             result in
                             switch result {
                             case .success(let data):
                                 letter = data
+                                print(letter)
                                 isLoading = false
                                 print("[DepartureLogInfoView] - 수정 성공")
                             case .failure(_):

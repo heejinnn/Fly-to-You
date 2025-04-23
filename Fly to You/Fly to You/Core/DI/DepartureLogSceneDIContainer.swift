@@ -24,8 +24,9 @@ final class DepartureLogSceneDIContainer{
     func makeEditLettersUseCase() -> EditLetterUseCase {
         let letterRepo = makeLetterRepo()
         let userRepo = makeUserRepo()
+        let flightRepo = makeFlightRepo()
         
-        return DefaultEditLetterUseCase(letterRepo: letterRepo, userRepo: userRepo)
+        return DefaultEditLetterUseCase(letterRepo: letterRepo, userRepo: userRepo, flightRepo: flightRepo)
     }
     
     func makeDeleteLettersUseCase() -> DeleteLetterUseCase {

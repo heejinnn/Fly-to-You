@@ -46,7 +46,7 @@ struct SendLetterView: View{
             
             ToolbarItem(placement: .topBarTrailing){
                 ToolbarFlyButton(action: {
-                    if toUser == nil, !message.isEmpty{
+                    if toUser != nil, !message.isEmpty{
                         sendLetter()
                     }
                 })
@@ -70,7 +70,7 @@ struct SendLetterView: View{
     
     private func sendLetter(){
         if route == .start{
-            viewModelWrapper.viewModel.sendLetter(toText: toText, topicData: topicData, message: message){ result in
+            viewModelWrapper.viewModel.sendLetter(toUid: toUser?.uid ?? "", topicData: topicData, message: message){ result in
                 switch result{
                 case .success:
                     print("[SendLetterView] - 비행기 날리기 성공")
@@ -83,7 +83,7 @@ struct SendLetterView: View{
             }
         } else{
             if let letter = self.letter{
-                landingZoneViewModelWrapper.viewModel.relayLetter(toText: toText, topicData: topicData, message: message, letter: letter){ result in
+                landingZoneViewModelWrapper.viewModel.relayLetter(toUid: toUser?.uid ?? "", topicData: topicData, message: message, letter: letter){ result in
                     switch result{
                     case .success:
                         print("[SendLetterView] - 비행기 이어서 날리기 성공")
