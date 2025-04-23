@@ -63,6 +63,8 @@ final class DefaultFetchLettersUseCase: FetchLettersUseCase{
         guard !letterDTOs.isEmpty else { return [] }
         
         let sortedDTOs = letterDTOs.sorted { $0.timestamp < $1.timestamp }
+        
+        print(sortedDTOs)
 
         // 2. 관련된 모든 UID 추출
         let userIDs = Set(sortedDTOs.flatMap { [$0.fromUid, $0.toUid] })
@@ -88,6 +90,7 @@ final class DefaultFetchLettersUseCase: FetchLettersUseCase{
                 isRelayStart: dto.isRelayStart
             )
         }
+        print(letters)
         
         return letters
     }

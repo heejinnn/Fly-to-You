@@ -12,7 +12,7 @@ import SwiftUI
 
 protocol DepartureLogViewModelInput{
     func fetchLetters(fromUid: String, completion: @escaping (Result<Void, Error>) -> Void)
-    func editSentLetter(letter: ReceiveLetterModel, toText: String, completion: @escaping (Result<ReceiveLetterModel, Error>) -> Void)
+    func editSentLetter(letter: ReceiveLetterModel, toUid: String, completion: @escaping (Result<ReceiveLetterModel, Error>) -> Void)
     func deleteSentLetter(letter: Letter, completion: @escaping (Result<Void, Error>) -> Void)
 }
 
@@ -50,10 +50,10 @@ class DefaultDepartureLogViewModel: DepartureLogViewModel {
         }
     }
     
-    func editSentLetter(letter: ReceiveLetterModel, toText: String, completion: @escaping (Result<ReceiveLetterModel, Error>) -> Void){
+    func editSentLetter(letter: ReceiveLetterModel, toUid: String, completion: @escaping (Result<ReceiveLetterModel, Error>) -> Void){
         Task {
             do {
-                let letter = try await editLetterUseCase.editSentLetter(letter: letter.toLetter(data: letter), toNickname: toText)
+                let letter = try await editLetterUseCase.editSentLetter(letter: letter.toLetter(data: letter), toUid: toUid)
                 let newLetter = ReceiveLetter.toReceiveLetterModel(letter: letter)
                 
                 // letters에 저장된 letter 중 newLetter과 id가 같으면 변경

@@ -10,9 +10,10 @@ import SwiftUI
 struct PaperPlaneInput: View{
     
     let topic: String
-    @Binding var toText: String
+    let toText: String
     let fromText: String
     @Binding var message: String
+    @Binding var showUserListSheet: Bool
     private let maxCharacters = 200
     
     var body: some View {
@@ -46,14 +47,21 @@ struct PaperPlaneInput: View{
                 Text("To.")
                     .font(.gaRamYeonGgoc(size: 18))
                 
-                TextField(
-                    "",
-                    text: $toText,
-                    prompt: Text("전달할 대상을 입력하세요")
-                        .foregroundColor(.gray1)
-                        .font(.gaRamYeonGgoc(size: 18))
-                )
-                .font(.gaRamYeonGgoc(size: 18))
+                Button(action: {
+                    showUserListSheet = true
+                }) {
+                    HStack(spacing: Spacing.xxs) {
+                        Text(toText.isEmpty ? "전달할 대상을 선택하세요" : toText)
+                            .foregroundColor(toText.isEmpty ? .gray1 : .black)
+                            .font(.gaRamYeonGgoc(size: 18))
+                        if toText.isEmpty{
+                            Image(systemName: "chevron.right")
+                                .foregroundColor(.gray1)
+                        }
+                    }
+                    .padding(.vertical, 8)
+                }
+                .buttonStyle(PlainButtonStyle())
             }
             .padding(.top, 10)
 
@@ -106,8 +114,8 @@ struct PaperPlaneInput: View{
     }
 }
 
-#Preview {
-    PaperPlaneInput(topic: "ddd", toText: .constant(""), fromText: "ssss", message: .constant(""))
-}
+//#Preview {
+//    PaperPlaneInput(topic: "ddd", toText: .constant(""), fromText: "ssss", message: .constant(""))
+//}
 
 

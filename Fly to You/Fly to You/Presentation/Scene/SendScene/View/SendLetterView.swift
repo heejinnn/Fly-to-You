@@ -15,16 +15,17 @@ struct SendLetterView: View{
     let topicData: TopicModel
     let route: SendLetterRoute
     let letter: Letter?
-    @State private var toText: String = ""
+    @State private var toUser: User? = nil
     @State private var fromText: String = ""
     @State private var message: String = ""
+    @State private var showUserListSheet = false // 시트 상태
     
     var body: some View{
         ScrollView{
             
             ExplanationText(originalText: "주제에 맞는\n내용을 입력해 보세요", boldSubstring: "주제에 맞는")
             
-            PaperPlaneInput(topic: topicData.topic, toText: $toText, fromText: fromText, message: $message)
+            PaperPlaneInput(topic: topicData.topic, toText: toUser?.nickname ?? "", fromText: fromText, message: $message, showUserListSheet: $showUserListSheet)
         
             Spacer()
         }
@@ -45,12 +46,17 @@ struct SendLetterView: View{
             
             ToolbarItem(placement: .topBarTrailing){
                 ToolbarFlyButton(action: {
-                    if !toText.isEmpty, !message.isEmpty{
+                    if toUser == nil, !message.isEmpty{
                         sendLetter()
                     }
                 })
             }
         }
+        .sheet(isPresented: $showUserListSheet) {
+            UserListSheetView(toUser: $toUser)
+                .presentationDetents([.medium, .large])
+        }
+
     }
     
     private func hideKeyboard() {
@@ -97,3 +103,4 @@ enum SendLetterRoute {
     case start
     case relay
 }
+

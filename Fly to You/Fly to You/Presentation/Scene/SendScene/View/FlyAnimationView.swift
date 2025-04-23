@@ -16,7 +16,6 @@ struct FlyAnimationView: View {
     
     var body: some View {
         VStack {
-            
             Spacer()
             
             GifPlayer(gifName: gifName)
