@@ -14,15 +14,15 @@ struct DepartureLogInfoView: View{
     @State var letter: ReceiveLetterModel
     @State private var isEditMode: Bool = false
     @State private var showAlert: Bool = false
-    @State private var toText: String = ""
+    @State private var toUser: User? = nil
     @State private var fromText: String = ""
     @State private var message: String = ""
     @State private var isLoading: Bool = false
+    @State private var showUserListSheet = false // 시트 상태
     
     init(letter: ReceiveLetterModel) {
         self._letter = State(initialValue: letter)
-        self._toText = State(initialValue: letter.to.nickname)
-        self._fromText = State(initialValue: letter.from.nickname)
+        self._toUser = State(initialValue: letter.to)
         self._message = State(initialValue: letter.message)
     }
     
@@ -30,7 +30,6 @@ struct DepartureLogInfoView: View{
         ZStack{
             
             VStack{
-                 
                 if letter.isDelivered{
                     ExplanationText(originalText: "비행기를\n새로 날려보세요", boldSubstring: "새로 날려보세요")
                 } else{
@@ -40,7 +39,7 @@ struct DepartureLogInfoView: View{
                 if !isEditMode{
                     PaperPlaneCheck(letter: letter)
                 } else{
-                    PaperPlaneInput(topic: letter.topic, toText: $toText, fromText: fromText, message: $message)
+                    PaperPlaneInput(topic: letter.topic, toText: toUser?.nickname ?? "", fromText: fromText, message: $message, showUserListSheet: $showUserListSheet)
                 }
                 
                 Spacer().frame(height: 40)
@@ -93,12 +92,20 @@ struct DepartureLogInfoView: View{
         } message: {
             Text("보낸 기록이 사라져요 🥲")
         }
+        .sheet(isPresented: $showUserListSheet) {
+            UserListSheetView(toUser: $toUser)
+                .presentationDetents([.medium, .large])
+        }
     }
     
     private var leadingToolbarButton: some View {
         Group {
             if isEditMode {
-                Button(action: { isEditMode = false }) {
+                Button(action: {
+                    isEditMode = false
+                    self.fromText = letter.from.nickname
+                    self.message = letter.message
+                }) {
                     Text("취소")
                         .foregroundStyle(.gray3)
                 }
@@ -114,17 +121,15 @@ struct DepartureLogInfoView: View{
         Group {
             if isEditMode {
                 Button(action: {
-                    
-                    print(toText, message)
-                    
-                    if !toText.isEmpty, !message.isEmpty {
+
+                    if let toUser, !message.isEmpty {
                         isEditMode = false
                         isLoading = true
                         
                         let newLetter = ReceiveLetterModel(
                             id: letter.id,
                             from: letter.from,
-                            to: letter.to,
+                            to: toUser,
                             message: message,
                             topic: letter.topic,
                             topicId: letter.topicId,
@@ -132,11 +137,12 @@ struct DepartureLogInfoView: View{
                             isDelivered: letter.isDelivered,
                             isRelayStart: letter.isRelayStart)
                         
-                        viewModelWrapper.viewModel.editSentLetter(letter: newLetter, toText: toText){
+                        viewModelWrapper.viewModel.editSentLetter(letter: newLetter, toUid: toUser.uid){
                             result in
                             switch result {
                             case .success(let data):
                                 letter = data
+                                print(letter)
                                 isLoading = false
                                 print("[DepartureLogInfoView] - 수정 성공")
                             case .failure(_):

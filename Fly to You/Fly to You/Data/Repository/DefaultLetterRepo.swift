@@ -9,7 +9,8 @@ import FirebaseFirestore
 
 final class DefaultLetterRepo: LetterRepo {
     private let db = Firestore.firestore()
-    private var listener: ListenerRegistration?
+    private var receivedListener: ListenerRegistration?
+    private var sentListener: ListenerRegistration?
     
     func save(letter: Letter) async throws -> Letter {
         let document = db.collection("letters").document(letter.id)
@@ -22,27 +23,6 @@ final class DefaultLetterRepo: LetterRepo {
         try await document.updateData([
             "isDelivered": isDelivered
         ])
-    }
-    
-    func fetchReceivedLetters(toUid: String) async throws -> [ReceiveLetterDto] {
-        let snapshot = try await db.collection("letters")
-            .whereField("toUid", isEqualTo: toUid)
-            .whereField("isDelivered", isEqualTo: false)
-            .getDocuments()
-        
-        return snapshot.documents.compactMap { doc in
-            try? doc.data(as: ReceiveLetterDto.self)
-        }
-    }
-    
-    func fetchSentLetters(fromUid: String) async throws -> [ReceiveLetterDto] {
-        let snapshot = try await db.collection("letters")
-            .whereField("fromUid", isEqualTo: fromUid)
-            .getDocuments()
-        
-        return snapshot.documents.compactMap { doc in
-            try? doc.data(as: ReceiveLetterDto.self)
-        }
     }
     
     func editSentLetter(letter: Letter) async throws -> ReceiveLetterDto {
@@ -59,5 +39,43 @@ final class DefaultLetterRepo: LetterRepo {
     func deleteSentLetter(letter: Letter) async throws {
         let letterRef = db.collection("letters").document(letter.id)
         try await letterRef.delete()
+    }
+    
+    func observeReceivedLetters(toUid: String, onUpdate: @escaping ([ReceiveLetterDto]) -> Void) {
+        // 기존 리스너 해제 (중복 방지)
+        receivedListener?.remove()
+        
+        receivedListener = db.collection("letters")
+            .whereField("toUid", isEqualTo: toUid)
+            .whereField("isDelivered", isEqualTo: false)
+            .addSnapshotListener { snapshot, error in
+                guard let documents = snapshot?.documents else {
+                    onUpdate([])
+                    return
+                }
+                let dtos = documents.compactMap { try? $0.data(as: ReceiveLetterDto.self) }
+                onUpdate(dtos)
+            }
+    }
+    
+    func observeSentLetters(fromUid: String, onUpdate: @escaping ([ReceiveLetterDto]) -> Void) {
+        sentListener?.remove()
+        sentListener = db.collection("letters")
+            .whereField("fromUid", isEqualTo: fromUid)
+            .addSnapshotListener { snapshot, error in
+                guard let documents = snapshot?.documents else {
+                    onUpdate([])
+                    return
+                }
+                let dtos = documents.compactMap { try? $0.data(as: ReceiveLetterDto.self) }
+                onUpdate(dtos)
+            }
+    }
+    
+    func removeListeners() {
+        receivedListener?.remove()
+        sentListener?.remove()
+        receivedListener = nil
+        sentListener = nil
     }
 }

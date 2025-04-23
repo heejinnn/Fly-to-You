@@ -11,6 +11,7 @@ import FirebaseFirestore
 final class DefaultFlightRepo: FlightRepo {
     private let auth = Auth.auth()
     private let db = Firestore.firestore()
+    private var flightsListener: ListenerRegistration?
     
     func addRoute(flightId: String, letter: Letter) async throws {
         let flightRef = db.collection("flights").document(flightId)
@@ -53,21 +54,31 @@ final class DefaultFlightRepo: FlightRepo {
     
     func updateRoute(letter: Letter) async throws {
         let ref = db.collection("flights").document(letter.topicId)
-        let document = try await ref.getDocument()
-        let routeData = letter.toFirestoreDataDeliver()
         
-        // 1. 기존 routes 배열 가져오기
-        var routes = document.data()?["routes"] as? [[String: Any]] ?? []
-        if let index = routes.firstIndex(where: { $0["id"] as? String == letter.id }) {
-            routes[index] = routeData
-            print(routes[index])
+        _ = try await db.runTransaction { transaction, errorPointer in
+            do {
+                let document = try transaction.getDocument(ref)
+                var routes = document.data()?["routes"] as? [[String: Any]] ?? []
+                
+                if let index = routes.firstIndex(where: { $0["id"] as? String == letter.id }) {
+                    let routeData = letter.toFirestoreDataDeliver()
+                    
+                    // 필수 필드 체크
+                    guard routeData["toUid"] != nil, routeData["fromUid"] != nil else {
+                        throw NSError(domain: "FlightError", code: 0, userInfo: [NSLocalizedDescriptionKey: "필수 필드 누락"])
+                    }
+                    
+                    routes[index] = routeData
+                    transaction.updateData(["routes": routes], forDocument: ref)
+                }
+                return nil
+            } catch {
+                errorPointer?.pointee = error as NSError
+                return nil
+            }
         }
-        
-        // 4. 전체 배열을 다시 저장
-        try await ref.updateData([
-            "routes": routes
-        ])
     }
+
     
     func getRoutes(topicId: String) async throws -> [[String: Any]] {
         let flightRef = db.collection("flights").document(topicId)
@@ -75,11 +86,22 @@ final class DefaultFlightRepo: FlightRepo {
         return flightDoc.data()?["routes"] as? [[String: Any]] ?? []
     }
     
-    func fetchAllFlights() async throws -> [FlightDto]{
-        let snapshot = try await db.collection("flights").getDocuments()
-        let flightDTOs: [FlightDto] = snapshot.documents.compactMap {
-            try? $0.data(as: FlightDto.self)
-        }
-        return flightDTOs
+    func observeAllFlights(onUpdate: @escaping ([FlightDto]) -> Void) {
+        flightsListener?.remove()
+        
+        flightsListener = db.collection("flights")
+            .addSnapshotListener { snapshot, error in
+                guard let documents = snapshot?.documents else {
+                    onUpdate([])
+                    return
+                }
+                let dtos: [FlightDto] = documents.compactMap { try? $0.data(as: FlightDto.self) }
+                onUpdate(dtos)
+            }
+    }
+    
+    func removeFlightsListener() {
+        flightsListener?.remove()
+        flightsListener = nil
     }
 }

@@ -11,9 +11,11 @@ import SwiftUI
 
 
 protocol DepartureLogViewModelInput{
-    func fetchLetters(fromUid: String, completion: @escaping (Result<Void, Error>) -> Void)
-    func editSentLetter(letter: ReceiveLetterModel, toText: String, completion: @escaping (Result<ReceiveLetterModel, Error>) -> Void)
+//    func fetchLetters(fromUid: String, completion: @escaping (Result<Void, Error>) -> Void)
+    func editSentLetter(letter: ReceiveLetterModel, toUid: String, completion: @escaping (Result<ReceiveLetterModel, Error>) -> Void)
     func deleteSentLetter(letter: Letter, completion: @escaping (Result<Void, Error>) -> Void)
+    func observeSentLetters()
+    func removeLettersListener()
 }
 
 protocol DepartureLogViewModelOutput{
@@ -38,22 +40,21 @@ class DefaultDepartureLogViewModel: DepartureLogViewModel {
         self.deleteLetterUseCase = deleteLetterUseCase
     }
     
-    func fetchLetters(fromUid: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        Task {
-            do {
-                let letterArr = try await fetchLetterUseCase.fetchSentLetters(fromUid: fromUid)
-                letters = ReceiveLetter.toReceiveLetterModels(letters: letterArr)
-                completion(.success(()))
-            } catch {
-                completion(.failure(error))
-            }
+    func observeSentLetters() {
+        guard let uid = UserDefaults.standard.string(forKey: "uid") else { return }
+        fetchLetterUseCase.observeSentLetters(fromUid: uid) { [weak self] letters in
+            self?.letters = ReceiveLetter.toReceiveLetterModels(letters: letters)
         }
     }
     
-    func editSentLetter(letter: ReceiveLetterModel, toText: String, completion: @escaping (Result<ReceiveLetterModel, Error>) -> Void){
+    func removeLettersListener() {
+        fetchLetterUseCase.removeListeners()
+    }
+    
+    func editSentLetter(letter: ReceiveLetterModel, toUid: String, completion: @escaping (Result<ReceiveLetterModel, Error>) -> Void){
         Task {
             do {
-                let letter = try await editLetterUseCase.editSentLetter(letter: letter.toLetter(data: letter), toNickname: toText)
+                let letter = try await editLetterUseCase.editSentLetter(letter: letter.toLetter(data: letter), toUid: toUid)
                 let newLetter = ReceiveLetter.toReceiveLetterModel(letter: letter)
                 
                 // letters에 저장된 letter 중 newLetter과 id가 같으면 변경

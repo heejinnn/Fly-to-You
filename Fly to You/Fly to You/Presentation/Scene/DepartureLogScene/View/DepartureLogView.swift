@@ -18,7 +18,7 @@ struct DepartureLogView: View {
             VStack{
                 Spacer().frame(height: Spacing.lg)
                 
-                Text("내가 보낸 종이 비행기들을 확인할 수 있어요🧐")
+                Text("내가 보낸 종이 비행기들을 확인할 수 있어요 🧐")
                     .font(.pretendard(.medium, size: 15))
                     .foregroundStyle(.gray3)
                 
@@ -45,15 +45,10 @@ struct DepartureLogView: View {
             })
         }
         .onAppear{
-            viewModelWrapper.viewModel.fetchLetters(fromUid: currentUid){ result in
-                switch result {
-                case .success():
-                    print("[DepartureLogView] - 보낸 기록 조회 성공")
-                case .failure(_):
-                    print("[DepartureLogView] - 보낸 기록 조회 실패")
-                }
-                
-            }
+            viewModelWrapper.viewModel.observeSentLetters()
+        }
+        .onDisappear{
+            viewModelWrapper.viewModel.removeLettersListener()
         }
     }
 }

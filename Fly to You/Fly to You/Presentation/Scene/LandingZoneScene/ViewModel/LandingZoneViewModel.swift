@@ -10,8 +10,9 @@ import FirebaseFirestore
 
 
 protocol LandingZoneViewModelInput{
-    func fetchLetters(completion: @escaping (Result<Void, Error>) -> Void)
-    func relayLetter(toText: String, topicData: TopicModel, message: String, letter: Letter, completion: @escaping (Result<Void, Error>) -> Void)
+    func relayLetter(toUid: String, topicData: TopicModel, message: String, letter: Letter, completion: @escaping (Result<Void, Error>) -> Void)
+    func observeLetters()
+    func removeLettersListener()
 }
 
 protocol LandingZoneViewModelOutput{
@@ -31,15 +32,10 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
         self.relayLetterUseCase = relayLetterUseCase
     }
 
-    func fetchLetters(completion: @escaping (Result<Void, Error>) -> Void  ) {
-        guard let uid = UserDefaults.standard.string(forKey: "uid") else {
-            return
-        }
-        
+    func relayLetter(toUid: String, topicData: TopicModel, message: String, letter: Letter, completion: @escaping (Result<Void, Error>) -> Void){
         Task {
             do {
-                let letterArr = try await fetchLetterUseCase.fetchReceivedLetters(toUid: uid)
-                letters = ReceiveLetter.toReceiveLetterModels(letters: letterArr)
+                let _ = try await relayLetterUseCase.send(toUid: toUid, topic: topicData.topic, topicId: topicData.topicId, message: message, previousLetter: letter)
                 completion(.success(()))
             } catch {
                 completion(.failure(error))
@@ -47,16 +43,17 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
         }
     }
     
-    func relayLetter(toText: String, topicData: TopicModel, message: String, letter: Letter, completion: @escaping (Result<Void, Error>) -> Void){
-        Task {
-            do {
-                let _ = try await relayLetterUseCase.send(toNickname: toText, topic: topicData.topic, topicId: topicData.topicId, message: message, previousLetter: letter)
-                completion(.success(()))
-            } catch {
-                completion(.failure(error))
-            }
+    func observeLetters() {
+        guard let uid = UserDefaults.standard.string(forKey: "uid") else { return }
+        fetchLetterUseCase.observeReceivedLetters(toUid: uid) { [weak self] letters in
+            self?.letters = ReceiveLetter.toReceiveLetterModels(letters: letters)
         }
     }
+    
+    func removeLettersListener() {
+        fetchLetterUseCase.removeListeners()
+    }
+ 
 }
 
 extension DafultLandingZoneViewModel{
