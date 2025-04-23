@@ -56,17 +56,11 @@ struct LandingZoneView: View {
             }
         }
         .onAppear{
-            fetchLetters()
+//            fetchLetters()
+            viewModelWrapper.viewModel.observeLetters()
         }
-    }
-    private func fetchLetters(){
-        viewModelWrapper.viewModel.fetchLetters{ result in
-            switch result {
-            case .success:
-                print("[LandingZoneView] - 받은 비행기 가져오기 성공")
-            case .failure:
-                print("[LandingZoneView] - 받은 비행기 가져오기 실패")
-            }
+        .onDisappear{
+            viewModelWrapper.viewModel.removeLettersListener()
         }
     }
 }

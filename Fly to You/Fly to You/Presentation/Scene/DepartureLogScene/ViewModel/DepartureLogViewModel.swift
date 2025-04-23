@@ -14,6 +14,8 @@ protocol DepartureLogViewModelInput{
     func fetchLetters(fromUid: String, completion: @escaping (Result<Void, Error>) -> Void)
     func editSentLetter(letter: ReceiveLetterModel, toUid: String, completion: @escaping (Result<ReceiveLetterModel, Error>) -> Void)
     func deleteSentLetter(letter: Letter, completion: @escaping (Result<Void, Error>) -> Void)
+    func observeSentLetters()
+    func removeLettersListener()
 }
 
 protocol DepartureLogViewModelOutput{
@@ -48,6 +50,17 @@ class DefaultDepartureLogViewModel: DepartureLogViewModel {
                 completion(.failure(error))
             }
         }
+    }
+    
+    func observeSentLetters() {
+        guard let uid = UserDefaults.standard.string(forKey: "uid") else { return }
+        fetchLetterUseCase.observeSentLetters(fromUid: uid) { [weak self] letters in
+            self?.letters = ReceiveLetter.toReceiveLetterModels(letters: letters)
+        }
+    }
+    
+    func removeLettersListener() {
+        fetchLetterUseCase.removeListeners()
     }
     
     func editSentLetter(letter: ReceiveLetterModel, toUid: String, completion: @escaping (Result<ReceiveLetterModel, Error>) -> Void){

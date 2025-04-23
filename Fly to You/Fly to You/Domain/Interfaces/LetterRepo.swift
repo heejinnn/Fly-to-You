@@ -12,4 +12,9 @@ protocol LetterRepo{
     func fetchSentLetters(fromUid: String) async throws -> [ReceiveLetterDto]
     func editSentLetter(letter: Letter) async throws -> ReceiveLetterDto
     func deleteSentLetter(letter: Letter) async throws
+    
+    
+    func observeReceivedLetters(toUid: String, onUpdate: @escaping ([ReceiveLetterDto]) -> Void)
+    func observeSentLetters(fromUid: String, onUpdate: @escaping ([ReceiveLetterDto]) -> Void)
+    func removeListeners()
 }

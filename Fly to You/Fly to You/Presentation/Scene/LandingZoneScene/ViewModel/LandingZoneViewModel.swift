@@ -12,6 +12,7 @@ import FirebaseFirestore
 protocol LandingZoneViewModelInput{
     func fetchLetters(completion: @escaping (Result<Void, Error>) -> Void)
     func relayLetter(toUid: String, topicData: TopicModel, message: String, letter: Letter, completion: @escaping (Result<Void, Error>) -> Void)
+    func observeLetters()
 }
 
 protocol LandingZoneViewModelOutput{
@@ -57,6 +58,14 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
             }
         }
     }
+    
+    func observeLetters() {
+        guard let uid = UserDefaults.standard.string(forKey: "uid") else { return }
+        fetchLetterUseCase.observeReceivedLetters(toUid: uid) { [weak self] letters in
+            self?.letters = ReceiveLetter.toReceiveLetterModels(letters: letters)
+        }
+    }
+ 
 }
 
 extension DafultLandingZoneViewModel{
