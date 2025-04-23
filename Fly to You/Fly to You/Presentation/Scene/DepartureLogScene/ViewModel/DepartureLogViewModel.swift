@@ -11,7 +11,7 @@ import SwiftUI
 
 
 protocol DepartureLogViewModelInput{
-    func fetchLetters(fromUid: String, completion: @escaping (Result<Void, Error>) -> Void)
+//    func fetchLetters(fromUid: String, completion: @escaping (Result<Void, Error>) -> Void)
     func editSentLetter(letter: ReceiveLetterModel, toUid: String, completion: @escaping (Result<ReceiveLetterModel, Error>) -> Void)
     func deleteSentLetter(letter: Letter, completion: @escaping (Result<Void, Error>) -> Void)
     func observeSentLetters()
@@ -38,18 +38,6 @@ class DefaultDepartureLogViewModel: DepartureLogViewModel {
         self.fetchLetterUseCase = fetchLetterUseCase
         self.editLetterUseCase = editLetterUseCase
         self.deleteLetterUseCase = deleteLetterUseCase
-    }
-    
-    func fetchLetters(fromUid: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        Task {
-            do {
-                let letterArr = try await fetchLetterUseCase.fetchSentLetters(fromUid: fromUid)
-                letters = ReceiveLetter.toReceiveLetterModels(letters: letterArr)
-                completion(.success(()))
-            } catch {
-                completion(.failure(error))
-            }
-        }
     }
     
     func observeSentLetters() {

@@ -121,6 +121,7 @@ struct DepartureLogInfoView: View{
         Group {
             if isEditMode {
                 Button(action: {
+
                     if let toUser, !message.isEmpty {
                         isEditMode = false
                         isLoading = true

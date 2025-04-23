@@ -49,18 +49,15 @@ struct LandingZoneView: View {
                     }
                 case .flyAnimation:
                     FlyAnimationView(onHome: {
-                        fetchLetters()
                         viewModelWrapper.path = []
                     })
                 }
             }
         }
         .onAppear{
-//            fetchLetters()
             viewModelWrapper.viewModel.observeLetters()
         }
         .onDisappear{
-            viewModelWrapper.viewModel.removeLettersListener()
         }
     }
 }

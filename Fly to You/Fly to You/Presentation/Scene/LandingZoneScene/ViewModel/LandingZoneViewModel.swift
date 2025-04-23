@@ -10,9 +10,9 @@ import FirebaseFirestore
 
 
 protocol LandingZoneViewModelInput{
-    func fetchLetters(completion: @escaping (Result<Void, Error>) -> Void)
     func relayLetter(toUid: String, topicData: TopicModel, message: String, letter: Letter, completion: @escaping (Result<Void, Error>) -> Void)
     func observeLetters()
+    func removeLettersListener()
 }
 
 protocol LandingZoneViewModelOutput{
@@ -32,22 +32,6 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
         self.relayLetterUseCase = relayLetterUseCase
     }
 
-    func fetchLetters(completion: @escaping (Result<Void, Error>) -> Void  ) {
-        guard let uid = UserDefaults.standard.string(forKey: "uid") else {
-            return
-        }
-        
-        Task {
-            do {
-                let letterArr = try await fetchLetterUseCase.fetchReceivedLetters(toUid: uid)
-                letters = ReceiveLetter.toReceiveLetterModels(letters: letterArr)
-                completion(.success(()))
-            } catch {
-                completion(.failure(error))
-            }
-        }
-    }
-    
     func relayLetter(toUid: String, topicData: TopicModel, message: String, letter: Letter, completion: @escaping (Result<Void, Error>) -> Void){
         Task {
             do {
@@ -64,6 +48,10 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
         fetchLetterUseCase.observeReceivedLetters(toUid: uid) { [weak self] letters in
             self?.letters = ReceiveLetter.toReceiveLetterModels(letters: letters)
         }
+    }
+    
+    func removeLettersListener() {
+        fetchLetterUseCase.removeListeners()
     }
  
 }

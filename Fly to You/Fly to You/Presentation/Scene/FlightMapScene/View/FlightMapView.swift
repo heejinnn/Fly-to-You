@@ -69,10 +69,13 @@ struct FlightMapView: View{
                     .zIndex(1)
             }
         }
-        .onAppear{
-            fechAllFlights()
-        }
         .animation(.easeInOut, value: showPopup)
+        .onAppear{
+            viewModelWrapper.viewModel.observeAllFlights()
+        }
+        .onDisappear{
+            viewModelWrapper.viewModel.removeFlightsListener()
+        }
     }
     
     private var segmentedControl: some View {
@@ -83,18 +86,6 @@ struct FlightMapView: View{
         }
         .pickerStyle(.segmented)
         .padding(.horizontal, Spacing.md)
-    }
-    
-    func fechAllFlights() {
-        viewModelWrapper.viewModel.fetchAllFlights{ result in
-            switch result{
-            case .success():
-                print("[FlightMapView] - 항로 맵 경로 조회 성공")
-            case .failure(let error):
-                print("[FlightMapView] - 항로 맵 경로 조회 실패")
-                print(error)
-            }
-        }
     }
     
 }

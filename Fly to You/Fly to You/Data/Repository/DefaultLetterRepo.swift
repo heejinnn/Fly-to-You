@@ -25,27 +25,6 @@ final class DefaultLetterRepo: LetterRepo {
         ])
     }
     
-    func fetchReceivedLetters(toUid: String) async throws -> [ReceiveLetterDto] {
-        let snapshot = try await db.collection("letters")
-            .whereField("toUid", isEqualTo: toUid)
-            .whereField("isDelivered", isEqualTo: false)
-            .getDocuments()
-        
-        return snapshot.documents.compactMap { doc in
-            try? doc.data(as: ReceiveLetterDto.self)
-        }
-    }
-    
-    func fetchSentLetters(fromUid: String) async throws -> [ReceiveLetterDto] {
-        let snapshot = try await db.collection("letters")
-            .whereField("fromUid", isEqualTo: fromUid)
-            .getDocuments()
-        
-        return snapshot.documents.compactMap { doc in
-            try? doc.data(as: ReceiveLetterDto.self)
-        }
-    }
-    
     func editSentLetter(letter: Letter) async throws -> ReceiveLetterDto {
         let letterRef = db.collection("letters").document(letter.id)
         let document = try await letterRef.getDocument()

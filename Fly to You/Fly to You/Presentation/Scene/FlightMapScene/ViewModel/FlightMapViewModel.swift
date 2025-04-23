@@ -8,7 +8,8 @@
 import FirebaseFirestore
 
 protocol FlightMapViewModelInput {
-    func fetchAllFlights(completion: @escaping (Result<Void, Error>) -> (Void))
+    func observeAllFlights()
+    func removeFlightsListener()
 }
 
 protocol FlightMapViewModelOutput {
@@ -27,16 +28,14 @@ final class DefaultFlightMapViewModel: FlightMapViewModel {
         self.useCase = useCase
     }
     
-    func fetchAllFlights(completion: @escaping (Result<Void, Error>) -> (Void)){
-        Task {
-            do {
-                let flightsData = try await useCase.execute()
-                self.flights = flightsData
-                completion(.success(()))
-            } catch {
-                completion(.failure(error))
-            }
+    func observeAllFlights() {
+        useCase.observeAllFlights { [weak self] flights in
+            self?.flights = flights
         }
+    }
+    
+    func removeFlightsListener() {
+        useCase.removeFlightsListener()
     }
 }
 

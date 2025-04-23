@@ -11,5 +11,6 @@ protocol FlightRepo{
     func removeRoute(topicId: String, routeId: String) async throws
     func updateRoute(letter: Letter) async throws
     func getRoutes(topicId: String) async throws -> [[String: Any]]
-    func fetchAllFlights() async throws -> [FlightDto]
+    func observeAllFlights(onUpdate: @escaping ([FlightDto]) -> Void)
+    func removeFlightsListener()
 }

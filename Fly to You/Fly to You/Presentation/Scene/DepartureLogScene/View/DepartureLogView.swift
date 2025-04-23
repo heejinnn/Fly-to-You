@@ -45,15 +45,6 @@ struct DepartureLogView: View {
             })
         }
         .onAppear{
-            viewModelWrapper.viewModel.fetchLetters(fromUid: currentUid){ result in
-                switch result {
-                case .success():
-                    print(currentUid)
-                    print("[DepartureLogView] - 보낸 기록 조회 성공")
-                case .failure(_):
-                    print("[DepartureLogView] - 보낸 기록 조회 실패")
-                }
-            }
             viewModelWrapper.viewModel.observeSentLetters()
         }
         .onDisappear{

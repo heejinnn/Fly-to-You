@@ -11,6 +11,7 @@ import FirebaseFirestore
 final class DefaultFlightRepo: FlightRepo {
     private let auth = Auth.auth()
     private let db = Firestore.firestore()
+    private var flightsListener: ListenerRegistration?
     
     func addRoute(flightId: String, letter: Letter) async throws {
         let flightRef = db.collection("flights").document(flightId)
@@ -85,11 +86,22 @@ final class DefaultFlightRepo: FlightRepo {
         return flightDoc.data()?["routes"] as? [[String: Any]] ?? []
     }
     
-    func fetchAllFlights() async throws -> [FlightDto]{
-        let snapshot = try await db.collection("flights").getDocuments()
-        let flightDTOs: [FlightDto] = snapshot.documents.compactMap {
-            try? $0.data(as: FlightDto.self)
-        }
-        return flightDTOs
+    func observeAllFlights(onUpdate: @escaping ([FlightDto]) -> Void) {
+        flightsListener?.remove()
+        
+        flightsListener = db.collection("flights")
+            .addSnapshotListener { snapshot, error in
+                guard let documents = snapshot?.documents else {
+                    onUpdate([])
+                    return
+                }
+                let dtos: [FlightDto] = documents.compactMap { try? $0.data(as: FlightDto.self) }
+                onUpdate(dtos)
+            }
+    }
+    
+    func removeFlightsListener() {
+        flightsListener?.remove()
+        flightsListener = nil
     }
 }
