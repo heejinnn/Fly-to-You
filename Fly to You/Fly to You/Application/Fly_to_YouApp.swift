@@ -18,15 +18,15 @@ struct YourApp: App {
         WindowGroup {
             if showSplash {
                 SplashView(gifReady: $gifReady)
-                    .onChange(of: gifReady) { ready in
-                        if ready {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    .onChange(of: gifReady, { oldValue, newValue in
+                        if newValue {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                                 withAnimation {
                                     showSplash = false
                                 }
                             }
                         }
-                    }
+                    })
             } else {
                 RootView()
                     .environmentObject(appState)

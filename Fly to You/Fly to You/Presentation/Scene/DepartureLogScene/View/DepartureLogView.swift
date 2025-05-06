@@ -24,7 +24,7 @@ struct DepartureLogView: View {
                 
                 Spacer().frame(height: Spacing.lg)
                 
-                VStack{
+                VStack(spacing: Spacing.sm){
                     ForEach(viewModelWrapper.letters, id: \.id){ letter in
                         PlaneCell(letter: letter, route: .send)
                             .onTapGesture {

@@ -32,26 +32,28 @@ struct FlightMapView: View{
                     
                     segmentedControl
                     
-                    ForEach(viewModelWrapper.flights, id: \.id) { flight in
-                        PlaneCell(letter: flight.routes[0], participantCount: flight.routes.count, route: .map)
-                            .onTapGesture {
-                                withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
-                                    if selectedFlightId == flight.id {
-                                        selectedFlightId = nil
-                                    } else {
-                                        selectedFlightId = flight.id
+                    VStack(spacing: Spacing.sm){
+                        ForEach(viewModelWrapper.flights, id: \.id) { flight in
+                            PlaneCell(letter: flight.routes[0], participantCount: flight.routes.count, route: .map)
+                                .onTapGesture {
+                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
+                                        if selectedFlightId == flight.id {
+                                            selectedFlightId = nil
+                                        } else {
+                                            selectedFlightId = flight.id
+                                        }
                                     }
                                 }
-                            }
-                        
-                        if selectedFlightId == flight.id {
-                            FlightMapCell(flight: flight) { route in
-                                selectedRoute = route
-                                showPopup = true
+                            
+                            if selectedFlightId == flight.id {
+                                FlightMapCell(flight: flight) { route in
+                                    selectedRoute = route
+                                    showPopup = true
+                                }
                             }
                         }
+                        .animation(.easeInOut(duration: 0.3), value: selectedFlightId)
                     }
-                    .animation(.easeInOut(duration: 0.3), value: selectedFlightId)
                     
                     Spacer()
                 }

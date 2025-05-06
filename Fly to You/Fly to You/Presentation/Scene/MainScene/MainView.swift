@@ -22,7 +22,6 @@ struct MainView: View {
             ZStack {
                 Image(.backgroundSky)
                     .resizable()
-                    .ignoresSafeArea(edges: .top)
                 
                 mainContent
             }
