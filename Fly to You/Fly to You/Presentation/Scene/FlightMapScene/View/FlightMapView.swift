@@ -17,6 +17,7 @@ struct FlightMapView: View{
     @State private var selectedFlightId: String? = nil
     @State private var showPopup = false
     @State private var selectedRoute: ReceiveLetterModel? = nil
+    @State private var seachTopic: String = ""
     
     // 현재 유저 UID
     private var currentUid: String? {
@@ -45,6 +46,8 @@ struct FlightMapView: View{
                         .foregroundStyle(.gray3)
                     
                     segmentedControl
+                    
+                    SearchBar(seachText: $seachTopic, searchBarRoute: .searchTopic)
                     
                     VStack(spacing: Spacing.sm){
                         ForEach(filteredFlights, id: \.id) { flight in
