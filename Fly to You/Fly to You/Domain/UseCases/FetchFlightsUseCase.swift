@@ -26,7 +26,7 @@ final class DefaultFetchFlightsUseCase: FetchFlightsUseCase {
         flightRepo.observeAllFlights { [weak self] dtos in
             guard let self = self else { return }
             Task {
-                let sortedDtos = dtos.sorted { $0.startDate < $1.startDate }
+                let sortedDtos = dtos.sorted { $0.startDate > $1.startDate }
                 
                 // 1. 모든 사용자 ID 추출
                 let userIDs = Set(

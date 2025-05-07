@@ -12,12 +12,26 @@ struct FlightMapView: View{
     
     @EnvironmentObject var viewModelWrapper: FlightMapViewModelWrapper
     
-    private let segmentedMenu = ["진행 중인 항로", "완료된 항로"]
-    @State private var selectedTab = "진행 중인 항로"
+    private let segmentedMenu = ["내 항로", "둘러보기"]
+    @State private var selectedTab = "내 항로"
     @State private var selectedFlightId: String? = nil
     @State private var showPopup = false
-    
     @State private var selectedRoute: ReceiveLetterModel? = nil
+    
+    // 현재 유저 UID
+    private var currentUid: String? {
+        UserDefaults.standard.string(forKey: "uid")
+    }
+    
+    // 필터링된 항로
+    private var filteredFlights: [FlightModel] {
+        guard let currentUid = currentUid else { return [] }
+
+        return viewModelWrapper.flights.filter { flight in
+            let isMyFlight = flight.routes.contains { $0.from.uid == currentUid || $0.to.uid == currentUid }
+            return selectedTab == "내 항로" ? isMyFlight : !isMyFlight
+        }
+    }
     
     var body: some View{
         ZStack {
@@ -33,7 +47,7 @@ struct FlightMapView: View{
                     segmentedControl
                     
                     VStack(spacing: Spacing.sm){
-                        ForEach(viewModelWrapper.flights, id: \.id) { flight in
+                        ForEach(filteredFlights, id: \.id) { flight in
                             PlaneCell(letter: flight.routes[0], participantCount: flight.routes.count, route: .map)
                                 .onTapGesture {
                                     withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
@@ -46,7 +60,7 @@ struct FlightMapView: View{
                                 }
                             
                             if selectedFlightId == flight.id {
-                                FlightMapCell(flight: flight) { route in
+                                FlightMapCell(flight: flight, isParticipated: selectedTab == "내 항로") { route in
                                     selectedRoute = route
                                     showPopup = true
                                 }

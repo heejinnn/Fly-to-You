@@ -10,6 +10,7 @@ import SwiftUI
 // MARK: - FlightMapCell
 struct FlightMapCell: View {
     let flight: FlightModel
+    let isParticipated: Bool
     let onSpotTap: (ReceiveLetterModel) -> Void
 
     var body: some View {
@@ -97,7 +98,7 @@ struct FlightMapCell: View {
     }
 
     private var statusText: some View {
-        Text("이 릴레이는 현재 진행 중입니다. 참여하려면 비행기를 받아보세요!")
+        Text(isParticipated ? "여정이 이어지고 있어요. 다음 목적지는 어디일까요?" : "이 릴레이는 현재 진행 중입니다. 참여하려면 비행기를 받아보세요!")
             .font(.pretendard(.regular, size: 12))
             .padding(.top, 10)
     }
