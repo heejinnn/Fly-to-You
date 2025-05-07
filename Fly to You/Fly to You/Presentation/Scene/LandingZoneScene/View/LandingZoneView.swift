@@ -24,7 +24,7 @@ struct LandingZoneView: View {
                     
                     Spacer().frame(height: Spacing.lg)
                     
-                    VStack(spacing: Spacing.xs){
+                    VStack(spacing: Spacing.sm){
                         ForEach(viewModelWrapper.letters, id: \.id){ letter in
                             PlaneCell(letter: letter, route: .receive)
                                 .contentShape(Rectangle())
