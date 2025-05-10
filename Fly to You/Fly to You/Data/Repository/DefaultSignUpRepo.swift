@@ -30,7 +30,7 @@ final class DefaultSignUpRepo: SignUpRepo {
     
     private func checkNicknameDuplicate(nickname: String, completion: @escaping (Bool) -> Void) {
         db.collection("users")
-            .whereField("nickname", isEqualTo: nickname.lowercased())
+            .whereField("nickname", isEqualTo: nickname)
             .getDocuments { snapshot, error in
                 if let error = error {
                     print("중복 검사 오류: \(error.localizedDescription)")
@@ -46,7 +46,7 @@ final class DefaultSignUpRepo: SignUpRepo {
         Auth.auth().signInAnonymously { [weak self] result, error in
             guard let self = self, let uid = result?.user.uid else { return }
             
-            let user = User(uid: uid, nickname: nickname.lowercased(), createdAt: Date())
+            let user = User(uid: uid, nickname: nickname, createdAt: Date())
             
             do {
                 try self.db.collection("users").document(uid).setData(from: user) { error in
