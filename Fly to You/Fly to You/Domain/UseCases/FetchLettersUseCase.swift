@@ -28,6 +28,7 @@ final class DefaultFetchLettersUseCase: FetchLettersUseCase{
         letterRepo.observeReceivedLetters(toUid: toUid) { [weak self] dtos in
             guard let self = self else { return }
             Task {
+                let sortedDtos = dtos.sorted { $0.timestamp > $1.timestamp }
                 
                 // 1. 모든 사용자 ID 추출
                 let userIDs = Set(dtos.flatMap { [$0.fromUid, $0.toUid] })
@@ -36,7 +37,7 @@ final class DefaultFetchLettersUseCase: FetchLettersUseCase{
                 let usersByID = users.map { Dictionary(uniqueKeysWithValues: $0.map { ($0.uid, $0) }) } ?? [:]
                 
                 // 3. DTO → Model 변환
-                let letters: [ReceiveLetter] = dtos.map { dto in
+                let letters: [ReceiveLetter] = sortedDtos.map { dto in
                     let fromUser = usersByID[dto.fromUid]
                     let toUser = usersByID[dto.toUid]
                     return ReceiveLetter(
@@ -62,11 +63,13 @@ final class DefaultFetchLettersUseCase: FetchLettersUseCase{
         letterRepo.observeSentLetters(fromUid: fromUid) { [weak self] dtos in
             guard let self = self else { return }
             Task {
+                let sortedDtos = dtos.sorted { $0.timestamp > $1.timestamp }
+                
                 let userIDs = Set(dtos.flatMap { [$0.fromUid, $0.toUid] })
                 let users = try? await self.userRepo.fetchUsers(uids: Array(userIDs))
                 let usersByID = users.map { Dictionary(uniqueKeysWithValues: $0.map { ($0.uid, $0) }) } ?? [:]
                 
-                let letters: [ReceiveLetter] = dtos.map { dto in
+                let letters: [ReceiveLetter] = sortedDtos.map { dto in
                     let fromUser = usersByID[dto.fromUid]
                     let toUser = usersByID[dto.toUid]
                     return ReceiveLetter(

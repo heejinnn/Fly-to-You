@@ -28,7 +28,8 @@ struct UserListSheetView: View {
             
             Spacer().frame(height: Spacing.sm)
             
-            searchBar
+            SearchBar(seachText: $seachUserId, searchBarRoute: .searchNickname)
+                .padding(Spacing.md)
             
             List(filteredUserList, id: \.uid) { user in
                 Button(action: {
@@ -61,34 +62,6 @@ struct UserListSheetView: View {
                 }
             }
         }
-    }
-    
-    private var searchBar: some View {
-        HStack{
-            TextField("닉네임을 검색해 보세요", text: $seachUserId)
-                .font(.pretendard(.light, size: 15))
-                .foregroundColor(.black)
-                .padding(.leading, 15)
-
-            Spacer()
-            
-            Button(action: {
-                
-            }, label: {
-                Image(systemName: "magnifyingglass")
-                    .frame(width: 25, height: 25)
-                    .padding(.trailing, 15)
-                    .foregroundStyle(.gray1)
-            })
-        }
-        .frame(height: 55)
-        .frame(maxWidth: .infinity)
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .inset(by: 0.5)
-                .stroke(.gray1, lineWidth: 1)
-        )
-        .padding(Spacing.md)
     }
 }
 
