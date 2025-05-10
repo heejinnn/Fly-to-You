@@ -44,6 +44,8 @@ struct MainView: View {
                 switch route {
                 case .profile:
                     ProfileView(visibliity: $visibility)
+                case .editNickname:
+                    EditNicknameView()
                 case .selectSubject:
                     SelectSubjectView(visibliity: $visibility)
                 case .sendLetter:
@@ -116,6 +118,7 @@ final class MainViewModelWrapper: ObservableObject {
 
 enum MainRoute {
     case profile
+    case editNickname
     case selectSubject
     case sendLetter
     case flyAnimation

@@ -29,6 +29,9 @@ struct ProfileView: View {
             
             VStack(spacing: 20) {
                 ProfileRow(icon: "person.fill", title: "닉네임", value: nickname)
+                    .onTapGesture {
+                        viewModelWrapper.path.append(.editNickname)
+                    }
                 ProfileRow(icon: "applelogo", title: "소셜 연동", value: isAppleLinked ? "Apple 계정 연동됨" : "익명 계정")
             }
             .padding()
@@ -82,5 +85,6 @@ struct ProfileRow: View {
 
             Spacer()
         }
+        .frame(maxWidth: .infinity)
     }
 }
