@@ -29,6 +29,7 @@ struct UserListSheetView: View {
             Spacer().frame(height: Spacing.sm)
             
             SearchBar(seachText: $seachUserId, searchBarRoute: .searchNickname)
+                .padding(Spacing.md)
             
             List(filteredUserList, id: \.uid) { user in
                 Button(action: {

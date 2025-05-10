@@ -30,7 +30,9 @@ struct FlightMapView: View{
 
         return viewModelWrapper.flights.filter { flight in
             let isMyFlight = flight.routes.contains { $0.from.uid == currentUid || $0.to.uid == currentUid }
-            return selectedTab == "내 항로" ? isMyFlight : !isMyFlight
+            let matchesTab = selectedTab == "내 항로" ? isMyFlight : !isMyFlight
+            let matchesSearch = seachTopic.isEmpty || flight.topic.localizedCaseInsensitiveContains(seachTopic)
+            return matchesTab && matchesSearch
         }
     }
     
@@ -48,6 +50,7 @@ struct FlightMapView: View{
                     segmentedControl
                     
                     SearchBar(seachText: $seachTopic, searchBarRoute: .searchTopic)
+                        .padding(.horizontal, Spacing.md)
                     
                     VStack(spacing: Spacing.sm){
                         ForEach(filteredFlights, id: \.id) { flight in
@@ -106,7 +109,6 @@ struct FlightMapView: View{
         .pickerStyle(.segmented)
         .padding(.horizontal, Spacing.md)
     }
-    
 }
 
 #Preview {
