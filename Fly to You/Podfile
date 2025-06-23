@@ -11,7 +11,7 @@ target 'Fly to You' do
   pod 'FirebaseAnalytics'
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore' 
-
+  pod 'FirebaseMessaging'
 
   target 'Fly to YouTests' do
     inherit! :search_paths
