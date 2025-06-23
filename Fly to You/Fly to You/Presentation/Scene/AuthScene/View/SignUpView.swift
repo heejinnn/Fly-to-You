@@ -20,10 +20,15 @@ struct SignUpView: View {
                 
                 Group{
                     HStack{
-                        TextField("닉네임을 입력하세요", text: $nickname)
+                        TextField("최대 10자까지 입력 가능", text: $nickname)
                             .font(.pretendard(.light, size: 15))
                             .foregroundColor(.black)
                             .padding(.leading, 15)
+                            .onChange(of: nickname) {
+                                if nickname.count > 10 {
+                                    nickname = String(nickname.prefix(10))
+                                }
+                            }
                         
                         Spacer()
                     }

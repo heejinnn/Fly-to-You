@@ -24,7 +24,6 @@ struct RootView: View {
         .onAppear {
             if let user = Auth.auth().currentUser, ((UserDefaults.standard.string(forKey: "uid")?.isEmpty) != nil) {
                 appState.isLoggedIn = true
-                print(user.uid)
             }
         }
     }

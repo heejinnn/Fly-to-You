@@ -32,9 +32,20 @@ struct MainView: View {
                         .font(.italiana(size: 20))
                         .foregroundStyle(.gray3)
                 }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        viewModelWrapper.path.append(.profile)
+                    }, label: {
+                        Image(systemName: "person.circle")
+                    })
+                }
             }
             .navigationDestination(for: MainRoute.self) { route in
                 switch route {
+                case .profile:
+                    ProfileView(visibliity: $visibility)
+                case .editNickname:
+                    EditNicknameView()
                 case .selectSubject:
                     SelectSubjectView(visibliity: $visibility)
                 case .sendLetter:
@@ -106,6 +117,8 @@ final class MainViewModelWrapper: ObservableObject {
 }
 
 enum MainRoute {
+    case profile
+    case editNickname
     case selectSubject
     case sendLetter
     case flyAnimation

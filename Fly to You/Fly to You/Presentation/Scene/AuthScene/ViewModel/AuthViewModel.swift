@@ -22,7 +22,6 @@ protocol AuthViewModelOutput{
 protocol AuthViewModel: AuthViewModelInput, AuthViewModelOutput{}
 
 class DefaultAuthViewModel: AuthViewModel {
-    @Published var nickname: String = ""
     @Published var isLoggedIn: Bool = false
     @Published var duplicateError: Bool = false
     
