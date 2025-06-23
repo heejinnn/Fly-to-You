@@ -85,6 +85,6 @@ struct ProfileRow: View {
 
             Spacer()
         }
-        .frame(maxWidth: .infinity)
+        .contentShape(Rectangle())
     }
 }
