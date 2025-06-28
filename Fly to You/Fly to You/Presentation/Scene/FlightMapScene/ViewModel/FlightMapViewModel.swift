@@ -46,5 +46,5 @@ extension DefaultFlightMapViewModel{
 }
 
 extension User {
-    static let unknown = User(uid: "unknown", nickname: "(Unknown)", createdAt: Date())
+    static let unknown = User(uid: "unknown", nickname: "(Unknown)", createdAt: Date(), fcmToken: "")
 }

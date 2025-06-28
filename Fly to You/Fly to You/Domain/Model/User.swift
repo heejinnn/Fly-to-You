@@ -11,4 +11,5 @@ struct User: Codable {
     let uid: String
     let nickname: String
     let createdAt: Date
+    let fcmToken: String
 }
