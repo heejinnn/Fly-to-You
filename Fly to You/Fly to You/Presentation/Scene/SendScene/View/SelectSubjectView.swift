@@ -29,7 +29,7 @@ struct SelectSubjectView: View {
                     SubjectCell(text: topic, isSelected: selectedTopic == topic)
                 }
             }
-            .onChange(of: customTopic) { newValue in
+            .onChange(of: customTopic) { oldValue, newValue in
                 if !newValue.isEmpty {
                     selectedTopic = ""
                 }
