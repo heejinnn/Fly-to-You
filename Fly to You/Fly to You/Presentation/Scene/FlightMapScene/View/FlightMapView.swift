@@ -52,28 +52,7 @@ struct FlightMapView: View{
                     SearchBar(seachText: $seachTopic, searchBarRoute: .searchTopic)
                         .padding(.horizontal, Spacing.md)
                     
-                    VStack(spacing: Spacing.sm){
-                        ForEach(filteredFlights, id: \.id) { flight in
-                            PlaneCell(letter: flight.routes[0], participantCount: flight.routes.count, route: .map)
-                                .onTapGesture {
-                                    withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
-                                        if selectedFlightId == flight.id {
-                                            selectedFlightId = nil
-                                        } else {
-                                            selectedFlightId = flight.id
-                                        }
-                                    }
-                                }
-                            
-                            if selectedFlightId == flight.id {
-                                FlightMapCell(flight: flight, isParticipated: selectedTab == "내 항로") { route in
-                                    selectedRoute = route
-                                    showPopup = true
-                                }
-                            }
-                        }
-                        .animation(.easeInOut(duration: 0.3), value: selectedFlightId)
-                    }
+                    planeCellSection
                     
                     Spacer()
                 }
@@ -97,6 +76,31 @@ struct FlightMapView: View{
         }
         .onDisappear{
             viewModelWrapper.viewModel.removeFlightsListener()
+        }
+    }
+    
+    private var planeCellSection: some View {
+        VStack(spacing: Spacing.sm){
+            ForEach(filteredFlights, id: \.id) { flight in
+                PlaneCell(letter: flight.routes[0], participantCount: flight.routes.count, route: .map)
+                    .onTapGesture {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
+                            if selectedFlightId == flight.id {
+                                selectedFlightId = nil
+                            } else {
+                                selectedFlightId = flight.id
+                            }
+                        }
+                    }
+                
+                if selectedFlightId == flight.id {
+                    FlightMapCell(flight: flight, isParticipated: selectedTab == "내 항로") { route in
+                        selectedRoute = route
+                        showPopup = true
+                    }
+                }
+            }
+            .animation(.easeInOut(duration: 0.3), value: selectedFlightId)
         }
     }
     

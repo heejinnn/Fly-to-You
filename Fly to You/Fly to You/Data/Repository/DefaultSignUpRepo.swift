@@ -44,12 +44,14 @@ final class DefaultSignUpRepo: SignUpRepo {
 
     private func signInAnonymouslyAndSaveUser(nickname: String, completion: @escaping (Bool) -> Void) {
         Auth.auth().signInAnonymously { [weak self] result, error in
-            guard let self = self, let uid = result?.user.uid else { return }
+            guard let self = self, let uid = result?.user.uid, let fcmToken = KeychainTokenStorage.load(for: "fcmToken") else { return }
             
-            let user = User(uid: uid, nickname: nickname, createdAt: Date())
+            let user = User(uid: uid, nickname: nickname, createdAt: Date(), fcmToken: fcmToken)
             
             do {
-                try self.db.collection("users").document(uid).setData(from: user) { error in
+                try self.db.collection("users")
+                    .document(uid)
+                    .setData(from: user) { error in
                     if error == nil {
                         UserDefaults.standard.set(uid, forKey: "uid")
                         UserDefaults.standard.set(nickname.lowercased(), forKey: "nickname")

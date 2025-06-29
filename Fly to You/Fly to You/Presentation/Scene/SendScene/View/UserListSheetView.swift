@@ -11,14 +11,13 @@ import SwiftUI
 struct UserListSheetView: View {
     @StateObject var viewModel = UserListSheetViewModel()
     @Binding var toUser: User?
-    @State private var selectedUserId: String? = nil
-    @State private var seachUserId: String = ""
+    @State private var searchUserId: String = ""
     private var filteredUserList: [User] {
-        if seachUserId.isEmpty {
+        if searchUserId.isEmpty {
             return viewModel.userList
         } else {
             return viewModel.userList.filter {
-                $0.nickname.localizedCaseInsensitiveContains(seachUserId)
+                $0.nickname.localizedCaseInsensitiveContains(searchUserId)
             }
         }
     }
@@ -28,24 +27,24 @@ struct UserListSheetView: View {
             
             Spacer().frame(height: Spacing.sm)
             
-            SearchBar(seachText: $seachUserId, searchBarRoute: .searchNickname)
+            SearchBar(seachText: $searchUserId, searchBarRoute: .searchNickname)
                 .padding(Spacing.md)
             
             List(filteredUserList, id: \.uid) { user in
                 Button(action: {
                     toUser = user
-                    selectedUserId = user.uid
                 }) {
                     HStack {
                         Text(user.nickname)
                             .foregroundColor(.primary)
                         Spacer()
                         
-                        if selectedUserId == user.uid {
+                        if toUser?.uid == user.uid {
                             Image(systemName: "checkmark")
                                 .foregroundColor(.blue1)
                         }
                     }
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(PlainButtonStyle())
             }
@@ -56,9 +55,9 @@ struct UserListSheetView: View {
             Task {
                 do {
                     _ = try await viewModel.fetchUserList()
-                    print("성공")
+                    print("[UserListSheetView] - user list 가져오기 성공")
                 } catch {
-                    print("실패")
+                    print("[UserListSheetView] - user list 가져오기 실패")
                 }
             }
         }
@@ -81,8 +80,9 @@ final class UserListSheetViewModel: ObservableObject {
         let userDatas: [User] = snapshot.documents.compactMap {
             try? $0.data(as: User.self)
         }
-        DispatchQueue.main.async {
-            self.userList = userDatas
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.userList = userDatas
         }
     }
 }

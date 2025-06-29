@@ -1188,6 +1188,7 @@ PODS:
     - abseil/meta/type_traits
     - abseil/xcprivacy
   - abseil/xcprivacy (1.20240722.0)
+  - Alamofire (5.10.2)
   - BoringSSL-GRPC (0.0.37):
     - BoringSSL-GRPC/Implementation (= 0.0.37)
     - BoringSSL-GRPC/Interface (= 0.0.37)
@@ -1256,6 +1257,15 @@ PODS:
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/UserDefaults (~> 8.0)
     - PromisesObjC (~> 2.4)
+  - FirebaseMessaging (11.11.0):
+    - FirebaseCore (~> 11.11.0)
+    - FirebaseInstallations (~> 11.0)
+    - GoogleDataTransport (~> 10.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 8.0)
+    - GoogleUtilities/Environment (~> 8.0)
+    - GoogleUtilities/Reachability (~> 8.0)
+    - GoogleUtilities/UserDefaults (~> 8.0)
+    - nanopb (~> 3.30910.0)
   - FirebaseSharedSwift (11.11.0)
   - GoogleAppMeasurement (11.11.0):
     - GoogleAppMeasurement/AdIdSupport (= 11.11.0)
@@ -1277,6 +1287,9 @@ PODS:
     - GoogleUtilities/Network (~> 8.0)
     - "GoogleUtilities/NSData+zlib (~> 8.0)"
     - nanopb (~> 3.30910.0)
+  - GoogleDataTransport (10.1.0):
+    - nanopb (~> 3.30910.0)
+    - PromisesObjC (~> 2.4)
   - GoogleUtilities/AppDelegateSwizzler (8.0.2):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -1407,13 +1420,16 @@ PODS:
   - RecaptchaInterop (101.0.0)
 
 DEPENDENCIES:
+  - Alamofire
   - FirebaseAnalytics
   - FirebaseAuth
   - FirebaseFirestore
+  - FirebaseMessaging
 
 SPEC REPOS:
   trunk:
     - abseil
+    - Alamofire
     - BoringSSL-GRPC
     - FirebaseAnalytics
     - FirebaseAppCheckInterop
@@ -1425,8 +1441,10 @@ SPEC REPOS:
     - FirebaseFirestore
     - FirebaseFirestoreInternal
     - FirebaseInstallations
+    - FirebaseMessaging
     - FirebaseSharedSwift
     - GoogleAppMeasurement
+    - GoogleDataTransport
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
@@ -1438,6 +1456,7 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   abseil: a05cc83bf02079535e17169a73c5be5ba47f714b
+  Alamofire: 7193b3b92c74a07f85569e1a6c4f4237291e7496
   BoringSSL-GRPC: dded2a44897e45f28f08ae87a55ee4bcd19bc508
   FirebaseAnalytics: acfa848bf81e1a4dbf60ef1f0eddd7328fe6673e
   FirebaseAppCheckInterop: f23709c9ce92d810aa53ff4ce12ad3e666a3c7be
@@ -1449,8 +1468,10 @@ SPEC CHECKSUMS:
   FirebaseFirestore: 7b356f6d680b3a464ade6a0e60a6b38f8e40149e
   FirebaseFirestoreInternal: e06766e483f3a5b16a33dfcc65e116a6dfcccd55
   FirebaseInstallations: 781e0e37aa0e1c92b44d00e739aba79ad31b2dba
+  FirebaseMessaging: c7be9357fd8ba33bc45b9a6c3cdff0b466e1e2a4
   FirebaseSharedSwift: b1d32c3b29a911dc174bcf363f2f70bda9509d2f
   GoogleAppMeasurement: 8a82b93a6400c8e6551c0bcd66a9177f2e067aed
+  GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
   "gRPC-C++": cc207623316fb041a7a3e774c252cf68a058b9e8
   gRPC-Core: 860978b7db482de8b4f5e10677216309b5ff6330
@@ -1460,6 +1481,6 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
 
-PODFILE CHECKSUM: 18c0fc6b66172c740ad596a4f9afc32dd1bbd0be
+PODFILE CHECKSUM: 9e98ac6f00ad132967c5b2ab1e515098d9e4616f
 
 COCOAPODS: 1.16.2
