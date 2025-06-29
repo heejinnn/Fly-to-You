@@ -1,5 +1,5 @@
 //
-//  Untitled.swift
+//  DefaultFlightRepo.swift
 //  Fly to You
 //
 //  Created by 최희진 on 4/16/25.
@@ -7,6 +7,7 @@
 
 import FirebaseAuth
 import FirebaseFirestore
+import Alamofire
 
 final class DefaultFlightRepo: FlightRepo {
     private let auth = Auth.auth()
@@ -24,6 +25,8 @@ final class DefaultFlightRepo: FlightRepo {
             try await flightRef.updateData([
                 "routes": FieldValue.arrayUnion([routeData])
             ])
+            
+            try await sendPushNotification(letter: letter)
         } else {
             // 없으면 setData로 새로 생성
             try await flightRef.setData([
@@ -32,6 +35,7 @@ final class DefaultFlightRepo: FlightRepo {
                 "startDate": letter.timestamp,
                 "routes": [routeData]
             ])
+            try await sendPushNotification(letter: letter)
         }
     }
     
@@ -103,5 +107,41 @@ final class DefaultFlightRepo: FlightRepo {
     func removeFlightsListener() {
         flightsListener?.remove()
         flightsListener = nil
+    }
+}
+
+extension DefaultFlightRepo {
+    /// Alamofire를 이용해서 POST 요청 전송
+    private func sendPushNotification(letter: Letter) async throws{
+        let firebaseUrl = Bundle.main.infoDictionary?["FirebaseUrl"] as? String ?? ""
+        
+        let headers: HTTPHeaders = [
+            "Content-Type": "application/json"
+        ]
+        
+        let fromNickname = try await fetchUserNickname(uid: letter.fromUid)
+        
+        let parameters: [String: String] = [
+            "from_id": letter.fromUid,
+            "to_id": letter.toUid,
+            "title": "Fly to You",
+            "body": "\(fromNickname)님이 비행기를 보냈어요!✈️"
+        ]
+        
+        AF.request(firebaseUrl.replacingOccurrences(of: " ", with: ""),
+                   method: .post,
+                   parameters: parameters,
+                   encoder: JSONParameterEncoder.default,
+                   headers: headers)
+        .validate()
+        .responseDecodable(of: [String: String].self) { response in
+            print(response)
+        }
+    }
+    
+    private func fetchUserNickname(uid: String) async throws -> String {
+        let userRef = db.collection("users").document(uid)
+        let userSnapshot = try await userRef.getDocument()
+        return userSnapshot.data()?["nickname"] as? String ?? ""
     }
 }

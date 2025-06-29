@@ -52,33 +52,5 @@ extension AppDelegate: MessagingDelegate {
         guard let fcmToken = fcmToken else { return }
       
         KeychainTokenStorage.save(token: fcmToken, for: "fcmToken")
-        
-        
-        let functionURL = Bundle.main.infoDictionary?["FirebaseUrl"] as? String ?? ""
-        print(functionURL)
-        
-        /// Alamofire를 이용해서 POST 요청 전송
-        
-        let headers: HTTPHeaders = [
-            "Content-Type": "application/json"
-        ]
-        
-        let parameters: [String: String] = [
-            "token": fcmToken,
-            "title": "Fly to You",
-            "body": "테스트입니다"
-        ]
-        
-        
-        AF.request(functionURL.replacingOccurrences(of: " ", with: ""),
-                   method: .post,
-                   parameters: parameters,
-                   encoder: JSONParameterEncoder.default,
-                   headers: headers)
-        .validate()
-        .responseDecodable(of: [String: String].self) { response in
-            print(response)
-        }
-        
     }
 }
