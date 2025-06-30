@@ -7,8 +7,7 @@
 ## 🎆 Screenshots
 | 홈 화면 | 비행기 착륙장 화면 | 보낸 기록 화면 | 항로 맵 화면 |
 |:--:|:--:|:--:|:--:|
-| ![홈 화면](https://github.com/user-attachments/assets/4c60aafc-d71f-4b70-bcbf-84d7d276d82d) | ![비행기 착륙장 화면](https://github.com/user-attachments/assets/e797e6ce-9413-40ec-b4fa-f0d76dda06fd) | ![보낸 기록 화면](https://github.com/user-attachments/assets/2138be75-613f-4ddd-be96-e96edbecbccf) | ![항로 맵 화면](https://github.com/user-attachments/assets/11f024ac-4d9b-4691-a692-90b53cbca10b) |
-
+| ![홈 화면](https://github.com/user-attachments/assets/4c60aafc-d71f-4b70-bcbf-84d7d276d82d) | ![비행기 착륙장 화면](https://github.com/user-attachments/assets/e797e6ce-9413-40ec-b4fa-f0d76dda06fd) | ![보낸 기록 화면](https://github.com/user-attachments/assets/2138be75-613f-4ddd-be96-e96edbecbccf) | ![항로 맵 화면](https://github.com/user-attachments/assets/a360d7c3-0cf5-488b-989b-0d846625e17d) |
 
 ## 🖼️ Demo
 
@@ -28,12 +27,13 @@
 
 ---
 
-## ✨ Skills & Tech Stack
+## ⚙️ Tech Stack
 
-![Swift](https://img.shields.io/badge/Swift-F05138?style=for-the-badge&logo=swift&logoColor=white)
-![SwiftUI](https://img.shields.io/badge/SwiftUI-007AFF?style=for-the-badge&logo=swift&logoColor=white)
-![MVVM](https://img.shields.io/badge/MVVM-blue?style=for-the-badge)
-![Clean Architecture](https://img.shields.io/badge/Clean%20Architecture-DDDDDD?style=for-the-badge)
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+
+| 구분              | 설명                                                                 |
+|-------------------|----------------------------------------------------------------------|
+| **Client Side**    | SwiftUI 기반, MVVM + Clean Architecture 적용 |
+| **Server Side**    | Firebase Functions 안에서 동작하는 백엔드 로직 (Python 기반 HTTP 요청 처리 및 FCM 전송) |
+| **Cloud & Services** | Firebase 및 Google Cloud 기반의 서비스 연동 (Auth, Firestore, FCM 등)     |
 
 ---
