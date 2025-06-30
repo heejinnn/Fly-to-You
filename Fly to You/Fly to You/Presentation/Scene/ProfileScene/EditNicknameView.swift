@@ -72,6 +72,7 @@ struct EditNicknameView: View {
                     Text("수정")
                         .foregroundStyle(.blue1)
                 })
+                .disabled(viewModel.nickname.isEmpty)
             }
         }
         .alert("닉네임이 성공적으로 변경되었어요!", isPresented: $showSuccessAlert) {

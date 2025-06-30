@@ -28,11 +28,11 @@ struct ProfileView: View {
             Spacer().frame(height: 10)
             
             VStack(spacing: 20) {
-                ProfileRow(icon: "person.fill", title: "닉네임", value: nickname)
+                ProfileRow(icon: "person.fill", title: "닉네임", value: nickname, arrowIcon: true)
                     .onTapGesture {
                         viewModelWrapper.path.append(.editNickname)
                     }
-                ProfileRow(icon: "applelogo", title: "소셜 연동", value: isAppleLinked ? "Apple 계정 연동됨" : "익명 계정")
+                ProfileRow(icon: "applelogo", title: "소셜 연동", value: isAppleLinked ? "Apple 계정 연동됨" : "익명 계정", arrowIcon: false)
             }
             .padding()
             .background(.white)
@@ -67,6 +67,7 @@ struct ProfileRow: View {
     var icon: String
     var title: String
     var value: String
+    var arrowIcon: Bool
 
     var body: some View {
         HStack(spacing: Spacing.md) {
@@ -84,6 +85,11 @@ struct ProfileRow: View {
             }
 
             Spacer()
+            
+            if arrowIcon{
+                Image(.arrowRight)
+                    .frame(width: 24, height: 24)
+            }
         }
         .contentShape(Rectangle())
     }
