@@ -7,7 +7,8 @@
 ## 🎆 Screenshots
 | 홈 화면 | 비행기 착륙장 화면 | 보낸 기록 화면 | 항로 맵 화면 |
 |:--:|:--:|:--:|:--:|
-| ![홈 화면](https://github.com/user-attachments/assets/4c60aafc-d71f-4b70-bcbf-84d7d276d82d) | ![비행기 착륙장 화면](https://github.com/user-attachments/assets/e797e6ce-9413-40ec-b4fa-f0d76dda06fd) | ![보낸 기록 화면](https://github.com/user-attachments/assets/2138be75-613f-4ddd-be96-e96edbecbccf) | ![항로 맵 화면](https://github.com/user-attachments/assets/a360d7c3-0cf5-488b-989b-0d846625e17d) |
+| ![홈 화면](https://github.com/user-attachments/assets/4c60aafc-d71f-4b70-bcbf-84d7d276d82d) | ![비행기 착륙장 화면](https://github.com/user-attachments/assets/e797e6ce-9413-40ec-b4fa-f0d76dda06fd) | ![보낸 기록 화면](https://github.com/user-attachments/assets/2138be75-613f-4ddd-be96-e96edbecbccf) | ![항로 맵 화면](https://github.com/user-attachments/assets/8c581bce-cc8d-48da-a279-669a3e79342c) |
+
 
 ## 🖼️ Demo
 
