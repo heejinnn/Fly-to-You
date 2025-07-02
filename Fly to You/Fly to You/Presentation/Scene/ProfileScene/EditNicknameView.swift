@@ -107,7 +107,7 @@ final class EditNicknameViewModel: ObservableObject {
                 "nickname": trimmed
             ]) { error in
                 if let error = error {
-                    print("닉네임 업데이트 실패: \(error)")
+                    Log.error("닉네임 업데이트 실패: \(error)")
                     return
                 }
 
@@ -124,7 +124,7 @@ final class EditNicknameViewModel: ObservableObject {
             .whereField("nickname", isEqualTo: nickname)
             .getDocuments { snapshot, error in
                 if let error = error {
-                    print("중복 검사 오류: \(error.localizedDescription)")
+                    Log.error("중복 검사 오류: \(error.localizedDescription)")
                     completion(true)
                     return
                 }

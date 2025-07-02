@@ -82,9 +82,9 @@ struct DepartureLogInfoView: View{
                         DispatchQueue.main.async {
                             viewModelWrapper.path.removeLast()
                         }
-                        print("[DepartureLogInfoView] - 삭제 성공")
+                        Log.info("[DepartureLogInfoView] - 삭제 성공")
                     case .failure(_):
-                        print("[DepartureLogInfoView] - 삭제 실패")
+                        Log.warning("[DepartureLogInfoView] - 삭제 실패")
                     }
                 }
             }
@@ -142,11 +142,10 @@ struct DepartureLogInfoView: View{
                             switch result {
                             case .success(let data):
                                 letter = data
-                                print(letter)
                                 isLoading = false
-                                print("[DepartureLogInfoView] - 수정 성공")
+                                Log.info("[DepartureLogInfoView] - 수정 성공 \(letter)")
                             case .failure(_):
-                                print("[DepartureLogInfoView] - 수정 실패")
+                                Log.warning("[DepartureLogInfoView] - 수정 실패")
                             }
                         }
                     }

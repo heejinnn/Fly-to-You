@@ -15,25 +15,27 @@ struct DepartureLogView: View {
      
     var body: some View {
         NavigationStack(path: $viewModelWrapper.path) {
-            VStack{
-                Spacer().frame(height: Spacing.lg)
-                
-                Text("내가 보낸 종이 비행기들을 확인할 수 있어요 🧐")
-                    .font(.pretendard(.medium, size: 15))
-                    .foregroundStyle(.gray3)
-                
-                Spacer().frame(height: Spacing.lg)
-                
-                VStack(spacing: Spacing.sm){
-                    ForEach(viewModelWrapper.letters, id: \.id){ letter in
-                        PlaneCell(letter: letter, route: .send)
-                            .onTapGesture {
-                                viewModelWrapper.letter = letter
-                                viewModelWrapper.path.append(.departureLogInfo)
-                            }
+            ScrollView{
+                VStack{
+                    Spacer().frame(height: Spacing.lg)
+                    
+                    Text("내가 보낸 종이 비행기들을 확인할 수 있어요 🧐")
+                        .font(.pretendard(.medium, size: 15))
+                        .foregroundStyle(.gray3)
+                    
+                    Spacer().frame(height: Spacing.lg)
+                    
+                    VStack(spacing: Spacing.sm){
+                        ForEach(viewModelWrapper.letters, id: \.id){ letter in
+                            PlaneCell(letter: letter, route: .send)
+                                .onTapGesture {
+                                    viewModelWrapper.letter = letter
+                                    viewModelWrapper.path.append(.departureLogInfo)
+                                }
+                        }
                     }
+                    Spacer()
                 }
-                Spacer()
             }
             .navigationDestination(for: DepartureLogRoute.self, destination: { route in
                 switch route{
