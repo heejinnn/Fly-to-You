@@ -72,6 +72,7 @@ struct EditNicknameView: View {
                     Text("수정")
                         .foregroundStyle(.blue1)
                 })
+                .disabled(viewModel.nickname.isEmpty)
             }
         }
         .alert("닉네임이 성공적으로 변경되었어요!", isPresented: $showSuccessAlert) {
@@ -106,7 +107,7 @@ final class EditNicknameViewModel: ObservableObject {
                 "nickname": trimmed
             ]) { error in
                 if let error = error {
-                    print("닉네임 업데이트 실패: \(error)")
+                    Log.error("닉네임 업데이트 실패: \(error)")
                     return
                 }
 
@@ -123,7 +124,7 @@ final class EditNicknameViewModel: ObservableObject {
             .whereField("nickname", isEqualTo: nickname)
             .getDocuments { snapshot, error in
                 if let error = error {
-                    print("중복 검사 오류: \(error.localizedDescription)")
+                    Log.error("중복 검사 오류: \(error.localizedDescription)")
                     completion(true)
                     return
                 }

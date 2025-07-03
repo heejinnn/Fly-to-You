@@ -55,9 +55,9 @@ struct UserListSheetView: View {
             Task {
                 do {
                     _ = try await viewModel.fetchUserList()
-                    print("[UserListSheetView] - user list 가져오기 성공")
+                    Log.info("[UserListSheetView] - user list 가져오기 성공")
                 } catch {
-                    print("[UserListSheetView] - user list 가져오기 실패")
+                    Log.warning("[UserListSheetView] - user list 가져오기 실패")
                 }
             }
         }

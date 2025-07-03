@@ -16,7 +16,7 @@ final class DefaultSignUpRepo: SignUpRepo {
         checkNicknameDuplicate(nickname: nickname) { [weak self] isDuplicate in
             guard let self = self else { return }
             if isDuplicate {
-                print("닉네임 중복됨")
+                Log.debug("닉네임이 중복됨")
                 completion(false)
             } else {
                 self.signInAnonymouslyAndSaveUser(nickname: nickname){ result in
@@ -33,7 +33,7 @@ final class DefaultSignUpRepo: SignUpRepo {
             .whereField("nickname", isEqualTo: nickname)
             .getDocuments { snapshot, error in
                 if let error = error {
-                    print("중복 검사 오류: \(error.localizedDescription)")
+                    Log.error("\("중복 검사 오류: \(error.localizedDescription)")")
                     completion(true)
                     return
                 }
@@ -59,7 +59,7 @@ final class DefaultSignUpRepo: SignUpRepo {
                     }
                 }
             } catch {
-                print("유저 저장 에러: \(error.localizedDescription)")
+                Log.error("유저 저장 에러: \(error.localizedDescription)")
             }
         }
     }

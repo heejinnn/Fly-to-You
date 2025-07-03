@@ -31,7 +31,7 @@ struct SearchBar: View {
             }
             .cornerRadius(10)
         }
-        .frame(height: 55)
+        .frame(height: 45)
         .frame(maxWidth: .infinity)
     }
 }

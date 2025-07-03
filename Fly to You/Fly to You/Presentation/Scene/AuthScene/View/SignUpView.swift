@@ -56,7 +56,7 @@ struct SignUpView: View {
                     Button(action: {
                         viewModelWrapper.viewModel.signUp(nickname: nickname){ result in
                             if result{
-                                print("[SignUpView] - 회원가입 성공")
+                                Log.info("[SignUpView] - 회원가입 성공")
                                 appState.isLoggedIn = true
                             }
                         }

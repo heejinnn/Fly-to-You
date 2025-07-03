@@ -135,7 +135,7 @@ extension DefaultFlightRepo {
                    headers: headers)
         .validate()
         .responseDecodable(of: [String: String].self) { response in
-            print(response)
+            Log.info("[DefaultFlightRepo] - sendPushNotification: \(response.debugDescription)")
         }
     }
     
