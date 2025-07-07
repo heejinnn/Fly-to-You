@@ -26,7 +26,7 @@ final class DefaultFlightRepo: FlightRepo {
                 "routes": FieldValue.arrayUnion([routeData])
             ])
             
-//            try await sendPushNotification(letter: letter)
+            try await sendPushNotification(letter: letter)
         } else {
             // 없으면 setData로 새로 생성
             try await flightRef.setData([
@@ -35,7 +35,7 @@ final class DefaultFlightRepo: FlightRepo {
                 "startDate": letter.timestamp,
                 "routes": [routeData]
             ])
-//            try await sendPushNotification(letter: letter)
+            try await sendPushNotification(letter: letter)
         }
     }
     
