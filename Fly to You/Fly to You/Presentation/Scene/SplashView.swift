@@ -32,7 +32,7 @@ struct SplashView: View {
                         .frame(width: 40, height: 40)
                 }
                 
-                Text("“마음을 담은 종이비행기를 접어서, \n누군가에게 날려보내는 감정 표현\"")
+                Text("“마음을 담은 종이비행기를 접어서, \n누군가에게 날려보내는 관심 표현\"")
                     .font(.pretendard(.light, size: 20))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.white)

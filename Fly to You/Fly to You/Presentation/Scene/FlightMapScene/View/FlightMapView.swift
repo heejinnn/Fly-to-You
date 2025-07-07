@@ -82,7 +82,9 @@ struct FlightMapView: View{
     private var planeCellSection: some View {
         VStack(spacing: Spacing.sm){
             ForEach(filteredFlights, id: \.id) { flight in
-                PlaneCell(letter: flight.routes[0], participantCount: flight.routes.count, route: .map)
+                let participantCount = calculateParticipationCount(flight: flight)
+                
+                PlaneCell(letter: flight.routes[0], participantCount: participantCount, route: .map)
                     .onTapGesture {
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.6)) {
                             if selectedFlightId == flight.id {
@@ -94,7 +96,7 @@ struct FlightMapView: View{
                     }
                 
                 if selectedFlightId == flight.id {
-                    FlightMapCell(flight: flight, isParticipated: selectedTab == "내 항로") { route in
+                    FlightMapCell(flight: flight, participantCount: participantCount,isParticipated: selectedTab == "내 항로") { route in
                         selectedRoute = route
                         showPopup = true
                     }
@@ -112,6 +114,15 @@ struct FlightMapView: View{
         }
         .pickerStyle(.segmented)
         .padding(.horizontal, Spacing.md)
+    }
+    
+    private func calculateParticipationCount(flight: FlightModel) -> Int{
+        var set: Set<String> = []
+        
+        for route in flight.routes {
+            set.insert(route.from.uid)
+        }
+        return set.count
     }
 }
 
@@ -137,5 +148,6 @@ final class FlightMapViewModelWrapper: ObservableObject{
             .store(in: &cancellables)
     }
 }
+
 
 

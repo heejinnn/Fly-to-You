@@ -10,6 +10,7 @@ import SwiftUI
 // MARK: - FlightMapCell
 struct FlightMapCell: View {
     let flight: FlightModel
+    let participantCount: Int
     let isParticipated: Bool
     let onSpotTap: (ReceiveLetterModel) -> Void
 
@@ -39,7 +40,7 @@ struct FlightMapCell: View {
     private var infoSection: some View {
         HStack(spacing: Spacing.xxs) {
             Text("시작일: \(DateUtil.formatLetterDate(flight.startDate))")
-            Text("참여자: \(flight.routes.count)명")
+            Text("참여자: \(participantCount)명")
         }
         .font(.pretendard(.medium, size: 12))
     }
@@ -95,6 +96,7 @@ struct FlightMapCell: View {
                 }
             }
         }
+        .frame(height: 230)
     }
 
     private var statusText: some View {
