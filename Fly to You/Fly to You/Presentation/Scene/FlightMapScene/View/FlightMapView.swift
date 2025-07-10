@@ -79,7 +79,7 @@ struct FlightMapView: View{
             viewModelWrapper.viewModel.removeFlightsListener()
         }
         .sheet(isPresented: $showReportModal) {
-            ReportSheetView()
+            ReportSheetView(letter: selectedRoute)
                 .presentationDragIndicator(.visible)
         }
     }

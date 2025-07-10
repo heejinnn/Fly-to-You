@@ -9,11 +9,12 @@ import SwiftUI
 
 struct ReportSheetView: View {
     @Environment(\.dismiss) var dismiss
-    @State private var message = ""
-    @State private var type = ""
-    @State private var showTypeDialog = false
     
-    var reportTypes: [String] = ["욕설", "비속어", "스팸/홍보", "음란물", "타인의 개인정보 도용", "기타"]
+    let letter: ReceiveLetterModel?
+    @State private var content = ""
+    @State private var selectedType: ReportType? = nil
+    @State private var showTypeDialog = false
+    @StateObject private var viewModel = ReportViewModel()
     
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xl) {
@@ -27,6 +28,18 @@ struct ReportSheetView: View {
             
             BottomButton(title: "제출하기", action: {
                 dismiss()
+                
+                Task {
+                    do {
+                        
+                        if let letter = letter {
+                            try viewModel.sendReport(letter: letter, type: selectedType?.rawValue ?? "", content: content)
+                        }
+                        Log.debug("✅ 신고 성공")
+                    } catch {
+                        Log.debug("🚨 신고 실패: \(error.localizedDescription)")
+                    }
+                }
             })
         }
     }
@@ -39,9 +52,9 @@ struct ReportSheetView: View {
                 showTypeDialog = true
             }, label: {
                 HStack {
-                    Text(type.isEmpty ? "신고 유형을 선택해주세요" : type)
+                    Text(selectedType?.title ?? "신고 유형을 선택해주세요")
                         .font(.pretendard(.light, size: 15))
-                        .foregroundStyle(type.isEmpty ? .gray1 : .black)
+                        .foregroundStyle(selectedType == nil ? .gray1 : .black)
                     
                     Spacer()
                     
@@ -61,9 +74,9 @@ struct ReportSheetView: View {
             })
             .buttonStyle(.plain)
             .confirmationDialog("신고 유형을 선택해주세요", isPresented: $showTypeDialog, titleVisibility: .visible) {
-                ForEach(reportTypes, id: \.self) { report in
-                    Button(report) {
-                        type = report
+                ForEach(ReportType.allCases, id: \.self) { type in
+                    Button(type.rawValue) {
+                        selectedType = type
                     }
                 }
             }
@@ -75,7 +88,7 @@ struct ReportSheetView: View {
         VStack(alignment: .leading, spacing: Spacing.md){
             Text("신고 내용")
             
-            TextEditor(text: $message)
+            TextEditor(text: $content)
                 .frame(height: 200)
                 .padding(.top, 9)
                 .padding(.leading, 11)
@@ -88,7 +101,7 @@ struct ReportSheetView: View {
                             .stroke(.gray1, lineWidth: 1)
                         
                         VStack {
-                            if message.isEmpty {
+                            if content.isEmpty {
                                 Text("예) 폭력적인 말이 포함되어있습니다.")
                                     .foregroundColor(.gray1)
                                     .font(.pretendard(.light, size: 15))
@@ -101,5 +114,25 @@ struct ReportSheetView: View {
                 )
         }
         .padding(.horizontal, Spacing.md)
+    }
+}
+
+enum ReportType: String, CaseIterable {
+    case profanity
+    case slang
+    case spam
+    case obscene
+    case identityTheft
+    case etc
+    
+    var title: String {
+        switch self {
+        case .profanity: return "욕설"
+        case .slang: return "비속어"
+        case .spam: return "스팸/홍보"
+        case .obscene: return "음란물"
+        case .identityTheft: return "타인의 개인정보 도용"
+        case .etc: return "기타"
+        }
     }
 }

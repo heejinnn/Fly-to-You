@@ -83,9 +83,3 @@ final class LandingZoneViewModelWrapper: ObservableObject {
             .store(in: &cancellables)
     }
 }
-
-enum LandingZoneRoute {
-    case landingZoneInfo
-    case relayLetter
-    case flyAnimation
-}

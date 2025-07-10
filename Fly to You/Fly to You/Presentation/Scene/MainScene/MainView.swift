@@ -116,10 +116,3 @@ final class MainViewModelWrapper: ObservableObject {
     }
 }
 
-enum MainRoute {
-    case profile
-    case editNickname
-    case selectSubject
-    case sendLetter
-    case flyAnimation
-}
