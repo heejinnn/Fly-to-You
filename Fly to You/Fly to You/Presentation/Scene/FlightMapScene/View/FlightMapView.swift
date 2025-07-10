@@ -16,6 +16,7 @@ struct FlightMapView: View{
     @State private var selectedTab = "내 항로"
     @State private var selectedFlightId: String? = nil
     @State private var showPopup = false
+    @State private var showReportModal = false
     @State private var selectedRoute: ReceiveLetterModel? = nil
     @State private var seachTopic: String = ""
     
@@ -63,7 +64,7 @@ struct FlightMapView: View{
                     .ignoresSafeArea()
                     .zIndex(1)
                 
-                RoutePopupView(isPresented: $showPopup, route: route)
+                RoutePopupView(showReportModal: $showReportModal, route: route)
                     .transition(.scale)
                     .padding(.horizontal, Spacing.md)
                     .onTapGesture { showPopup = false }
@@ -76,6 +77,18 @@ struct FlightMapView: View{
         }
         .onDisappear{
             viewModelWrapper.viewModel.removeFlightsListener()
+        }
+        .sheet(isPresented: $showReportModal) {
+            VStack {
+                Text("License Agreement")
+                    .font(.title)
+                    .padding(50)
+                Text("""
+                                Terms and conditions go here.
+                            """)
+                .padding(50)
+                
+            }
         }
     }
     

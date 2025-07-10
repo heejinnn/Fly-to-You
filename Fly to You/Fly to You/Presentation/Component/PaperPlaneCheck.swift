@@ -10,6 +10,8 @@ import SwiftUI
 struct PaperPlaneCheck: View{
     
     let letter: ReceiveLetterModel
+    let showReportIcon: Bool
+    @Binding var showReportModal: Bool
     
     var body: some View {
         VStack(spacing: 0) {
@@ -22,6 +24,22 @@ struct PaperPlaneCheck: View{
                       .background(.blue1)
                   
                   Spacer()
+                
+                Menu {
+                    Button(role: .destructive, action: {
+                        showReportModal = true
+                    }, label: {
+                        HStack {
+                            Text("신고하기")
+                        }
+                    })
+                } label: {
+                    Image(.kebabmenu)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                }
+                .padding(.trailing, 10)
               }
               .background(.blue1)
             
@@ -63,5 +81,5 @@ struct PaperPlaneCheck: View{
 }
 
 #Preview {
-    PaperPlaneCheck(letter: ReceiveLetterModel(id: "1", from: User(uid: "", nickname: "ddd", createdAt: Date(), fcmToken: ""), to: User(uid: "", nickname: "ddd", createdAt: Date(), fcmToken: ""), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false))
+    PaperPlaneCheck(letter: ReceiveLetterModel(id: "1", from: User(uid: "", nickname: "ddd", createdAt: Date(), fcmToken: ""), to: User(uid: "", nickname: "ddd", createdAt: Date(), fcmToken: ""), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), showReportIcon: true, showReportModal: .constant(false))
 }

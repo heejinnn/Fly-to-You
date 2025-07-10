@@ -37,7 +37,7 @@ struct DepartureLogInfoView: View{
                 }
                 
                 if !isEditMode{
-                    PaperPlaneCheck(letter: letter)
+                    PaperPlaneCheck(letter: letter, showReportIcon: false, showReportModal: .constant(false))
                 } else{
                     PaperPlaneInput(topic: letter.topic, toText: toUser?.nickname ?? "", fromText: fromText, message: $message, showUserListSheet: $showUserListSheet)
                 }
