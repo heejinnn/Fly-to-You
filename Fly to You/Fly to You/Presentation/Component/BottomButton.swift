@@ -1,5 +1,5 @@
 //
-//  PlaneButton.swift
+//  BottomButton.swift
 //  Fly to You
 //
 //  Created by 최희진 on 4/16/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PlaneButton: View {
+struct BottomButton: View {
     let title: String
     let action: () -> Void
 

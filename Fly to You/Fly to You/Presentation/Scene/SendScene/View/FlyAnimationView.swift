@@ -29,7 +29,7 @@ struct FlyAnimationView: View {
             Spacer()
             
             if isPresented{
-                PlaneButton(title: "홈 화면으로", action: {
+                BottomButton(title: "홈 화면으로", action: {
                     onHome()
                 })
             }

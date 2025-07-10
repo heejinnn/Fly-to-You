@@ -79,16 +79,8 @@ struct FlightMapView: View{
             viewModelWrapper.viewModel.removeFlightsListener()
         }
         .sheet(isPresented: $showReportModal) {
-            VStack {
-                Text("License Agreement")
-                    .font(.title)
-                    .padding(50)
-                Text("""
-                                Terms and conditions go here.
-                            """)
-                .padding(50)
-                
-            }
+            ReportSheetView()
+                .presentationDragIndicator(.visible)
         }
     }
     
