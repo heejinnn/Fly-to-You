@@ -77,7 +77,7 @@ struct ReportSheetView: View {
             .buttonStyle(.plain)
             .confirmationDialog("신고 유형을 선택해주세요", isPresented: $showTypeDialog, titleVisibility: .visible) {
                 ForEach(ReportType.allCases, id: \.self) { type in
-                    Button(type.rawValue) {
+                    Button(type.title) {
                         selectedType = type
                     }
                 }
