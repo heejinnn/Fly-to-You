@@ -84,7 +84,3 @@ class DepatureLogViewModelWrapper: ObservableObject {
 #Preview {
     DepartureLogView()
 }
-
-enum DepartureLogRoute {
-    case departureLogInfo
-}

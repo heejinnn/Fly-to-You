@@ -58,6 +58,7 @@ struct LandingZoneView: View {
             viewModelWrapper.viewModel.observeLetters()
         }
         .onDisappear{
+            viewModelWrapper.viewModel.removeLettersListener()
         }
     }
 }
@@ -82,10 +83,4 @@ final class LandingZoneViewModelWrapper: ObservableObject {
             .assign(to: \.letters, on: self)
             .store(in: &cancellables)
     }
-}
-
-enum LandingZoneRoute {
-    case landingZoneInfo
-    case relayLetter
-    case flyAnimation
 }

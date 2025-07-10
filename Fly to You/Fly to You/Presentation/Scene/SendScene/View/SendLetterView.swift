@@ -99,8 +99,3 @@ struct SendLetterView: View{
     }
 }
 
-enum SendLetterRoute {
-    case start
-    case relay
-}
-

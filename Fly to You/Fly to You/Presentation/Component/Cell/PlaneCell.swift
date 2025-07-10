@@ -61,12 +61,6 @@ struct PlaneCell: View{
     }
 }
 
-enum PlaneCellRoute{
-    case receive
-    case send
-    case map
-}
-
 //#Preview {
 //    PlaneCell()
 //}
