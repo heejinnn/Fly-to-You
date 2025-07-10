@@ -12,6 +12,7 @@ struct LandingZoneInfoView: View{
     @EnvironmentObject var viewModelWrapper: LandingZoneViewModelWrapper
     let letter: ReceiveLetterModel
     @State var showReportModal: Bool = false
+    @State var alertDuplicatedReport: Bool = false
     
     var body: some View{
         VStack{
@@ -34,6 +35,15 @@ struct LandingZoneInfoView: View{
                     viewModelWrapper.topic = TopicModel(topic: letter.topic, topicId: letter.topicId)
                     viewModelWrapper.path.append(.relayLetter)
                 })
+            }
+        }
+        .sheet(isPresented: $showReportModal) {
+            ReportSheetView(letter: letter, alertDuplicatedReport: $alertDuplicatedReport)
+                .presentationDragIndicator(.visible)
+        }
+        .alert("이미 신고된 편지예요. 빠르게 검토 중입니다!", isPresented: $alertDuplicatedReport) {
+            Button("확인") {
+                alertDuplicatedReport = false
             }
         }
     }

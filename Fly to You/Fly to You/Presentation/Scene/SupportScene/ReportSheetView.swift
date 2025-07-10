@@ -11,6 +11,8 @@ struct ReportSheetView: View {
     @Environment(\.dismiss) var dismiss
     
     let letter: ReceiveLetterModel?
+    @Binding var alertDuplicatedReport: Bool
+    
     @State private var content = ""
     @State private var selectedType: ReportType? = nil
     @State private var showTypeDialog = false
@@ -31,9 +33,9 @@ struct ReportSheetView: View {
                 
                 Task {
                     do {
-                        
                         if let letter = letter {
-                            try viewModel.sendReport(letter: letter, type: selectedType?.rawValue ?? "", content: content)
+                            try await viewModel.sendReport(letter: letter, type: selectedType?.rawValue ?? "", content: content)
+                            alertDuplicatedReport = viewModel.isDuplicated
                         }
                         Log.debug("✅ 신고 성공")
                     } catch {
