@@ -34,7 +34,7 @@ struct PaperPlaneCheck: View{
                         }
                     })
                 } label: {
-                    Image(.kebabmenu)
+                    Image(.kebabmenuWhite)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 24, height: 24)
