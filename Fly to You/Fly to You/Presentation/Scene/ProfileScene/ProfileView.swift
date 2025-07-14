@@ -23,21 +23,34 @@ struct ProfileView: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(spacing: Spacing.xxl) {
             
-            Spacer().frame(height: 10)
+            VStack(spacing: Spacing.xs) {
+                Image(systemName: "person.crop.circle.fill")
+                    .resizable()
+                    .frame(width: 60, height: 60)
+                    .foregroundColor(.gray0)
+                
+                Text(nickname)
+                    .font(.pretendard(.medium, size: 20))
+                    .foregroundColor(.black)
+            }
             
-            VStack(spacing: 20) {
-                ProfileRow(icon: "person.fill", title: "닉네임", value: nickname, arrowIcon: true)
+            VStack(spacing: Spacing.md) {
+                ProfileRow(icon: "person.fill", title: "닉네임 변경", arrowIcon: true)
                     .onTapGesture {
                         viewModelWrapper.path.append(.editNickname)
                     }
-                ProfileRow(icon: "applelogo", title: "소셜 연동", value: isAppleLinked ? "Apple 계정 연동됨" : "익명 계정", arrowIcon: false)
+                
+                Divider()
+                
+                ProfileRow(icon: "envelope.fill", title: "문의하기", arrowIcon: false)
+                
             }
             .padding()
             .background(.white)
             .cornerRadius(10)
-            .shadow(radius: 3)
+            .shadow(radius: 1)
 
             Spacer()
         }
@@ -66,24 +79,18 @@ struct ProfileView: View {
 struct ProfileRow: View {
     var icon: String
     var title: String
-    var value: String
     var arrowIcon: Bool
 
     var body: some View {
         HStack(spacing: Spacing.md) {
             Image(systemName: icon)
                 .frame(width: 24, height: 24)
-                .foregroundColor(.blue)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.caption)
-                    .foregroundColor(.gray)
-                Text(value)
-                    .font(.body)
-                    .foregroundColor(.black)
-            }
-
+                .foregroundColor(.blue1)
+ 
+            Text(title)
+                .font(.pretendard(.medium, size: 15))
+                .foregroundColor(.black)
+            
             Spacer()
             
             if arrowIcon{
