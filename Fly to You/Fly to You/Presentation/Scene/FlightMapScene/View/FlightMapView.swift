@@ -16,6 +16,7 @@ struct FlightMapView: View{
     @State private var showPopup = false
     @State private var showReportModal = false
     @State private var alertDuplicatedReport = false
+    @State private var completeReport = false
     
     @State private var selectedTab = "내 항로"
     @State private var selectedFlightId: String? = nil
@@ -81,8 +82,13 @@ struct FlightMapView: View{
             viewModelWrapper.viewModel.removeFlightsListener()
         }
         .sheet(isPresented: $showReportModal) {
-            ReportSheetView(letter: selectedRoute, alertDuplicatedReport: $alertDuplicatedReport)
+            ReportSheetView(letter: selectedRoute, alertDuplicatedReport: $alertDuplicatedReport, completeReport: $completeReport)
                 .presentationDragIndicator(.visible)
+        }
+        .alert("신고가 접수되었습니다. 검토까지는 최대 24시간 소요됩니다!", isPresented: $completeReport) {
+            Button("확인") {
+                completeReport = false
+            }
         }
         .alert("이미 신고된 편지예요. 빠르게 검토 중입니다!", isPresented: $alertDuplicatedReport) {
             Button("확인") {
