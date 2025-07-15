@@ -13,9 +13,12 @@ struct FlightMapView: View{
     @EnvironmentObject var viewModelWrapper: FlightMapViewModelWrapper
     
     private let segmentedMenu = ["내 항로", "둘러보기"]
+    @State private var showPopup = false
+    @State private var showReportModal = false
+    @State private var alertDuplicatedReport = false
+    
     @State private var selectedTab = "내 항로"
     @State private var selectedFlightId: String? = nil
-    @State private var showPopup = false
     @State private var selectedRoute: ReceiveLetterModel? = nil
     @State private var seachTopic: String = ""
     
@@ -63,7 +66,7 @@ struct FlightMapView: View{
                     .ignoresSafeArea()
                     .zIndex(1)
                 
-                RoutePopupView(isPresented: $showPopup, route: route)
+                RoutePopupView(showReportModal: $showReportModal, route: route)
                     .transition(.scale)
                     .padding(.horizontal, Spacing.md)
                     .onTapGesture { showPopup = false }
@@ -76,6 +79,15 @@ struct FlightMapView: View{
         }
         .onDisappear{
             viewModelWrapper.viewModel.removeFlightsListener()
+        }
+        .sheet(isPresented: $showReportModal) {
+            ReportSheetView(letter: selectedRoute, alertDuplicatedReport: $alertDuplicatedReport)
+                .presentationDragIndicator(.visible)
+        }
+        .alert("이미 신고된 편지예요. 빠르게 검토 중입니다!", isPresented: $alertDuplicatedReport) {
+            Button("확인") {
+                alertDuplicatedReport = false
+            }
         }
     }
     

@@ -36,7 +36,3 @@ struct SearchBar: View {
     }
 }
 
-enum searchBarRoute{
-    case searchNickname
-    case searchTopic
-}
