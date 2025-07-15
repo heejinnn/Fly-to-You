@@ -12,6 +12,7 @@ struct ProfileView: View {
     
     @EnvironmentObject var viewModelWrapper: MainViewModelWrapper
     @Binding var visibliity: Visibility
+    @State private var showAlert = false
     
     private var nickname: String {
         UserDefaults.standard.string(forKey: "nickname") ?? "알 수 없음"
@@ -37,14 +38,15 @@ struct ProfileView: View {
             }
             
             VStack(spacing: Spacing.md) {
-                ProfileRow(icon: "person.fill", title: "닉네임 변경", arrowIcon: true)
-                    .onTapGesture {
-                        viewModelWrapper.path.append(.editNickname)
-                    }
+                ProfileRow(icon: "person.fill", title: "닉네임 변경", arrowIcon: true, action: {
+                    viewModelWrapper.path.append(.editNickname)
+                })
                 
                 Divider()
                 
-                ProfileRow(icon: "envelope.fill", title: "문의하기", arrowIcon: false)
+                ProfileRow(icon: "envelope.fill", title: "문의하기", arrowIcon: false, action: {
+                    showAlert = true
+                })
                 
             }
             .padding()
@@ -73,6 +75,16 @@ struct ProfileView: View {
                 visibliity = .hidden
             }
         }
+        .alert(
+            "알림",
+            isPresented: $showAlert
+        ) {
+            Button("확인", role: .cancel) {
+                showAlert = false
+            }
+        } message: {
+            Text("아래 이메일로 문의 주세요.\nhee924jin@gmail.com")
+        }
     }
 }
 
@@ -80,6 +92,7 @@ struct ProfileRow: View {
     var icon: String
     var title: String
     var arrowIcon: Bool
+    let action: () -> Void
 
     var body: some View {
         HStack(spacing: Spacing.md) {
@@ -99,5 +112,8 @@ struct ProfileRow: View {
             }
         }
         .contentShape(Rectangle())
+        .onTapGesture{
+            action()
+        }
     }
 }

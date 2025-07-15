@@ -58,6 +58,7 @@ struct LandingZoneView: View {
             viewModelWrapper.viewModel.observeLetters()
         }
         .onDisappear{
+            viewModelWrapper.viewModel.removeLettersListener()
         }
     }
 }
