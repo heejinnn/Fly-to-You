@@ -12,6 +12,7 @@ struct ReportSheetView: View {
     
     let letter: ReceiveLetterModel?
     @Binding var alertDuplicatedReport: Bool
+    @Binding var completeReport: Bool
     
     @State private var content = ""
     @State private var selectedType: ReportType? = nil
@@ -36,6 +37,7 @@ struct ReportSheetView: View {
                         if let letter = letter {
                             try await viewModel.sendReport(letter: letter, type: selectedType?.rawValue ?? "", content: content)
                             alertDuplicatedReport = viewModel.isDuplicated
+                            completeReport = !viewModel.isDuplicated
                         }
                         Log.debug("✅ 신고 성공")
                     } catch {
