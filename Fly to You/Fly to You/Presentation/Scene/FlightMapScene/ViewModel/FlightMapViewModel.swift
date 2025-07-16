@@ -44,7 +44,3 @@ extension DefaultFlightMapViewModel{
         $flights
     }
 }
-
-extension User {
-    static let unknown = User(uid: "unknown", nickname: "(Unknown)", createdAt: Date(), fcmToken: "")
-}

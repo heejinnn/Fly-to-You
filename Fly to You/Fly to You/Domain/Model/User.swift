@@ -12,4 +12,9 @@ struct User: Codable {
     let nickname: String
     let createdAt: Date
     let fcmToken: String
+    let reportedId: Int
+}
+
+extension User {
+    static let unknown = User(uid: "unknown", nickname: "(Unknown)", createdAt: Date(), fcmToken: "", reportedId: 0)
 }
