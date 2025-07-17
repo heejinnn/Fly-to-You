@@ -13,6 +13,7 @@ protocol LandingZoneViewModelInput{
     func relayLetter(toUid: String, topicData: TopicModel, message: String, letter: Letter, completion: @escaping (Result<Void, Error>) -> Void)
     func observeLetters()
     func removeLettersListener()
+    func fetchReportedCount() async throws -> Bool
 }
 
 protocol LandingZoneViewModelOutput{
@@ -54,6 +55,9 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
         fetchLetterUseCase.removeListeners()
     }
  
+    func fetchReportedCount() async throws -> Bool{
+        try await relayLetterUseCase.fetchReportedCount()
+    }
 }
 
 extension DafultLandingZoneViewModel{

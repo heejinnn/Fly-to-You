@@ -53,6 +53,19 @@ final class DefaultUserRepo: UserRepo {
         
         return users
     }
+    
+    func fetchReportedCount() async throws -> Bool{
+        guard let uid = UserDefaults.standard.string(forKey: "uid") else { return true }
+        
+        let userRef = db.collection("users").document(uid)
+        let document = try await userRef.getDocument()
+        
+        if let reportedCount = document.get("reportedCount") as? Int {
+            return reportedCount >= 3
+        } else {
+            return false
+        }
+    }
 }
 
 extension Array {

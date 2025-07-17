@@ -64,7 +64,7 @@ final class ReportViewModel: ObservableObject {
     }
     
     private func addReportedCount(uid: String) async throws {
-        let userRef = db.collection("user").document(uid)
+        let userRef = db.collection("users").document(uid)
         let document = try await userRef.getDocument()
         
         if document.exists {

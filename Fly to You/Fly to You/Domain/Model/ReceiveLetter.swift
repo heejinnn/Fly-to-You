@@ -24,8 +24,8 @@ extension ReceiveLetter {
         letters.map { letter in
             ReceiveLetterModel(
                 id: letter.id,
-                from: letter.from ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedId: 0),
-                to: letter.to ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedId: 0),
+                from: letter.from ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0),
+                to: letter.to ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0),
                 message: letter.message,
                 topic: letter.topic,
                 topicId: letter.topicId,
@@ -39,8 +39,8 @@ extension ReceiveLetter {
     static func toReceiveLetterModel(letter: ReceiveLetter) -> ReceiveLetterModel {
         return ReceiveLetterModel(
             id: letter.id,
-            from: letter.from ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedId: 0),
-            to: letter.to ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedId: 0),
+            from: letter.from ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0),
+            to: letter.to ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0),
             message: letter.message,
             topic: letter.topic,
             topicId: letter.topicId,
