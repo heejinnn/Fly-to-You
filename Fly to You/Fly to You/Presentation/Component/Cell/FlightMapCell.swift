@@ -65,6 +65,7 @@ struct FlightMapCell: View {
                                 }
                             }
                             .frame(height: 200)
+                            .padding(.top, Spacing.xxs)
                         }
                     }
                     .padding(.horizontal, Spacing.xxl)
@@ -112,15 +113,24 @@ struct SpotButton: View {
     let onTap: () -> Void
 
     var body: some View {
-        Button(action: onTap) {
-            VStack {
-                Image(.iconMap)
-                    .resizable()
-                    .frame(width: 37, height: 37)
-                Text(route.from.nickname)
-                    .font(.pretendard(.regular, size: 12))
+        Button(action: {
+            if !route.isBlocked {
+                onTap()
             }
-            .padding(10)
+        }) {
+            VStack {
+                if route.isBlocked {
+                    Text("차단됨")
+                        .font(.pretendard(.regular, size: 12))
+                } else {
+                    Image(.iconMap)
+                        .resizable()
+                        .frame(width: 37, height: 37)
+                    Text(route.from.nickname)
+                        .font(.pretendard(.regular, size: 12))
+                }
+            }
+            .frame(width: 60, height: 60)
             .background(Circle().fill(.white).shadow(radius: 2))
         }
         .buttonStyle(.plain)
