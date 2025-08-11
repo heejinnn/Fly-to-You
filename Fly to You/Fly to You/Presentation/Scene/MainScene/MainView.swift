@@ -12,6 +12,7 @@ struct MainView: View {
     
     @EnvironmentObject var viewModelWrapper: MainViewModelWrapper
     @State var visibility: Visibility = .automatic
+    @State private var alertLimited = false
         
     init() {
         UITabBar.appearance().backgroundColor = UIColor.white
@@ -62,6 +63,11 @@ struct MainView: View {
                     visibility = .visible
                 }
             }
+            .alert("신고 3번 이상으로 비행기 날리기가 제한됩니다.", isPresented: $alertLimited) {
+                Button("확인") {
+                    alertLimited = false
+                }
+            }
         }
     }
     
@@ -74,8 +80,23 @@ struct MainView: View {
                 .foregroundColor(.gray3)
             
             BottomButton(title: "비행기 날리기", action: {
-                viewModelWrapper.path.append(.selectSubject)
+                checkLimited()
             })
+        }
+    }
+    
+    private func checkLimited() {
+        Task{
+            do{
+                let limited = try await viewModelWrapper.viewModel.fetchReportedCount()
+                if limited{
+                    alertLimited = true
+                } else{
+                    viewModelWrapper.path.append(.selectSubject)
+                }
+            } catch{
+                Log.fault("[MainView] - checkLimited() 실패 : \(error)")
+            }
         }
     }
 }

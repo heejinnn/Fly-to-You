@@ -77,7 +77,7 @@ struct ReportSheetView: View {
                 )
             })
             .buttonStyle(.plain)
-            .confirmationDialog("신고 유형을 선택해주세요", isPresented: $showTypeDialog, titleVisibility: .visible) {
+            .confirmationDialog("신고 유형을 선택해주세요.\n신고를 3번 이상 받은 유저는 작성이 제한됩니다.", isPresented: $showTypeDialog, titleVisibility: .visible) {
                 ForEach(ReportType.allCases, id: \.self) { type in
                     Button(type.title) {
                         selectedType = type

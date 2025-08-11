@@ -9,6 +9,7 @@ import Foundation
 
 protocol RelayLetterUseCase{
     func send(toUid: String, topic: String, topicId: String, message: String, previousLetter: Letter) async throws -> Letter
+    func fetchReportedCount() async throws -> Bool
 }
 
 public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
@@ -53,5 +54,9 @@ public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
         try await flightRepo.updateRoute(letter: previousLetter)
         
         return letter
+    }
+    
+    func fetchReportedCount() async throws -> Bool{
+        try await userRepo.fetchReportedCount()
     }
 }

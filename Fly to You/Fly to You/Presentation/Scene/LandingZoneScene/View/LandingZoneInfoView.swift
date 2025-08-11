@@ -14,6 +14,7 @@ struct LandingZoneInfoView: View{
     @State private var showReportModal: Bool = false
     @State private var alertDuplicatedReport: Bool = false
     @State private var completeReport: Bool = false
+    @State private var alertLimited: Bool = false
     
     var body: some View{
         VStack{
@@ -33,8 +34,7 @@ struct LandingZoneInfoView: View{
             }
             ToolbarItem(placement: .topBarTrailing){
                 ToolbarFlyButton(action: {
-                    viewModelWrapper.topic = TopicModel(topic: letter.topic, topicId: letter.topicId)
-                    viewModelWrapper.path.append(.relayLetter)
+                    checkLimited()
                 })
             }
         }
@@ -50,6 +50,29 @@ struct LandingZoneInfoView: View{
         .alert("이미 신고된 편지예요. 빠르게 검토 중입니다!", isPresented: $alertDuplicatedReport) {
             Button("확인") {
                 alertDuplicatedReport = false
+            }
+        }
+        .alert("신고 3번 이상으로 비행기 날리기가 제한됩니다.", isPresented: $alertLimited) {
+            Button("확인") {
+                alertLimited = false
+            }
+        }
+    }
+    
+    private func checkLimited(){
+        Task{
+            do{
+                let limited = try await viewModelWrapper.viewModel.fetchReportedCount()
+                
+                if limited{
+                    alertLimited = true
+                } else{
+                    viewModelWrapper.topic = TopicModel(topic: letter.topic, topicId: letter.topicId)
+                    viewModelWrapper.path.append(.relayLetter)
+                }
+            }
+            catch{
+                Log.fault("[LandingZoneInfoView] - checkLimited() 실패 : \(error)")
             }
         }
     }

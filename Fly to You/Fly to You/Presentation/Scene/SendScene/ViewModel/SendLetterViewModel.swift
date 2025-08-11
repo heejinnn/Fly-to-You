@@ -12,6 +12,7 @@ import FirebaseFirestore
 
 protocol SendLetterViewModelInput{
     func sendLetter(toUid: String, topicData: TopicModel, message: String, completion: @escaping (Result<Letter, Error>) -> Void)
+    func fetchReportedCount() async throws -> Bool
 }
 
 protocol SendLetterViewModelOutput{
@@ -45,6 +46,9 @@ class DefaultSendLetterViewModel: SendLetterViewModel{
                 completion(.failure(error))
             }
         }
-        
+    }
+    
+    func fetchReportedCount() async throws -> Bool{
+        try await sendLetterUseCase.fetchReportedCount()
     }
 }
