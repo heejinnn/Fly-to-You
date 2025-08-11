@@ -137,7 +137,8 @@ struct DepartureLogInfoView: View{
                             topicId: letter.topicId,
                             timestamp: letter.timestamp,
                             isDelivered: letter.isDelivered,
-                            isRelayStart: letter.isRelayStart)
+                            isRelayStart: letter.isRelayStart,
+                            isBlocked: false)
                         
                         viewModelWrapper.viewModel.editSentLetter(letter: newLetter, toUid: toUser.uid){
                             result in

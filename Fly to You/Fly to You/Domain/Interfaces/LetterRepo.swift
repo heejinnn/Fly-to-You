@@ -13,4 +13,6 @@ protocol LetterRepo{
     func observeReceivedLetters(toUid: String, onUpdate: @escaping ([ReceiveLetterDto]) -> Void)
     func observeSentLetters(fromUid: String, onUpdate: @escaping ([ReceiveLetterDto]) -> Void)
     func removeListeners()
+    func blockLetter(letterId: String) async throws
+    func getBlockedLetters() async throws -> [String] 
 }

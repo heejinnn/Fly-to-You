@@ -18,9 +18,16 @@ final class FlightMapSceneDIContainer {
     
     func makeFetchFlightsUseCase() -> FetchFlightsUseCase {
         let userRepo = makeUserRepo()
+        let letterRepo = makeLetterRepo()
         let flightRepo = makeFlightRepo()
         
-        return DefaultFetchFlightsUseCase(userRepo: userRepo, flightRepo: flightRepo)
+        return DefaultFetchFlightsUseCase(userRepo: userRepo, letterRepo: letterRepo, flightRepo: flightRepo)
+    }
+    
+    func makeBlockLetterUseCase() -> BlockLetterUseCase {
+        let letterRepo = makeLetterRepo()
+        
+        return DefaultBlockLetterUseCase(letterRepo: letterRepo)
     }
    
  
@@ -30,6 +37,10 @@ final class FlightMapSceneDIContainer {
         return DefaultUserRepo()
     }
     
+    func makeLetterRepo() -> LetterRepo {
+        return DefaultLetterRepo()
+    }
+    
     func makeFlightRepo() -> FlightRepo {
         return DefaultFlightRepo()
     }
@@ -37,7 +48,7 @@ final class FlightMapSceneDIContainer {
     // MARK: - View Model
     
     func makeFlightMapViewModel() -> DefaultFlightMapViewModel{
-        return DefaultFlightMapViewModel(useCase: makeFetchFlightsUseCase())
+        return DefaultFlightMapViewModel(useCase: makeFetchFlightsUseCase(), blockLetterUseCase: makeBlockLetterUseCase())
     }
     
     // MARK: - View Model Wrapper

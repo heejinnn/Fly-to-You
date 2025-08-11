@@ -100,6 +100,9 @@ struct FlightMapView: View{
             Button("차단", role: .destructive) {
                 showBlockAlert = false
                 showPopup = false
+                if let selectedRoute = selectedRoute{
+                    viewModelWrapper.viewModel.blockLetter(letterId: selectedRoute.id)
+                }
             }
             Button("취소", role: .cancel) {
                 showBlockAlert = false

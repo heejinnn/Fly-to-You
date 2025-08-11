@@ -47,7 +47,7 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
     func observeLetters() {
         guard let uid = UserDefaults.standard.string(forKey: "uid") else { return }
         fetchLetterUseCase.observeReceivedLetters(toUid: uid) { [weak self] letters in
-            self?.letters = ReceiveLetter.toReceiveLetterModels(letters: letters)
+            self?.letters = letters
         }
     }
     

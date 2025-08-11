@@ -89,6 +89,3 @@ struct PaperPlaneCheck: View{
     }
 }
 
-#Preview {
-    PaperPlaneCheck(letter: ReceiveLetterModel(id: "1", from: User(uid: "", nickname: "ddd", createdAt: Date(), fcmToken: "", reportedCount: 0), to: User(uid: "", nickname: "ddd", createdAt: Date(), fcmToken: "", reportedCount: 0), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), showReportIcon: true, showReportModal: .constant(false), showBlockAlert: .constant(false))
-}
