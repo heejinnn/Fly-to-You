@@ -15,6 +15,7 @@ struct PaperPlaneInput: View{
     @Binding var message: String
     @Binding var showUserListSheet: Bool
     private let maxCharacters = 200
+    private let sanctionText = "부적절하거나 불쾌감을 줄 수 있는 컨텐츠는\n제재를 받을 수 있습니다"
     
     var body: some View {
         VStack(spacing: 0) {
@@ -39,6 +40,12 @@ struct PaperPlaneInput: View{
         .shadow(radius: 3)
         
         textCount
+        
+        Text(sanctionText)
+            .font(.pretendard(.regular, size: 10))
+            .foregroundColor(.gray)
+            .padding(.top, 10)
+            .multilineTextAlignment(.center)
     }
     
     private var content: some View {
@@ -88,7 +95,7 @@ struct PaperPlaneInput: View{
                         Spacer()
                     }
                 )
-                .onChange(of: message) { newValue in
+                .onChange(of: message) { _, newValue in
                     if message.count > maxCharacters {
                         message = String(message.prefix(maxCharacters))
                     }
