@@ -44,6 +44,8 @@ final class DefaultFlightMapViewModel: FlightMapViewModel {
     func blockLetter(letterId: String){
         Task {
             try await blockLetterUseCase.blockLetter(letterId: letterId)
+            removeFlightsListener()
+            observeAllFlights()
         }
     }
 }

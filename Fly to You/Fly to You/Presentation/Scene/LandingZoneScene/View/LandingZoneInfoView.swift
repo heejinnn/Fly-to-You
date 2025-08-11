@@ -58,6 +58,18 @@ struct LandingZoneInfoView: View{
                 alertLimited = false
             }
         }
+        .alert("컨텐츠를 차단할까요?", isPresented: $showBlockAlert) {
+            Button("차단", role: .destructive) {
+                showBlockAlert = false
+                viewModelWrapper.path.removeLast()
+                viewModelWrapper.viewModel.blockLetter(letterId: letter.id)  
+            }
+            Button("취소", role: .cancel) {
+                showBlockAlert = false
+            }
+        } message: {
+            Text("해당 비행기에서 차단하려는 경로만 사라집니다!")
+        }
     }
     
     private func checkLimited(){

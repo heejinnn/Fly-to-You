@@ -75,7 +75,7 @@ struct PaperPlaneCheck: View{
             
             Divider()
             
-            Text(letter.message)
+            Text(letter.isBlocked ? "차단된 글입니다." : letter.message)
                 .font(.gaRamYeonGgoc(size: 20))
                 .multilineTextAlignment(.leading)
                 .frame(height: 300, alignment: .top)
