@@ -15,6 +15,7 @@ struct FlightMapView: View{
     private let segmentedMenu = ["내 항로", "둘러보기"]
     @State private var showPopup = false
     @State private var showReportModal = false
+    @State private var showBlockAlert = false
     @State private var alertDuplicatedReport = false
     @State private var completeReport = false
     
@@ -66,11 +67,11 @@ struct FlightMapView: View{
                 Color.black.opacity(0.4)
                     .ignoresSafeArea()
                     .zIndex(1)
+                    .onTapGesture { showPopup = false }
                 
-                RoutePopupView(showReportModal: $showReportModal, route: route)
+                RoutePopupView(showReportModal: $showReportModal, showBlockAlert: $showBlockAlert, route: route)
                     .transition(.scale)
                     .padding(.horizontal, Spacing.md)
-                    .onTapGesture { showPopup = false }
                     .zIndex(1)
             }
         }
@@ -94,6 +95,20 @@ struct FlightMapView: View{
             Button("확인") {
                 alertDuplicatedReport = false
             }
+        }
+        .alert("컨텐츠를 차단할까요?", isPresented: $showBlockAlert) {
+            Button("차단", role: .destructive) {
+                showBlockAlert = false
+                showPopup = false
+                if let selectedRoute = selectedRoute{
+                    viewModelWrapper.viewModel.blockLetter(letterId: selectedRoute.id)
+                }
+            }
+            Button("취소", role: .cancel) {
+                showBlockAlert = false
+            }
+        } message: {
+            Text("해당 비행기에서 차단하려는 경로만 사라집니다!")
         }
     }
     

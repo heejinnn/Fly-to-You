@@ -30,6 +30,13 @@ final class LandingZoneSceneDIContainer {
         
         return DefaultRelayLetterUseCase(userRepo: userRepo, flightRepo: flightRepo, letterRepo: letterRepo)
     }
+    
+    private func makeBlockLetterUseCase() -> BlockLetterUseCase {
+        let letterRepo = makeLetterRepo()
+        
+        return DefaultBlockLetterUseCase(letterRepo: letterRepo)
+    }
+   
 
     // MARK: - Repository
     
@@ -50,8 +57,9 @@ final class LandingZoneSceneDIContainer {
     func makeLandingZoneViewModel() -> LandingZoneViewModel {
         let useCase = makeFetchLettersUseCase()
         let relayLetterUseCase = makeRelayLetterUseCase()
+        let blockLetterUseCase = makeBlockLetterUseCase()
         
-        return DafultLandingZoneViewModel(fetchLetterUseCase: useCase, relayLetterUseCase: relayLetterUseCase)
+        return DafultLandingZoneViewModel(fetchLetterUseCase: useCase, relayLetterUseCase: relayLetterUseCase, blockLetterUseCase: blockLetterUseCase)
     }
 
     // MARK: - View Model Wrapper

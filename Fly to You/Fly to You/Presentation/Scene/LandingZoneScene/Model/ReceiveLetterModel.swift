@@ -17,6 +17,7 @@ struct ReceiveLetterModel: Identifiable, Codable {
     let timestamp: Date
     let isDelivered: Bool
     let isRelayStart: Bool
+    let isBlocked: Bool
 }
 
 extension ReceiveLetterModel {

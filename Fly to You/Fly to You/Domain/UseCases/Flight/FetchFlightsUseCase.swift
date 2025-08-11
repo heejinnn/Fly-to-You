@@ -15,10 +15,12 @@ protocol FetchFlightsUseCase{
 final class DefaultFetchFlightsUseCase: FetchFlightsUseCase {
     
     private let userRepo: UserRepo
+    private let letterRepo: LetterRepo
     private let flightRepo: FlightRepo
     
-    init(userRepo: UserRepo, flightRepo: FlightRepo) {
+    init(userRepo: UserRepo, letterRepo: LetterRepo, flightRepo: FlightRepo) {
         self.userRepo = userRepo
+        self.letterRepo = letterRepo
         self.flightRepo = flightRepo
     }
     
@@ -37,6 +39,8 @@ final class DefaultFetchFlightsUseCase: FetchFlightsUseCase {
                 let users = try? await self.userRepo.fetchUsers(uids: Array(userIDs))
                 let usersByID = users.map { Dictionary(uniqueKeysWithValues: $0.map { ($0.uid, $0) }) } ?? [:]
                 
+                let blockedLetters = Set(try await self.letterRepo.getBlockedLetters())
+                
                 // 3. DTO → Model 변환
                 let models: [FlightModel] = sortedDtos.map { dto in
                     let sortedRoutes = dto.routes.sorted { $0.timestamp < $1.timestamp }
@@ -50,7 +54,8 @@ final class DefaultFetchFlightsUseCase: FetchFlightsUseCase {
                             topicId: routeDTO.topicId,
                             timestamp: routeDTO.timestamp,
                             isDelivered: routeDTO.isDelivered,
-                            isRelayStart: routeDTO.isRelayStart
+                            isRelayStart: routeDTO.isRelayStart,
+                            isBlocked: blockedLetters.contains(routeDTO.id)
                         )
                     }
                     return FlightModel(

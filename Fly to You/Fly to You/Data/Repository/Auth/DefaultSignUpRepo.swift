@@ -46,7 +46,7 @@ final class DefaultSignUpRepo: SignUpRepo {
         Auth.auth().signInAnonymously { [weak self] result, error in
             guard let self = self, let uid = result?.user.uid, let fcmToken = KeychainTokenStorage.load(for: "fcmToken") else { return }
             
-            let user = User(uid: uid, nickname: nickname, createdAt: Date(), fcmToken: fcmToken, reportedCount: 0)
+            let user = User(uid: uid, nickname: nickname, createdAt: Date(), fcmToken: fcmToken, reportedCount: 0, blockedLetters: [])
             
             do {
                 try self.db.collection("users")

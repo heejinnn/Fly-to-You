@@ -9,11 +9,12 @@ import SwiftUI
 
 struct RoutePopupView: View {
     @Binding var showReportModal: Bool
+    @Binding var showBlockAlert: Bool
     let route: ReceiveLetterModel
     
     var body: some View {
         VStack {
-            PaperPlaneCheck(letter: route, showReportIcon: true, showReportModal: $showReportModal)
+            PaperPlaneCheck(letter: route, showReportIcon: true, showReportModal: $showReportModal, showBlockAlert: $showBlockAlert)
         }
         .padding(.vertical, Spacing.md)
         .background(

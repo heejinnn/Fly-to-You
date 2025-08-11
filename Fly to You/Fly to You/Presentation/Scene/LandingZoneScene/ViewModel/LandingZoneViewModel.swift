@@ -14,6 +14,7 @@ protocol LandingZoneViewModelInput{
     func observeLetters()
     func removeLettersListener()
     func fetchReportedCount() async throws -> Bool
+    func blockLetter(letterId: String)
 }
 
 protocol LandingZoneViewModelOutput{
@@ -27,10 +28,12 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
     @Published var letters: [ReceiveLetterModel] = []
     private let fetchLetterUseCase: FetchLettersUseCase
     private let relayLetterUseCase: RelayLetterUseCase
+    private let blockLetterUseCase: BlockLetterUseCase
     
-    init(fetchLetterUseCase: FetchLettersUseCase, relayLetterUseCase: RelayLetterUseCase) {
+    init(fetchLetterUseCase: FetchLettersUseCase, relayLetterUseCase: RelayLetterUseCase, blockLetterUseCase: BlockLetterUseCase) {
         self.fetchLetterUseCase = fetchLetterUseCase
         self.relayLetterUseCase = relayLetterUseCase
+        self.blockLetterUseCase = blockLetterUseCase
     }
 
     func relayLetter(toUid: String, topicData: TopicModel, message: String, letter: Letter, completion: @escaping (Result<Void, Error>) -> Void){
@@ -47,7 +50,7 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
     func observeLetters() {
         guard let uid = UserDefaults.standard.string(forKey: "uid") else { return }
         fetchLetterUseCase.observeReceivedLetters(toUid: uid) { [weak self] letters in
-            self?.letters = ReceiveLetter.toReceiveLetterModels(letters: letters)
+            self?.letters = letters
         }
     }
     
@@ -57,6 +60,14 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
  
     func fetchReportedCount() async throws -> Bool{
         try await relayLetterUseCase.fetchReportedCount()
+    }
+    
+    func blockLetter(letterId: String){
+        Task {
+            try await blockLetterUseCase.blockLetter(letterId: letterId)
+            removeLettersListener()
+            observeLetters()
+        }
     }
 }
 

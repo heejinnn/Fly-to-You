@@ -13,8 +13,9 @@ struct User: Codable {
     let createdAt: Date
     let fcmToken: String
     let reportedCount: Int
+    let blockedLetters: [String]
 }
 
 extension User {
-    static let unknown = User(uid: "unknown", nickname: "(Unknown)", createdAt: Date(), fcmToken: "", reportedCount: 0)
+    static let unknown = User(uid: "unknown", nickname: "(Unknown)", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: [])
 }

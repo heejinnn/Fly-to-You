@@ -10,6 +10,7 @@ import FirebaseFirestore
 protocol FlightMapViewModelInput {
     func observeAllFlights()
     func removeFlightsListener()
+    func blockLetter(letterId: String)
 }
 
 protocol FlightMapViewModelOutput {
@@ -23,9 +24,11 @@ final class DefaultFlightMapViewModel: FlightMapViewModel {
     @Published var flights: [FlightModel] = []
 
     private let useCase: FetchFlightsUseCase
+    private let blockLetterUseCase: BlockLetterUseCase
     
-    init(useCase: FetchFlightsUseCase){
+    init(useCase: FetchFlightsUseCase, blockLetterUseCase: BlockLetterUseCase){
         self.useCase = useCase
+        self.blockLetterUseCase = blockLetterUseCase
     }
     
     func observeAllFlights() {
@@ -36,6 +39,14 @@ final class DefaultFlightMapViewModel: FlightMapViewModel {
     
     func removeFlightsListener() {
         useCase.removeFlightsListener()
+    }
+    
+    func blockLetter(letterId: String){
+        Task {
+            try await blockLetterUseCase.blockLetter(letterId: letterId)
+            removeFlightsListener()
+            observeAllFlights()
+        }
     }
 }
 

@@ -37,7 +37,7 @@ struct DepartureLogInfoView: View{
                 }
                 
                 if !isEditMode{
-                    PaperPlaneCheck(letter: letter, showReportIcon: false, showReportModal: .constant(false))
+                    PaperPlaneCheck(letter: letter, showReportIcon: false, showReportModal: .constant(false), showBlockAlert: .constant(false))
                 } else{
                     PaperPlaneInput(topic: letter.topic, toText: toUser?.nickname ?? "", fromText: fromText, message: $message, showUserListSheet: $showUserListSheet)
                 }
@@ -88,7 +88,9 @@ struct DepartureLogInfoView: View{
                     }
                 }
             }
-            Button("취소", role: .cancel) { }
+            Button("취소", role: .cancel) {
+                showAlert = false
+            }
         } message: {
             Text("보낸 기록이 사라져요 🥲")
         }
@@ -135,7 +137,8 @@ struct DepartureLogInfoView: View{
                             topicId: letter.topicId,
                             timestamp: letter.timestamp,
                             isDelivered: letter.isDelivered,
-                            isRelayStart: letter.isRelayStart)
+                            isRelayStart: letter.isRelayStart,
+                            isBlocked: false)
                         
                         viewModelWrapper.viewModel.editSentLetter(letter: newLetter, toUid: toUser.uid){
                             result in

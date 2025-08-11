@@ -12,6 +12,7 @@ struct LandingZoneInfoView: View{
     @EnvironmentObject var viewModelWrapper: LandingZoneViewModelWrapper
     let letter: ReceiveLetterModel
     @State private var showReportModal: Bool = false
+    @State private var showBlockAlert: Bool = false
     @State private var alertDuplicatedReport: Bool = false
     @State private var completeReport: Bool = false
     @State private var alertLimited: Bool = false
@@ -20,7 +21,7 @@ struct LandingZoneInfoView: View{
         VStack{
             ExplanationText(originalText: "비행기를\n이어서 날려보세요", boldSubstring: "이어서 날려보세요")
             
-            PaperPlaneCheck(letter: letter, showReportIcon: true, showReportModal: $showReportModal)
+            PaperPlaneCheck(letter: letter, showReportIcon: true, showReportModal: $showReportModal, showBlockAlert: $showBlockAlert)
             
             Spacer()
         }
@@ -56,6 +57,18 @@ struct LandingZoneInfoView: View{
             Button("확인") {
                 alertLimited = false
             }
+        }
+        .alert("컨텐츠를 차단할까요?", isPresented: $showBlockAlert) {
+            Button("차단", role: .destructive) {
+                showBlockAlert = false
+                viewModelWrapper.path.removeLast()
+                viewModelWrapper.viewModel.blockLetter(letterId: letter.id)  
+            }
+            Button("취소", role: .cancel) {
+                showBlockAlert = false
+            }
+        } message: {
+            Text("해당 비행기에서 차단하려는 경로만 사라집니다!")
         }
     }
     

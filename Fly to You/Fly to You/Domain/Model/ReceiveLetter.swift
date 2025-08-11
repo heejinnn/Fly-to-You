@@ -24,14 +24,15 @@ extension ReceiveLetter {
         letters.map { letter in
             ReceiveLetterModel(
                 id: letter.id,
-                from: letter.from ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0),
-                to: letter.to ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0),
+                from: letter.from ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: []),
+                to: letter.to ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: []),
                 message: letter.message,
                 topic: letter.topic,
                 topicId: letter.topicId,
                 timestamp: letter.timestamp,
                 isDelivered: letter.isDelivered,
-                isRelayStart: letter.isRelayStart
+                isRelayStart: letter.isRelayStart,
+                isBlocked: false
             )
         }
     }
@@ -39,15 +40,15 @@ extension ReceiveLetter {
     static func toReceiveLetterModel(letter: ReceiveLetter) -> ReceiveLetterModel {
         return ReceiveLetterModel(
             id: letter.id,
-            from: letter.from ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0),
-            to: letter.to ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0),
+            from: letter.from ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: []),
+            to: letter.to ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: []),
             message: letter.message,
             topic: letter.topic,
             topicId: letter.topicId,
             timestamp: letter.timestamp,
             isDelivered: letter.isDelivered,
-            isRelayStart: letter.isRelayStart
+            isRelayStart: letter.isRelayStart,
+            isBlocked: false
         )
-        
     }
 }

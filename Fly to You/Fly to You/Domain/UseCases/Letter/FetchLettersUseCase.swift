@@ -7,7 +7,7 @@
 import SwiftUI
 
 protocol FetchLettersUseCase{
-    func observeReceivedLetters(toUid: String, onUpdate: @escaping ([ReceiveLetter]) -> Void)
+    func observeReceivedLetters(toUid: String, onUpdate: @escaping ([ReceiveLetterModel]) -> Void)
     func observeSentLetters(fromUid: String, onUpdate: @escaping ([ReceiveLetter]) -> Void)
     func removeListeners()
 }
@@ -24,7 +24,7 @@ final class DefaultFetchLettersUseCase: FetchLettersUseCase{
         self.userRepo = userRepo
     }
 
-    func observeReceivedLetters(toUid: String, onUpdate: @escaping ([ReceiveLetter]) -> Void) {
+    func observeReceivedLetters(toUid: String, onUpdate: @escaping ([ReceiveLetterModel]) -> Void) {
         letterRepo.observeReceivedLetters(toUid: toUid) { [weak self] dtos in
             guard let self = self else { return }
             Task {
@@ -36,20 +36,24 @@ final class DefaultFetchLettersUseCase: FetchLettersUseCase{
                 let users = try? await self.userRepo.fetchUsers(uids: Array(userIDs))
                 let usersByID = users.map { Dictionary(uniqueKeysWithValues: $0.map { ($0.uid, $0) }) } ?? [:]
                 
+                let blockedLetters = Set(try await self.letterRepo.getBlockedLetters())
+
                 // 3. DTO → Model 변환
-                let letters: [ReceiveLetter] = sortedDtos.map { dto in
+                let letters: [ReceiveLetterModel] = sortedDtos.map { dto in
                     let fromUser = usersByID[dto.fromUid]
                     let toUser = usersByID[dto.toUid]
-                    return ReceiveLetter(
+                    
+                    return ReceiveLetterModel(
                         id: dto.id,
-                        from: fromUser,
-                        to: toUser,
+                        from: fromUser ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: []),
+                        to: toUser ?? User(uid: "", nickname: "", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: []),
                         message: dto.message,
                         topic: dto.topic,
                         topicId: dto.topicId,
                         timestamp: dto.timestamp,
                         isDelivered: dto.isDelivered,
-                        isRelayStart: dto.isRelayStart
+                        isRelayStart: dto.isRelayStart,
+                        isBlocked: blockedLetters.contains(dto.id)
                     )
                 }
                 DispatchQueue.main.async {

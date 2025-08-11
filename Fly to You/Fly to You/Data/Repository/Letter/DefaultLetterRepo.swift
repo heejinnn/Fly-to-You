@@ -6,6 +6,7 @@
 //
 
 import FirebaseFirestore
+import FirebaseAuth
 
 final class DefaultLetterRepo: LetterRepo {
     private let db = Firestore.firestore()
@@ -77,5 +78,20 @@ final class DefaultLetterRepo: LetterRepo {
         sentListener?.remove()
         receivedListener = nil
         sentListener = nil
+    }
+    
+    func blockLetter(letterId: String) async throws {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return }
+        
+        try await db.collection("users").document(currentUid).updateData([
+            "blockedLetters": FieldValue.arrayUnion([letterId])
+        ])
+    }
+    
+    func getBlockedLetters() async throws -> [String] {
+        guard let currentUid = Auth.auth().currentUser?.uid else { return []}
+        
+        let document = try await db.collection("users").document(currentUid).getDocument()
+        return document.data()?["blockedLetters"] as? [String] ?? []
     }
 }
