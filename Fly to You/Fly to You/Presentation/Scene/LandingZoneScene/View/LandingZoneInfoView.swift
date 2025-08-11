@@ -12,6 +12,7 @@ struct LandingZoneInfoView: View{
     @EnvironmentObject var viewModelWrapper: LandingZoneViewModelWrapper
     let letter: ReceiveLetterModel
     @State private var showReportModal: Bool = false
+    @State private var showBlockAlert: Bool = false
     @State private var alertDuplicatedReport: Bool = false
     @State private var completeReport: Bool = false
     @State private var alertLimited: Bool = false
@@ -20,7 +21,7 @@ struct LandingZoneInfoView: View{
         VStack{
             ExplanationText(originalText: "비행기를\n이어서 날려보세요", boldSubstring: "이어서 날려보세요")
             
-            PaperPlaneCheck(letter: letter, showReportIcon: true, showReportModal: $showReportModal)
+            PaperPlaneCheck(letter: letter, showReportIcon: true, showReportModal: $showReportModal, showBlockAlert: $showBlockAlert)
             
             Spacer()
         }

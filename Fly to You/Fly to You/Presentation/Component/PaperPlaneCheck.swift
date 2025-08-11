@@ -12,6 +12,7 @@ struct PaperPlaneCheck: View{
     let letter: ReceiveLetterModel
     let showReportIcon: Bool
     @Binding var showReportModal: Bool
+    @Binding var showBlockAlert: Bool
     
     var body: some View {
         VStack(spacing: 0) {
@@ -26,6 +27,14 @@ struct PaperPlaneCheck: View{
                   Spacer()
                 
                 Menu {
+                    Button(action: {
+                        showBlockAlert = true
+                    }, label: {
+                        HStack {
+                            Text("차단하기")
+                        }
+                    })
+                    
                     Button(role: .destructive, action: {
                         showReportModal = true
                     }, label: {
@@ -81,5 +90,5 @@ struct PaperPlaneCheck: View{
 }
 
 #Preview {
-    PaperPlaneCheck(letter: ReceiveLetterModel(id: "1", from: User(uid: "", nickname: "ddd", createdAt: Date(), fcmToken: "", reportedCount: 0), to: User(uid: "", nickname: "ddd", createdAt: Date(), fcmToken: "", reportedCount: 0), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), showReportIcon: true, showReportModal: .constant(false))
+    PaperPlaneCheck(letter: ReceiveLetterModel(id: "1", from: User(uid: "", nickname: "ddd", createdAt: Date(), fcmToken: "", reportedCount: 0), to: User(uid: "", nickname: "ddd", createdAt: Date(), fcmToken: "", reportedCount: 0), message: "mmmm", topic: "tttt", topicId: "1", timestamp: Date(), isDelivered: false, isRelayStart: false), showReportIcon: true, showReportModal: .constant(false), showBlockAlert: .constant(false))
 }
