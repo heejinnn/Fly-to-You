@@ -29,50 +29,18 @@ final class GetParticipationCountUseCaseTest: XCTestCase {
         let user2 = User(uid: "user2", nickname: "User2", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: [])
         let user3 = User(uid: "user3", nickname: "User3", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: [])
         
-        let route1 = ReceiveLetterModel(
-            id: "letter1",
-            from: user1,
-            to: user2,
-            message: "Hello",
-            topic: "Greeting",
-            topicId: "topic1",
-            timestamp: Date(),
-            isDelivered: true,
-            isRelayStart: true,
-            isBlocked: false
-        )
+        let routes = [
+            ReceiveLetterModel(id: "1", from: user1, to: user2, message: "1", topic: "Topic", topicId: "topic1", timestamp: Date(), isDelivered: true, isRelayStart: true, isBlocked: false),
+            ReceiveLetterModel(id: "2", from: user2, to: user3, message: "2", topic: "Topic", topicId: "topic1", timestamp: Date(), isDelivered: true, isRelayStart: false, isBlocked: false),
+            ReceiveLetterModel(id: "3", from: user3, to: user1, message: "3", topic: "Topic", topicId: "topic1", timestamp: Date(), isDelivered: true, isRelayStart: false, isBlocked: false)
+        ]
         
-        let route2 = ReceiveLetterModel(
-            id: "letter2",
-            from: user2,
-            to: user3,
-            message: "Hello again",
-            topic: "Greeting",
-            topicId: "topic1",
-            timestamp: Date(),
-            isDelivered: true,
-            isRelayStart: false,
-            isBlocked: false
-        )
-        
-        let route3 = ReceiveLetterModel(
-            id: "letter3",
-            from: user3,
-            to: user1,
-            message: "Reply",
-            topic: "Greeting",
-            topicId: "topic1",
-            timestamp: Date(),
-            isDelivered: true,
-            isRelayStart: false,
-            isBlocked: false
-        )
         
         let flight = FlightModel(
             id: "flight1",
             topic: "Test Topic",
             startDate: Date(),
-            routes: [route1, route2, route3]
+            routes: routes
         )
         
         // When

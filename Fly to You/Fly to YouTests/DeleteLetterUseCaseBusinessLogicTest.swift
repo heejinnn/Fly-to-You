@@ -11,6 +11,11 @@ import XCTest
 final class DeleteLetterUseCaseBusinessLogicTest: XCTestCase {
     
     var sut: DefaultDeleteLetterUseCase!
+    let routes: [[String: Any]] = [
+        ["id": "letter1", "fromUid": "user1"],
+        ["id": "letter2", "fromUid": "user2"],
+        ["id": "letter3", "fromUid": "user3"]
+    ]
     
     override func setUpWithError() throws {
         // Mock repos는 실제로 사용 X, 인스턴스 생성을 위해 임시 Mock 사용
@@ -25,12 +30,7 @@ final class DeleteLetterUseCaseBusinessLogicTest: XCTestCase {
     
     //normal 이전 Id 조회 테스트
     func test_findPreviousLetterId_withValidPreviousLetter_returnsPreviousId() {
-        // Given
-        let routes: [[String: Any]] = [
-            ["id": "letter1", "fromUid": "user1"],
-            ["id": "letter2", "fromUid": "user2"],
-            ["id": "letter3", "fromUid": "user3"]
-        ]
+        // Given: routs 초기화
         
         // When
         let result = sut.findPreviousLetterId(in: routes, currentLetterId: "letter3")
@@ -41,12 +41,7 @@ final class DeleteLetterUseCaseBusinessLogicTest: XCTestCase {
     
     //첫 번째 편지의 이전 편지를 찾으려 할 때 테스트
     func test_findPreviousLetterId_withFirstLetter_returnsNil() {
-        // Given
-        let routes: [[String: Any]] = [
-            ["id": "letter1", "fromUid": "user1"],
-            ["id": "letter2", "fromUid": "user2"],
-            ["id": "letter3", "fromUid": "user3"]
-        ]
+        // Given: routs 초기화
         
         // When
         let result = sut.findPreviousLetterId(in: routes, currentLetterId: "letter1")
@@ -57,12 +52,7 @@ final class DeleteLetterUseCaseBusinessLogicTest: XCTestCase {
     
     //없는 Id 값을 넣은 경우
     func test_findPreviousLetterId_withNonExistingLetter_returnsNil() {
-        // Given
-        let routes: [[String: Any]] = [
-            ["id": "letter1", "fromUid": "user1"],
-            ["id": "letter2", "fromUid": "user2"],
-            ["id": "letter3", "fromUid": "user3"]
-        ]
+        // Given: routs 초기화
         
         // When
         let result = sut.findPreviousLetterId(in: routes, currentLetterId: "letter999")
