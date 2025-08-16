@@ -57,8 +57,37 @@ struct SignUpView: View {
                 }
                 .padding(.horizontal, Spacing.md)
                 
-                
-               
+                // EULA 동의 체크박스
+                VStack(alignment: .leading, spacing: Spacing.sm) {
+                    HStack(spacing: Spacing.sm) {
+                        Button(action: {
+                            isEULAAccepted.toggle()
+                        }) {
+                            Image(systemName: isEULAAccepted ? "checkmark.square.fill" : "square")
+                                .foregroundColor(isEULAAccepted ? .blue1 : .gray1)
+                                .frame(width: 20, height: 20)
+                        }
+                        
+                        HStack(spacing: Spacing.xxs) {
+                            Text("사용권 계약에 동의합니다.")
+                                .font(.pretendard(.regular, size: 14))
+                            
+                            Text("(필수)")
+                                .font(.pretendard(.regular, size: 14))
+                                .foregroundColor(.red)
+                            
+                            Spacer()
+                            
+                            Button("보기") {
+                                showingEULA = true
+                            }
+                            .font(.pretendard(.regular, size: 14))
+                            .foregroundColor(.blue1)
+                        }
+                    }
+                    .padding(.horizontal, Spacing.md)
+                }
+                .padding(.top, Spacing.xs)
                 
                 Spacer()
             }
@@ -80,7 +109,7 @@ struct SignUpView: View {
             }
         }
         .sheet(isPresented: $showingEULA) {
-            EULADetailView()
+            EULADetailSheetView()
         }
     }
 }
