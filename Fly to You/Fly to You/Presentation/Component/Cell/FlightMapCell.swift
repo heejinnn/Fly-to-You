@@ -39,7 +39,7 @@ struct FlightMapCell: View {
 
     private var infoSection: some View {
         HStack(spacing: Spacing.xxs) {
-            Text("시작일: \(DateUtil.formatLetterDate(flight.startDate))")
+            Text("시작일: \(DateUtil.convertToDateString(flight.startDate))")
             Text("참여자: \(participantCount)명")
         }
         .font(.pretendard(.medium, size: 12))

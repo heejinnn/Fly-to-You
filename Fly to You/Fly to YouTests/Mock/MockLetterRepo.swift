@@ -9,21 +9,29 @@
 
 class MockLetterRepo: LetterRepo{
     
-    // Mock 상태 변수들
+    // MARK: - block Mock 변수들
     var blockLetterCalled = false
     var receivedLetterId: String?
     var callCount = 0
     var shouldThrowError = false
     var errorToThrow: Error?
     
+    // MARK: - save Mock 변수들
+    var saveCalled = false
+    var savedLetters: [Letter] = []
+    var saveCallCount = 0
+    var saveShouldThrowError = false
+    var saveErrorToThrow: Error?
+    var saveResult: Letter?
+    
     // blockLetter Mock 구현
     func blockLetter(letterId: String) async throws {
         
         receivedLetterId = letterId
-        guard !letterId.isEmpty else { return print("[??]: \(blockLetterCalled)")}
+        guard !letterId.isEmpty else { return }
         
         blockLetterCalled = true
-        callCount += 1
+        callCount += 2
         
         if shouldThrowError, let error = errorToThrow {
             throw error
@@ -31,6 +39,15 @@ class MockLetterRepo: LetterRepo{
     }
     
     func save(letter: Fly_to_You.Letter) async throws -> Fly_to_You.Letter {
+        
+        saveCalled = true
+        savedLetters.append(letter)
+        saveCallCount = 0
+        
+        if saveShouldThrowError, let error = saveErrorToThrow {
+            throw error
+        }
+        
         return letter
     }
     

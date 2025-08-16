@@ -8,7 +8,7 @@
 import XCTest
 @testable import Fly_to_You
 
-final class Fly_to_YouTests: XCTestCase {
+final class BlockLetterUseCaseTest: XCTestCase {
     
     var sut: DefaultBlockLetterUseCase!
     var mockLetterRepo: MockLetterRepo!
