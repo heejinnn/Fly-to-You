@@ -22,7 +22,8 @@ final class GetParticipationCountUseCaseTest: XCTestCase {
     
     // MARK: - Test Cases
     
-    func test_execute_withMultipleUniqueParticipants_returnsCorrectCount() {
+    // normal 참여 count 조회
+    func test_execute_withUniqueParticipants_returnsCorrectCount() {
         // Given
         let user1 = User(uid: "user1", nickname: "User1", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: [])
         let user2 = User(uid: "user2", nickname: "User2", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: [])
@@ -81,6 +82,7 @@ final class GetParticipationCountUseCaseTest: XCTestCase {
         XCTAssertEqual(result, 3)
     }
     
+    //참여자가 없는 경우
     func test_execute_withEmptyRoutes_returnsZero() {
         // Given
         let flight = FlightModel(
@@ -97,6 +99,7 @@ final class GetParticipationCountUseCaseTest: XCTestCase {
         XCTAssertEqual(result, 0)
     }
     
+    // 복잡한 릴레이 시나리오: user1 -> user2 -> user3 -> user1 -> user4
     func test_execute_withComplexScenario_returnsCorrectCount() {
         // Given
         let user1 = User(uid: "user1", nickname: "User1", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: [])
@@ -104,7 +107,6 @@ final class GetParticipationCountUseCaseTest: XCTestCase {
         let user3 = User(uid: "user3", nickname: "User3", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: [])
         let user4 = User(uid: "user4", nickname: "User4", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: [])
         
-        // 복잡한 릴레이 시나리오: user1 -> user2 -> user3 -> user1 -> user4
         let routes = [
             ReceiveLetterModel(id: "1", from: user1, to: user2, message: "1", topic: "Topic", topicId: "topic1", timestamp: Date(), isDelivered: true, isRelayStart: true, isBlocked: false),
             ReceiveLetterModel(id: "2", from: user2, to: user3, message: "2", topic: "Topic", topicId: "topic1", timestamp: Date(), isDelivered: true, isRelayStart: false, isBlocked: false),

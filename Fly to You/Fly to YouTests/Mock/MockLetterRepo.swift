@@ -1,90 +1,26 @@
 //
-//  MockLetterRepo.swift
+//  MockLetterRepo 2.swift
 //  Fly to You
 //
-//  Created by 최희진 on 8/14/25.
+//  Created by 최희진 on 8/16/25.
 //
 
 @testable import Fly_to_You
+import Foundation
 
-class MockLetterRepo: LetterRepo{
-    
-    // MARK: - block Mock 변수들
-    var blockLetterCalled = false
-    var receivedLetterId: String?
-    var callCount = 0
-    var shouldThrowError = false
-    var errorToThrow: Error?
-    
-    // MARK: - save Mock 변수들
-    var saveCalled = false
-    var savedLetters: [Letter] = []
-    var saveCallCount = 0
-    var saveShouldThrowError = false
-    var saveErrorToThrow: Error?
-    var saveResult: Letter?
-    
-    // blockLetter Mock 구현
-    func blockLetter(letterId: String) async throws {
-        
-        receivedLetterId = letterId
-        guard !letterId.isEmpty else { return }
-        
-        blockLetterCalled = true
-        callCount += 2
-        
-        if shouldThrowError, let error = errorToThrow {
-            throw error
-        }
-    }
-    
+class MockLetterRepo: LetterRepo {
+    func updateIsDelivered(letterId: String, isDelivered: Bool) async throws {}
+    func deleteSentLetter(letter: Fly_to_You.Letter) async throws {}
+    func blockLetter(letterId: String) async throws {}
     func save(letter: Fly_to_You.Letter) async throws -> Fly_to_You.Letter {
-        
-        saveCalled = true
-        savedLetters.append(letter)
-        saveCallCount = 0
-        
-        if saveShouldThrowError, let error = saveErrorToThrow {
-            throw error
-        }
-        
-        return letter
+        return Letter(id: "", fromUid: "", toUid: "", message: "", topic: "", topicId: "", timestamp: Date(), isDelivered: false, isRelayStart: false)
     }
-    
-    func updateIsDelivered(letterId: String, isDelivered: Bool) async throws {
-        
+    func editSentLetter(letter: Fly_to_You.Letter) async throws -> Fly_to_You.ReceiveLetterDto {
+        return ReceiveLetterDto(id: "", fromUid: "", toUid: "", message: "", topic: "", topicId: "", timestamp: Date(), isDelivered: false, isRelayStart: false)
     }
-    
-    func editSentLetter(letter: Letter) async throws -> ReceiveLetterDto {
-        return ReceiveLetterDto(
-            id: letter.id,
-            fromUid: letter.fromUid,
-            toUid: letter.toUid,
-            message: letter.message,
-            topic: letter.topic,
-            topicId: letter.topicId,
-            timestamp: letter.timestamp,
-            isDelivered: false,
-            isRelayStart: letter.isRelayStart
-        )
-    }
-    
-    func deleteSentLetter(letter: Fly_to_You.Letter) async throws {
-        
-    }
-    
-    func observeReceivedLetters(toUid: String, onUpdate: @escaping ([Fly_to_You.ReceiveLetterDto]) -> Void) {
-        
-    }
-    
-    func observeSentLetters(fromUid: String, onUpdate: @escaping ([Fly_to_You.ReceiveLetterDto]) -> Void) {
-        
-    }
-    
-    func removeListeners() {
-        
-    }
-    
+    func observeReceivedLetters(toUid: String, onUpdate: @escaping ([Fly_to_You.ReceiveLetterDto]) -> Void) {}
+    func observeSentLetters(fromUid: String, onUpdate: @escaping ([Fly_to_You.ReceiveLetterDto]) -> Void) {}
+    func removeListeners() {}
     func getBlockedLetters() async throws -> [String] {
         return []
     }
