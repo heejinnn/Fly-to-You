@@ -1,0 +1,43 @@
+name: 🧪 테스트
+description: 테스트 코드 작성 및 실행 관련 내용을 기록합니다.
+title: "🧪 Test: "
+labels: ["Test"]
+body:
+  - type: textarea
+    id: test-purpose
+    attributes:
+      label: 🎯 테스트 목적
+      description: 어떤 기능/모듈을 테스트하려는지 설명해주세요.
+      placeholder: ex) 로그인 API의 정상 동작 검증
+    validations:
+      required: true
+
+  - type: textarea
+    id: test-scope
+    attributes:
+      label: 📦 테스트 범위
+      description: 테스트가 적용되는 범위를 작성해주세요.
+      placeholder: ex) AuthViewModel, AuthUseCase
+    validations:
+      required: true
+
+  - type: textarea
+    id: test-steps
+    attributes:
+      label: 📝 테스트 시나리오
+      description: 테스트를 어떻게 진행할지 단계별로 작성해주세요.
+      placeholder: ex)
+        1) 올바른 아이디/비밀번호 입력 시 로그인 성공
+        2) 잘못된 아이디 입력 시 에러 반환
+    validations:
+      required: true
+
+  - type: textarea
+    id: test-result
+    attributes:
+      label: ✅ 예상 결과
+      description: 테스트를 통해 기대되는 결과를 작성해주세요.
+      placeholder: ex) 로그인 성공 시 JWT 토큰 반환
+    validations:
+      required: false
+
