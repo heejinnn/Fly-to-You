@@ -115,7 +115,7 @@ struct FlightMapView: View{
     private var planeCellSection: some View {
         VStack(spacing: Spacing.sm){
             ForEach(filteredFlights, id: \.id) { flight in
-                let participantCount = calculateParticipationCount(flight: flight)
+                let participantCount = viewModelWrapper.viewModel.getParticipationCount(for: flight)
                 
                 PlaneCell(letter: flight.routes[0], participantCount: participantCount, route: .map)
                     .onTapGesture {
@@ -149,14 +149,6 @@ struct FlightMapView: View{
         .padding(.horizontal, Spacing.md)
     }
     
-    private func calculateParticipationCount(flight: FlightModel) -> Int{
-        var set: Set<String> = []
-        
-        for route in flight.routes {
-            set.insert(route.from.uid)
-        }
-        return set.count
-    }
 }
 
 #Preview {

@@ -34,6 +34,7 @@ struct PaperPlaneCheck: View{
                             Text("차단하기")
                         }
                     })
+                    .disabled(letter.isBlocked)
                     
                     Button(role: .destructive, action: {
                         showReportModal = true

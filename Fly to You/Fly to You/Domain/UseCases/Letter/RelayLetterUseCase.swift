@@ -34,7 +34,7 @@ public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
         message: String,
         previousLetter: Letter
     ) async throws -> Letter {
-        let fromUid = try await userRepo.currentUserUid()
+        guard let fromUid = UserDefaults.standard.string(forKey: "uid") else { throw FirebaseError.validationError(message: "uid not found") }
         
         let letter = Letter(
             id: UUID().uuidString,

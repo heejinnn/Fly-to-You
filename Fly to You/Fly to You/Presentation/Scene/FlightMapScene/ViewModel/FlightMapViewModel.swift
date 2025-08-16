@@ -11,6 +11,7 @@ protocol FlightMapViewModelInput {
     func observeAllFlights()
     func removeFlightsListener()
     func blockLetter(letterId: String)
+    func getParticipationCount(for flight: FlightModel) -> Int
 }
 
 protocol FlightMapViewModelOutput {
@@ -23,22 +24,24 @@ protocol FlightMapViewModel: FlightMapViewModelInput, FlightMapViewModelOutput {
 final class DefaultFlightMapViewModel: FlightMapViewModel {
     @Published var flights: [FlightModel] = []
 
-    private let useCase: FetchFlightsUseCase
+    private let fetchFlightsUseCase: FetchFlightsUseCase
     private let blockLetterUseCase: BlockLetterUseCase
+    private let getParticipationCountUseCase: GetParticipationCountUseCase
     
-    init(useCase: FetchFlightsUseCase, blockLetterUseCase: BlockLetterUseCase){
-        self.useCase = useCase
+    init(fetchFlightsUseCase: FetchFlightsUseCase, blockLetterUseCase: BlockLetterUseCase, getParticipationCountUseCase: GetParticipationCountUseCase){
+        self.fetchFlightsUseCase = fetchFlightsUseCase
         self.blockLetterUseCase = blockLetterUseCase
+        self.getParticipationCountUseCase = getParticipationCountUseCase
     }
     
     func observeAllFlights() {
-        useCase.observeAllFlights { [weak self] flights in
+        fetchFlightsUseCase.observeAllFlights { [weak self] flights in
             self?.flights = flights
         }
     }
     
     func removeFlightsListener() {
-        useCase.removeFlightsListener()
+        fetchFlightsUseCase.removeFlightsListener()
     }
     
     func blockLetter(letterId: String){
@@ -47,6 +50,10 @@ final class DefaultFlightMapViewModel: FlightMapViewModel {
             removeFlightsListener()
             observeAllFlights()
         }
+    }
+    
+    func getParticipationCount(for flight: FlightModel) -> Int {
+        return getParticipationCountUseCase.execute(for: flight)
     }
 }
 

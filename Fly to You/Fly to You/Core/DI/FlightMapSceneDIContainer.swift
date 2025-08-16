@@ -29,7 +29,10 @@ final class FlightMapSceneDIContainer {
         
         return DefaultBlockLetterUseCase(letterRepo: letterRepo)
     }
-   
+    
+    func makeGetParticipationCountUseCase() -> GetParticipationCountUseCase {
+        return DefaultGetParticipationCountUseCase()
+    }
  
     // MARK: - Repository
     
@@ -48,7 +51,11 @@ final class FlightMapSceneDIContainer {
     // MARK: - View Model
     
     func makeFlightMapViewModel() -> DefaultFlightMapViewModel{
-        return DefaultFlightMapViewModel(useCase: makeFetchFlightsUseCase(), blockLetterUseCase: makeBlockLetterUseCase())
+        return DefaultFlightMapViewModel(
+            fetchFlightsUseCase: makeFetchFlightsUseCase(), 
+            blockLetterUseCase: makeBlockLetterUseCase(),
+            getParticipationCountUseCase: makeGetParticipationCountUseCase()
+        )
     }
     
     // MARK: - View Model Wrapper

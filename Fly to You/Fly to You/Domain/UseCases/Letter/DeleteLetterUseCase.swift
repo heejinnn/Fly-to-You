@@ -30,13 +30,34 @@ final class DefaultDeleteLetterUseCase: DeleteLetterUseCase {
         } else {
             // 3. routes에서 route 삭제
             let routes = try await flightRepo.getRoutes(topicId: letter.topicId)
-            if let currentIndex = routes.firstIndex(where: { ($0["id"] as? String) == letter.id }), currentIndex > 0 {
-                let previousRoute = routes[currentIndex - 1]
-                if let previousLetterId = previousRoute["id"] as? String {
-                    try await letterRepo.updateIsDelivered(letterId: previousLetterId, isDelivered: false)
-                }
+            
+            if let previousLetterId = findPreviousLetterId(in: routes, currentLetterId: letter.id) {
+                try await letterRepo.updateIsDelivered(letterId: previousLetterId, isDelivered: false)
             }
+            
             try await flightRepo.removeRoute(topicId: letter.topicId, routeId: letter.id)
         }
+    }
+    
+    // MARK: - Pure Business Logic Functions 
+    
+    func findPreviousLetterId(in routes: [[String: Any]], currentLetterId: String) -> String? {
+        guard let currentIndex = findLetterIndex(in: routes, letterId: currentLetterId),
+              currentIndex > 0 else {
+            return nil
+        }
+        
+        let previousRoute = routes[currentIndex - 1]
+        return extractLetterId(from: previousRoute)
+    }
+    
+    private func findLetterIndex(in routes: [[String: Any]], letterId: String) -> Int? {
+        return routes.firstIndex { route in
+            extractLetterId(from: route) == letterId
+        }
+    }
+    
+    private func extractLetterId(from route: [String: Any]) -> String? {
+        return route["id"] as? String
     }
 }

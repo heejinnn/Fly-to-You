@@ -48,7 +48,7 @@ struct PlaneCell: View{
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 30, height: 30)
                     Spacer()
-                    Text("\(DateUtil.formatLetterDate(letter.timestamp))")
+                    Text("\(DateUtil.convertToDateString(letter.timestamp))")
                         .font(.pretendard(.thin, size: 13))
                 }
             }

@@ -15,7 +15,7 @@ enum DateUtil {
         return formatter
     }()
     
-    static func formatLetterDate(_ date: Date) -> String {
+    static func convertToDateString(_ date: Date) -> String {
         return letterDateFormatter.string(from: date)
     }
 }
