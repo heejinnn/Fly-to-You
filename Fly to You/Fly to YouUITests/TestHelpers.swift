@@ -7,6 +7,17 @@
 
 import XCTest
 
+/// UI 테스트에서 사용하는 AccessibilityIdentifier 상수 정의
+struct TestAccessibilityIdentifiers {
+    struct SignUp {
+        static let nicknameTextField = "signUp.nicknameTextField"
+        static let eulaCheckbox = "signUp.eulaCheckbox"
+        static let eulaDetailButton = "signUp.eulaDetailButton"
+        static let completeButton = "signUp.completeButton"
+        static let duplicateErrorText = "signUp.duplicateErrorText"
+    }
+}
+
 /// UI 테스트에서 사용하는 Launch Argument 정의
 enum LaunchArgument: String, CaseIterable {
     case forceLogout = "-forceLogout"
