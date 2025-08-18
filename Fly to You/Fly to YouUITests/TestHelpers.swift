@@ -12,7 +12,7 @@ enum LaunchArgument: String, CaseIterable {
     case forceLogout = "-forceLogout"
     case skipSplash = "-skipSplash"
     case disableAnimations = "-disableAnimations"
-    case uiTesting = "UITEST"
+    case uiTesting = "-uiTest"
 }
 
 /// UI 테스트를 위한 XCUIApplication 확장
