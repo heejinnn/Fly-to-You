@@ -217,3 +217,5 @@ poetry.toml
 pyrightconfig.json
 
 service-account-key.json
+
+CLAUDE.md

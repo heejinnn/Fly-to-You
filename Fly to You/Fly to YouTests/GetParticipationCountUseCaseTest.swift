@@ -101,7 +101,7 @@ final class GetParticipationCountUseCaseTest: XCTestCase {
     
     func test_execute_performance() throws {
         // Given
-        let users = (1...1000).map { index in
+        let users = (1...1000000).map { index in
             User(uid: "user\(index)", nickname: "User\(index)", createdAt: Date(), fcmToken: "", reportedCount: 0, blockedLetters: [])
         }
         
@@ -131,7 +131,7 @@ final class GetParticipationCountUseCaseTest: XCTestCase {
         // When & Then
         self.measure {
             let result = sut.execute(for: flight)
-            XCTAssertEqual(result, 1000)
+            XCTAssertEqual(result, 1000000)
         }
     }
 }
