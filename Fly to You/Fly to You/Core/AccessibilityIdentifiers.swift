@@ -17,6 +17,7 @@ struct AccessibilityIdentifiers {
         static let eulaDetailButton = "signUp.eulaDetailButton"
         static let completeButton = "signUp.completeButton"
         static let duplicateErrorText = "signUp.duplicateErrorText"
+        static let eulaSheet = "signUp.eulaSheet"
     }
     
     /// MainView 관련 식별자

@@ -15,6 +15,7 @@ struct TestAccessibilityIdentifiers {
         static let eulaDetailButton = "signUp.eulaDetailButton"
         static let completeButton = "signUp.completeButton"
         static let duplicateErrorText = "signUp.duplicateErrorText"
+        static let eulaSheet = "signUp.eulaSheet"
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  Fly_to_YouUITests.swift
+//  SignUpUITest.swift
 //  Fly to YouUITests
 //
 //  Created by 최희진 on 4/12/25.
@@ -7,19 +7,21 @@
 
 import XCTest
 
-final class Fly_to_YouUITests: XCTestCase {
+final class SignUpUITest: XCTestCase {
+    
+    var app: XCUIApplication!
 
     override func setUpWithError() throws {
+        app = XCUIApplication.launchForSignUpTest()
         continueAfterFailure = false
     }
 
     override func tearDownWithError() throws {
-
+        app = nil
     }
 
     @MainActor
     func testSignUpViewNicknameInput() throws {
-        let app = XCUIApplication.launchForSignUpTest()
         
         // SignUpView의 닉네임 입력 필드 찾기
         let nicknameTextField = app.textFields[TestAccessibilityIdentifiers.SignUp.nicknameTextField]
@@ -35,7 +37,6 @@ final class Fly_to_YouUITests: XCTestCase {
     
     @MainActor
     func testSignUpViewEULACheckbox() throws {
-        let app = XCUIApplication.launchForSignUpTest()
         
         // EULA 체크박스 찾기
         let eulaCheckbox = app.buttons[TestAccessibilityIdentifiers.SignUp.eulaCheckbox]
@@ -51,7 +52,6 @@ final class Fly_to_YouUITests: XCTestCase {
     
     @MainActor
     func testSignUpViewCompleteButtonState() throws {
-        let app = XCUIApplication.launchForSignUpTest()
         
         // 완료 버튼 찾기
         let completeButton = app.buttons[TestAccessibilityIdentifiers.SignUp.completeButton]
@@ -75,7 +75,6 @@ final class Fly_to_YouUITests: XCTestCase {
     
     @MainActor
     func testSignUpViewNicknameCharacterLimit() throws {
-        let app = XCUIApplication.launchForSignUpTest()
         
         // 닉네임 입력 필드에 10자 초과 입력 시도
         let nicknameTextField = app.textFields[TestAccessibilityIdentifiers.SignUp.nicknameTextField]
@@ -83,22 +82,26 @@ final class Fly_to_YouUITests: XCTestCase {
         nicknameTextField.tap()
         nicknameTextField.typeText("12345678901234567890") // 20자 입력
         
-        // 10자로 제한되는지 확인 (실제 값은 앱 로직에 따라 10자로 제한됨)
+        // 10자로 제한되는지 확인
         let textValue = nicknameTextField.value as? String ?? ""
         XCTAssertTrue(textValue.count <= 10, "닉네임은 10자를 초과할 수 없습니다")
     }
     
     @MainActor
     func testSignUpViewEULASheetPresentation() throws {
-        let app = XCUIApplication.launchForSignUpTest()
         
         // EULA 상세보기 버튼 클릭
         let eulaDetailButton = app.buttons[TestAccessibilityIdentifiers.SignUp.eulaDetailButton]
         XCTAssertTrue(eulaDetailButton.waitForExistence(timeout: 3), "EULA 상세보기 버튼이 존재해야 합니다")
         eulaDetailButton.tap()
         
-        app.swipeUp()
-        app.swipeDown()
+        // EULA 시트가 나타나는지 확인
+        let eulaSheet = app.scrollViews[TestAccessibilityIdentifiers.SignUp.eulaSheet]
+        XCTAssertTrue(eulaSheet.waitForExistence(timeout: 3), "EULA 시트가 표시되어야 합니다")
+        
+        // 스크롤 테스트
+        eulaSheet.swipeUp()
+        eulaSheet.swipeDown()
     }
 
     @MainActor
