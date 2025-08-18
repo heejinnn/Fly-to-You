@@ -37,7 +37,7 @@ extension XCUIApplication {
     /// SignUp 테스트를 위한 앱 시작 (로그아웃 상태)
     static func launchForSignUpTest() -> XCUIApplication {
         let app = XCUIApplication()
-        app.launch(with: [.forceLogout, .uiTesting])
+        app.launch(with: [.forceLogout, .uiTesting, .skipSplash])
         return app
     }
     
