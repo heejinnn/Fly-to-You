@@ -6,6 +6,7 @@
 //
 
 import XCTest
+@testable import Fly_to_You
 
 final class Fly_to_YouUITests: XCTestCase {
 
@@ -22,7 +23,7 @@ final class Fly_to_YouUITests: XCTestCase {
         let app = XCUIApplication.launchForSignUpTest()
         
         // SignUpView의 닉네임 입력 필드 찾기
-        let nicknameTextField = app.textFields["최대 10자까지 입력 가능"]
+        let nicknameTextField = app.textFields[AccessibilityIdentifiers.SignUp.nicknameTextField]
         XCTAssertTrue(nicknameTextField.waitForExistence(timeout: 3), "닉네임 입력 필드가 존재해야 합니다")
         
         // 닉네임 입력
@@ -38,14 +39,14 @@ final class Fly_to_YouUITests: XCTestCase {
         let app = XCUIApplication.launchForSignUpTest()
         
         // EULA 체크박스 찾기
-        let eulaCheckbox = app.buttons.matching(NSPredicate(format: "identifier CONTAINS 'checkmark' OR identifier CONTAINS 'square'")).firstMatch
+        let eulaCheckbox = app.buttons[AccessibilityIdentifiers.SignUp.eulaCheckbox]
         XCTAssertTrue(eulaCheckbox.waitForExistence(timeout: 3), "EULA 체크박스가 존재해야 합니다")
         
         // 체크박스 클릭
         eulaCheckbox.tap()
         
         // EULA 상세보기 버튼 확인
-        let eulaDetailButton = app.buttons["보기"]
+        let eulaDetailButton = app.buttons[AccessibilityIdentifiers.SignUp.eulaDetailButton]
         XCTAssertTrue(eulaDetailButton.exists, "EULA 상세보기 버튼이 존재해야 합니다")
     }
     
@@ -54,19 +55,19 @@ final class Fly_to_YouUITests: XCTestCase {
         let app = XCUIApplication.launchForSignUpTest()
         
         // 완료 버튼 찾기
-        let completeButton = app.buttons["완료"]
+        let completeButton = app.buttons[AccessibilityIdentifiers.SignUp.completeButton]
         XCTAssertTrue(completeButton.waitForExistence(timeout: 3), "완료 버튼이 존재해야 합니다")
         
         // 초기 상태에서는 완료 버튼이 비활성화되어 있어야 함
         XCTAssertFalse(completeButton.isEnabled, "초기 상태에서 완료 버튼은 비활성화되어야 합니다")
         
         // 닉네임 입력
-        let nicknameTextField = app.textFields["최대 10자까지 입력 가능"]
+        let nicknameTextField = app.textFields[AccessibilityIdentifiers.SignUp.nicknameTextField]
         nicknameTextField.tap()
         nicknameTextField.typeText("테스트")
         
         // EULA 체크박스 클릭
-        let eulaCheckbox = app.buttons.matching(NSPredicate(format: "identifier CONTAINS 'checkmark' OR identifier CONTAINS 'square'")).firstMatch
+        let eulaCheckbox = app.buttons[AccessibilityIdentifiers.SignUp.eulaCheckbox]
         eulaCheckbox.tap()
         
         // 완료 버튼이 활성화되어야 함
@@ -78,7 +79,7 @@ final class Fly_to_YouUITests: XCTestCase {
         let app = XCUIApplication.launchForSignUpTest()
         
         // 닉네임 입력 필드에 10자 초과 입력 시도
-        let nicknameTextField = app.textFields["최대 10자까지 입력 가능"]
+        let nicknameTextField = app.textFields[AccessibilityIdentifiers.SignUp.nicknameTextField]
         XCTAssertTrue(nicknameTextField.waitForExistence(timeout: 3), "닉네임 입력 필드가 존재해야 합니다")
         nicknameTextField.tap()
         nicknameTextField.typeText("12345678901234567890") // 20자 입력
@@ -93,7 +94,7 @@ final class Fly_to_YouUITests: XCTestCase {
         let app = XCUIApplication.launchForSignUpTest()
         
         // EULA 상세보기 버튼 클릭
-        let eulaDetailButton = app.buttons["보기"]
+        let eulaDetailButton = app.buttons[AccessibilityIdentifiers.SignUp.eulaDetailButton]
         XCTAssertTrue(eulaDetailButton.waitForExistence(timeout: 3), "EULA 상세보기 버튼이 존재해야 합니다")
         eulaDetailButton.tap()
         
