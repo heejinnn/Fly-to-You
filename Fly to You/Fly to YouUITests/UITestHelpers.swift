@@ -1,5 +1,5 @@
 //
-//  TestHelpers.swift
+//  UITestHelpers.swift
 //  Fly to YouUITests
 //
 //  Created by Claude on 8/18/25.
@@ -16,6 +16,28 @@ struct TestAccessibilityIdentifiers {
         static let completeButton = "signUp.completeButton"
         static let duplicateErrorText = "signUp.duplicateErrorText"
         static let eulaSheet = "signUp.eulaSheet"
+    }
+    
+    struct Main {
+        static let flyButton = "main.flyButton"
+    }
+    
+    struct SelectSubject {
+        static let nextButton = "selectSubject.nextButton"
+        static let customTopicTextField = "selectSubject.customTopicTextField"
+        static let topicButton = "selectSubject.topicButton"
+    }
+    
+    struct SendLetter {
+        static let flyButton = "sendLetter.flyButton"
+        static let toUserButton = "sendLetter.toUserButton"
+        static let messageTextEditor = "sendLetter.messageTextEditor"
+        static let userListSheet = "sendLetter.userListSheet"
+    }
+    
+    struct FlyAnimation {
+        static let homeButton = "flyAnimation.homeButton"
+        static let completionText = "flyAnimation.completionText"
     }
 }
 

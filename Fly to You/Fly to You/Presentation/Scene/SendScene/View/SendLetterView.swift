@@ -50,11 +50,13 @@ struct SendLetterView: View{
                         sendLetter()
                     }
                 })
+                .accessibilityIdentifier(AccessibilityIdentifiers.SendLetter.flyButton)
             }
         }
         .sheet(isPresented: $showUserListSheet) {
             UserListSheetView(toUser: $toUser)
                 .presentationDetents([.medium, .large])
+                .accessibilityIdentifier(AccessibilityIdentifiers.SendLetter.userListSheet)
         }
 
     }

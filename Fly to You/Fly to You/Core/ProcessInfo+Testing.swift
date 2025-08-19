@@ -10,7 +10,7 @@ import Foundation
 extension ProcessInfo {
     /// UI 테스트 실행 여부 확인
     var isUITesting: Bool {
-        return arguments.contains("UITEST")
+        return arguments.contains("-uiTest")
     }
     
     /// 강제 로그아웃 상태로 시작할지 여부

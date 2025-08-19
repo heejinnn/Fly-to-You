@@ -68,6 +68,7 @@ struct MainView: View {
                     alertLimited = false
                 }
             }
+            .accessibilityIdentifier(AccessibilityIdentifiers.Main.tabView)
         }
     }
     
@@ -82,6 +83,7 @@ struct MainView: View {
             BottomButton(title: "비행기 날리기", action: {
                 checkLimited()
             })
+            .accessibilityIdentifier(AccessibilityIdentifiers.Main.flyButton)
         }
     }
     
@@ -98,26 +100,6 @@ struct MainView: View {
                 Log.fault("[MainView] - checkLimited() 실패 : \(error)")
             }
         }
-    }
-}
-
-struct ShakingImage: View {
-    @State private var isShaking = false
-
-    var body: some View {
-        Image(.paperplane)
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 200, height: 200)
-            .rotationEffect(.degrees(isShaking ? 5 : -5)) // 좌우로 흔들기
-            .animation(
-                Animation.easeInOut(duration: 1)
-                    .repeatForever(autoreverses: true),
-                value: isShaking
-            )
-            .onAppear {
-                isShaking = true
-            }
     }
 }
 

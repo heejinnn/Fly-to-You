@@ -25,6 +25,7 @@ struct FlyAnimationView: View {
             Text("\(text)")
                 .font(.pretendard(.regular, size: 20))
                 .foregroundStyle(.gray3)
+                .accessibilityIdentifier(AccessibilityIdentifiers.FlyAnimation.completionText)
             
             Spacer()
             
@@ -32,6 +33,7 @@ struct FlyAnimationView: View {
                 BottomButton(title: "홈 화면으로", action: {
                     onHome()
                 })
+                .accessibilityIdentifier(AccessibilityIdentifiers.FlyAnimation.homeButton)
             }
         }
         .navigationBarBackButtonHidden(true)

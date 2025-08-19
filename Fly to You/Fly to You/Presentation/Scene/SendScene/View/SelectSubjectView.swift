@@ -28,6 +28,7 @@ struct SelectSubjectView: View {
                 }) {
                     SubjectCell(text: topic, isSelected: selectedTopic == topic)
                 }
+                .accessibilityIdentifier("\(AccessibilityIdentifiers.SelectSubject.topicButton)_\(topic)")
             }
             .onChange(of: customTopic) { oldValue, newValue in
                 if !newValue.isEmpty {
@@ -59,6 +60,7 @@ struct SelectSubjectView: View {
                     Text("다음")
                         .foregroundStyle(.blue1)
                 })
+                .accessibilityIdentifier(AccessibilityIdentifiers.SelectSubject.nextButton)
             }
         }
         .onAppear {
@@ -74,6 +76,7 @@ struct SelectSubjectView: View {
                 .font(.pretendard(.light, size: 15))
                 .foregroundColor(.black)
                 .padding(.leading, 15)
+                .accessibilityIdentifier(AccessibilityIdentifiers.SelectSubject.customTopicTextField)
 
             Spacer()
         }

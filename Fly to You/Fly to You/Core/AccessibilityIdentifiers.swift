@@ -26,6 +26,28 @@ struct AccessibilityIdentifiers {
         static let flightTab = "main.flightTab"
         static let mapTab = "main.mapTab"
         static let profileTab = "main.profileTab"
+        static let flyButton = "main.flyButton"
+    }
+    
+    /// SelectSubjectView 관련 식별자
+    struct SelectSubject {
+        static let nextButton = "selectSubject.nextButton"
+        static let customTopicTextField = "selectSubject.customTopicTextField"
+        static let topicButton = "selectSubject.topicButton"
+    }
+    
+    /// SendLetterView 관련 식별자
+    struct SendLetter {
+        static let flyButton = "sendLetter.flyButton"
+        static let toUserButton = "sendLetter.toUserButton"
+        static let messageTextEditor = "sendLetter.messageTextEditor"
+        static let userListSheet = "sendLetter.userListSheet"
+    }
+    
+    /// FlyAnimationView 관련 식별자
+    struct FlyAnimation {
+        static let homeButton = "flyAnimation.homeButton"
+        static let completionText = "flyAnimation.completionText"
     }
     
     /// 공통 UI 요소 식별자

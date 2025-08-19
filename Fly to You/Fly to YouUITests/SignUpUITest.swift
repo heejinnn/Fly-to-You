@@ -78,7 +78,7 @@ final class SignUpUITest: XCTestCase {
         
         // 닉네임 입력 필드에 10자 초과 입력 시도
         let nicknameTextField = app.textFields[TestAccessibilityIdentifiers.SignUp.nicknameTextField]
-        XCTAssertTrue(nicknameTextField.waitForExistence(timeout: 10), "닉네임 입력 필드가 존재해야 합니다")
+        XCTAssertTrue(nicknameTextField.waitForExistence(timeout: 3), "닉네임 입력 필드가 존재해야 합니다")
         nicknameTextField.tap()
         nicknameTextField.typeText("12345678901234567890") // 20자 입력
         

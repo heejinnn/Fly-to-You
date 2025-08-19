@@ -69,6 +69,7 @@ struct PaperPlaneInput: View{
                     .padding(.vertical, 8)
                 }
                 .buttonStyle(PlainButtonStyle())
+                .accessibilityIdentifier(AccessibilityIdentifiers.SendLetter.toUserButton)
             }
             .padding(.top, 10)
 
@@ -82,6 +83,7 @@ struct PaperPlaneInput: View{
                 .frame(height: 300)
                 .font(.gaRamYeonGgoc(size: 20))
                 .scrollContentBackground(.hidden)
+                .accessibilityIdentifier(AccessibilityIdentifiers.SendLetter.messageTextEditor)
                 .overlay(
                     VStack {
                         if message.isEmpty {
