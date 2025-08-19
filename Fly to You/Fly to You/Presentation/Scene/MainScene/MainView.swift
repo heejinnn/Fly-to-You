@@ -68,7 +68,6 @@ struct MainView: View {
                     alertLimited = false
                 }
             }
-            .accessibilityIdentifier(AccessibilityIdentifiers.Main.tabView)
         }
     }
     
@@ -83,7 +82,6 @@ struct MainView: View {
             BottomButton(title: "비행기 날리기", action: {
                 checkLimited()
             })
-            .accessibilityIdentifier(AccessibilityIdentifiers.Main.flyButton)
         }
     }
     

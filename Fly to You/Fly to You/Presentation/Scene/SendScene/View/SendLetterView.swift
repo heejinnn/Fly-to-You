@@ -56,7 +56,6 @@ struct SendLetterView: View{
         .sheet(isPresented: $showUserListSheet) {
             UserListSheetView(toUser: $toUser)
                 .presentationDetents([.medium, .large])
-                .accessibilityIdentifier(AccessibilityIdentifiers.SendLetter.userListSheet)
         }
 
     }
@@ -72,15 +71,19 @@ struct SendLetterView: View{
     
     private func sendLetter(){
         if route == .start{
-            viewModelWrapper.viewModel.sendLetter(toUid: toUser?.uid ?? "", topicData: topicData, message: message){ result in
-                switch result{
-                case .success:
-                    Log.info("[SendLetterView] - 비행기 날리기 성공")
-                    DispatchQueue.main.async {
-                        viewModelWrapper.path.append(.flyAnimation)
+            if ProcessInfo.processInfo.isUITesting{
+                viewModelWrapper.path.append(.flyAnimation)
+            } else {
+                viewModelWrapper.viewModel.sendLetter(toUid: toUser?.uid ?? "", topicData: topicData, message: message){ result in
+                    switch result{
+                    case .success:
+                        Log.info("[SendLetterView] - 비행기 날리기 성공")
+                        DispatchQueue.main.async {
+                            viewModelWrapper.path.append(.flyAnimation)
+                        }
+                    case .failure(let error):
+                        Log.error(error)
                     }
-                case .failure(let error):
-                    Log.error(error)
                 }
             }
         } else{

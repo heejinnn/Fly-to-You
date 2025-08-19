@@ -20,5 +20,6 @@ struct BackButton: View{
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)
         }
+        .accessibilityIdentifier(AccessibilityIdentifiers.Common.backButton)
     }
 }

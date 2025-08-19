@@ -47,6 +47,7 @@ struct UserListSheetView: View {
                     .contentShape(Rectangle())
                 }
                 .buttonStyle(PlainButtonStyle())
+                .accessibilityIdentifier(AccessibilityIdentifiers.SendLetter.userListButton)
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)

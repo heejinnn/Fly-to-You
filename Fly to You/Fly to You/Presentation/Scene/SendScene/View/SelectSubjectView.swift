@@ -28,7 +28,7 @@ struct SelectSubjectView: View {
                 }) {
                     SubjectCell(text: topic, isSelected: selectedTopic == topic)
                 }
-                .accessibilityIdentifier("\(AccessibilityIdentifiers.SelectSubject.topicButton)_\(topic)")
+                .accessibilityIdentifier(AccessibilityIdentifiers.SelectSubject.topicButton)
             }
             .onChange(of: customTopic) { oldValue, newValue in
                 if !newValue.isEmpty {

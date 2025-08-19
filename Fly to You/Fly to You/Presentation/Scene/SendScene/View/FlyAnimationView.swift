@@ -33,7 +33,7 @@ struct FlyAnimationView: View {
                 BottomButton(title: "홈 화면으로", action: {
                     onHome()
                 })
-                .accessibilityIdentifier(AccessibilityIdentifiers.FlyAnimation.homeButton)
+                .accessibilityIdentifier(AccessibilityIdentifiers.Common.bottomButton)
             }
         }
         .navigationBarBackButtonHidden(true)
