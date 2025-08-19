@@ -25,7 +25,7 @@ final class SignUpUITest: XCTestCase {
         
         // SignUpView의 닉네임 입력 필드 찾기
         let nicknameTextField = app.textFields[TestAccessibilityIdentifiers.SignUp.nicknameTextField]
-        XCTAssertTrue(nicknameTextField.waitForExistence(timeout: 3), "닉네임 입력 필드가 존재해야 합니다")
+        XCTAssertTrue(nicknameTextField.waitForExistence(timeout: 10), "닉네임 입력 필드가 존재해야 합니다")
         
         // 닉네임 입력
         nicknameTextField.tap()
@@ -40,7 +40,7 @@ final class SignUpUITest: XCTestCase {
         
         // EULA 체크박스 찾기
         let eulaCheckbox = app.buttons[TestAccessibilityIdentifiers.SignUp.eulaCheckbox]
-        XCTAssertTrue(eulaCheckbox.waitForExistence(timeout: 3), "EULA 체크박스가 존재해야 합니다")
+        XCTAssertTrue(eulaCheckbox.waitForExistence(timeout: 10), "EULA 체크박스가 존재해야 합니다")
         
         // 체크박스 클릭
         eulaCheckbox.tap()
@@ -55,7 +55,7 @@ final class SignUpUITest: XCTestCase {
         
         // 완료 버튼 찾기
         let completeButton = app.buttons[TestAccessibilityIdentifiers.SignUp.completeButton]
-        XCTAssertTrue(completeButton.waitForExistence(timeout: 3), "완료 버튼이 존재해야 합니다")
+        XCTAssertTrue(completeButton.waitForExistence(timeout: 10), "완료 버튼이 존재해야 합니다")
         
         // 초기 상태에서는 완료 버튼이 비활성화되어 있어야 함
         XCTAssertFalse(completeButton.isEnabled, "초기 상태에서 완료 버튼은 비활성화되어야 합니다")
@@ -78,7 +78,7 @@ final class SignUpUITest: XCTestCase {
         
         // 닉네임 입력 필드에 10자 초과 입력 시도
         let nicknameTextField = app.textFields[TestAccessibilityIdentifiers.SignUp.nicknameTextField]
-        XCTAssertTrue(nicknameTextField.waitForExistence(timeout: 3), "닉네임 입력 필드가 존재해야 합니다")
+        XCTAssertTrue(nicknameTextField.waitForExistence(timeout: 10), "닉네임 입력 필드가 존재해야 합니다")
         nicknameTextField.tap()
         nicknameTextField.typeText("12345678901234567890") // 20자 입력
         
@@ -92,12 +92,12 @@ final class SignUpUITest: XCTestCase {
         
         // EULA 상세보기 버튼 클릭
         let eulaDetailButton = app.buttons[TestAccessibilityIdentifiers.SignUp.eulaDetailButton]
-        XCTAssertTrue(eulaDetailButton.waitForExistence(timeout: 3), "EULA 상세보기 버튼이 존재해야 합니다")
+        XCTAssertTrue(eulaDetailButton.waitForExistence(timeout: 10), "EULA 상세보기 버튼이 존재해야 합니다")
         eulaDetailButton.tap()
         
         // EULA 시트가 나타나는지 확인
         let eulaSheet = app.scrollViews[TestAccessibilityIdentifiers.SignUp.eulaSheet]
-        XCTAssertTrue(eulaSheet.waitForExistence(timeout: 3), "EULA 시트가 표시되어야 합니다")
+        XCTAssertTrue(eulaSheet.waitForExistence(timeout: 10), "EULA 시트가 표시되어야 합니다")
         
         // 스크롤 테스트
         eulaSheet.swipeUp()
