@@ -115,43 +115,4 @@ extension XCUIApplication {
     func debugPrintButtons() {
         debugPrintElements(ofType: .button)
     }
-    
-    /// Sheet 닫기를 위한 다양한 방법 시도
-    func dismissSheet(timeout: TimeInterval = 3.0) -> Bool {
-        // 방법 1: 시트 외부 영역 탭 (상단 영역)
-        let coordinate = self.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.1))
-        coordinate.tap()
-        
-        // 시트가 닫혔는지 확인
-        if !hasVisibleSheet(timeout: 1.0) {
-            return true
-        }
-        
-        // 방법 2: 아래로 스와이프
-        let startCoordinate = self.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.3))
-        let endCoordinate = self.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
-        startCoordinate.press(forDuration: 0.1, thenDragTo: endCoordinate)
-        
-        // 시트가 닫혔는지 확인
-        if !hasVisibleSheet(timeout: timeout) {
-            return true
-        }
-        
-        // 방법 3: Escape 키 (iOS 시뮬레이터에서 사용 가능)
-        if ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] != nil {
-            // 시뮬레이터에서만 사용 가능한 키보드 단축키
-            self.typeText("\u{1B}") // ESC 키
-            
-            if !hasVisibleSheet(timeout: 1.0) {
-                return true
-            }
-        }
-        
-        return false
-    }
-    
-    /// 현재 시트가 표시되어 있는지 확인
-    private func hasVisibleSheet(timeout: TimeInterval) -> Bool {
-        return sheets.firstMatch.waitForExistence(timeout: timeout)
-    }
 }
