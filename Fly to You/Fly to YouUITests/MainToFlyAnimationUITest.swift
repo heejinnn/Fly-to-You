@@ -26,9 +26,10 @@ final class MainToFlyAnimationUITest: XCTestCase {
         app = nil
     }
     
-    //MARK: Navigation Test
+    //MARK: - Navigation Tests
     
     /// MainView에서 SelectSubjectView로의 네비게이션만 테스트
+    @MainActor
     func testNavigationFromMainToSelectSubject() throws {
         // Given: MainView에서 시작
         let mainFlyButton = findButton(identifier: TestAccessibilityIdentifiers.Common.bottomButton)
@@ -43,6 +44,7 @@ final class MainToFlyAnimationUITest: XCTestCase {
     }
     
     /// SelectSubjectView에서 SendLetterView로의 네비게이션만 테스트
+    @MainActor
     func testNavigationFromSelectSubjectToSendLetter() throws {
         // Given: 주제가 선택된 SelectSubjectView 상태
         navigateToSelectSubjectView()
@@ -57,6 +59,7 @@ final class MainToFlyAnimationUITest: XCTestCase {
     }
     
     /// SendLetterView에서 FlyAnimationView로의 네비게이션만 테스트
+    @MainActor
     func testNavigationFromSendLetterToFlyAnimation() throws {
         // Given: 모든 정보가 입력된 SendLetterView 상태
         navigateToSelectSubjectView()
@@ -74,6 +77,7 @@ final class MainToFlyAnimationUITest: XCTestCase {
     }
     
     /// FlyAnimationView에서 MainView로의 네비게이션만 테스트
+    @MainActor
     func testNavigationFromFlyAnimationToMain() throws {
         // Given: 애니메이션이 완료된 FlyAnimationView 상태
         navigateToSelectSubjectView()
@@ -96,6 +100,7 @@ final class MainToFlyAnimationUITest: XCTestCase {
     }
     
     /// SelectSubjectView에서 MainView로의 백 네비게이션만 테스트
+    @MainActor
     func testBackNavigationFromSelectSubjectToMain() throws {
         // Given: SelectSubjectView에서 시작
         navigateToSelectSubjectView()
@@ -111,6 +116,7 @@ final class MainToFlyAnimationUITest: XCTestCase {
     }
     
     /// SendLetterView에서 SelectSubjectView로의 백 네비게이션만 테스트
+    @MainActor
     func testBackNavigationFromSendLetterToSelectSubject() throws {
         // Given: SendLetterView에서 시작
         navigateToSelectSubjectView()
@@ -127,9 +133,10 @@ final class MainToFlyAnimationUITest: XCTestCase {
         XCTAssertTrue(nextButton.waitForExistence(timeout: 3), "백 버튼 탭 후 SelectSubjectView로 돌아가지 않음")
     }
     
-    //MARK: 기능 테스트
+    //MARK: - UI Feature Tests
     
     /// 첫 번째 주제 선택 기능만 테스트
+    @MainActor
     func testFirstTopicSelection() throws {
         // Given: SelectSubjectView에서 시작
         navigateToSelectSubjectView()
@@ -148,6 +155,7 @@ final class MainToFlyAnimationUITest: XCTestCase {
     }
     
     /// 커스텀 주제 입력 기능만 테스트
+    @MainActor
     func testCustomTopicInput() throws {
         // Given: SelectSubjectView에서 시작
         navigateToSelectSubjectView()
@@ -161,6 +169,7 @@ final class MainToFlyAnimationUITest: XCTestCase {
     }
     
     /// 커스텀 주제 표시 기능만 테스트
+    @MainActor
     func testCustomTopicDisplay() throws {
         // Given: 커스텀 주제가 입력된 상태
         navigateToSelectSubjectView()
@@ -175,6 +184,7 @@ final class MainToFlyAnimationUITest: XCTestCase {
     }
     
     /// 사용자 선택 기능만 테스트
+    @MainActor
     func testUserSelection() throws {
         // Given: SendLetterView에서 시작
         navigateToSelectSubjectView()
@@ -190,6 +200,7 @@ final class MainToFlyAnimationUITest: XCTestCase {
     }
     
     /// 메시지 입력 기능만 테스트
+    @MainActor
     func testMessageInput() throws {
         // Given: 사용자가 선택된 SendLetterView 상태
         navigateToSelectSubjectView()
@@ -206,6 +217,7 @@ final class MainToFlyAnimationUITest: XCTestCase {
     }
     
     /// 애니메이션 진행 상태 표시만 테스트
+    @MainActor
     func testAnimationProgressDisplay() throws {
         // Given: FlyAnimationView가 표시된 상태
         navigateToSelectSubjectView()
@@ -224,6 +236,7 @@ final class MainToFlyAnimationUITest: XCTestCase {
     }
     
     /// 애니메이션 완료 상태 표시만 테스트
+    @MainActor
     func testAnimationCompletionDisplay() throws {
         // Given: 애니메이션이 진행 중인 상태
         navigateToSelectSubjectView()
@@ -245,6 +258,7 @@ final class MainToFlyAnimationUITest: XCTestCase {
     }
     
     /// 주제 미선택 시 유효성 검사만 테스트
+    @MainActor
     func testTopicSelectionValidation() throws {
         // Given: SelectSubjectView에서 시작
         navigateToSelectSubjectView()
@@ -258,6 +272,7 @@ final class MainToFlyAnimationUITest: XCTestCase {
     }
     
     /// 필수 정보 미입력 시 날리기 버튼 유효성 검사만 테스트
+    @MainActor
     func testSendLetterValidationWithMissingInfo() throws {
         // Given: 주제만 선택된 SendLetterView 상태 (받는 사람, 메시지 없음)
         navigateToSelectSubjectView()
@@ -282,6 +297,7 @@ extension MainToFlyAnimationUITest {
     // MARK: - Navigation Helper Methods
     
     /// MainView -> SelectSubjectView로 이동
+    @MainActor
     private func navigateToSelectSubjectView() {
         let mainFlyButton = findButton(identifier: TestAccessibilityIdentifiers.Common.bottomButton)
         XCTAssertTrue(mainFlyButton.exists, "MainView의 비행기 날리기 버튼이 존재하지 않음")
@@ -289,6 +305,7 @@ extension MainToFlyAnimationUITest {
     }
     
     /// SelectSubjectView -> SendLetterView로 이동
+    @MainActor
     private func navigateToSendLetterView() {
         let nextButton = findNextButton()
         XCTAssertTrue(nextButton.isEnabled, "주제 선택 후 다음 버튼이 활성화되지 않음")
@@ -296,6 +313,7 @@ extension MainToFlyAnimationUITest {
     }
     
     /// SendLetterView -> FlyAnimationView로 이동
+    @MainActor
     private func navigateToFlyAnimationView() {
         let sendFlyButton = findFlyButton()
         XCTAssertTrue(sendFlyButton.exists, "SendLetterView의 날리기 버튼이 존재하지 않음")
@@ -305,6 +323,7 @@ extension MainToFlyAnimationUITest {
     // MARK: - Action Helper Methods
     
     /// 첫 번째 주제 선택
+    @MainActor
     private func selectFirstTopic() {
         let firstTopicButton = app.buttons[TestAccessibilityIdentifiers.SelectSubject.topicButton].firstMatch
         XCTAssertTrue(firstTopicButton.waitForExistence(timeout: 3), "첫 번째 주제 버튼이 나타나지 않음")
@@ -312,6 +331,7 @@ extension MainToFlyAnimationUITest {
     }
     
     /// 커스텀 주제 입력
+    @MainActor
     private func enterCustomTopic() {
         let customTopicTextField = app.textFields[TestAccessibilityIdentifiers.SelectSubject.customTopicTextField]
         XCTAssertTrue(customTopicTextField.waitForExistence(timeout: 5), "커스텀 주제 입력 필드가 나타나지 않음")
@@ -321,6 +341,7 @@ extension MainToFlyAnimationUITest {
     }
     
     /// 첫 번째 사용자 선택
+    @MainActor
     private func selectFirstUser() {
         let toUserButton = app.buttons[TestAccessibilityIdentifiers.SendLetter.toUserButton]
         XCTAssertTrue(toUserButton.waitForExistence(timeout: 5), "SendLetterView의 받는 사람 버튼이 나타나지 않음")
@@ -344,6 +365,7 @@ extension MainToFlyAnimationUITest {
     }
     
     /// 테스트 메시지 입력
+    @MainActor
     private func enterTestMessage() -> String {
         let messageTextEditor = app.textViews[TestAccessibilityIdentifiers.SendLetter.messageTextEditor]
         XCTAssertTrue(messageTextEditor.waitForExistence(timeout: 3), "메시지 입력 필드가 나타나지 않음")
@@ -364,7 +386,7 @@ extension MainToFlyAnimationUITest {
         return app.buttons[identifier]
     }
     
-    /// 다음 버튼 찾기 (fallback 포함)
+    /// 다음 버튼 찾기
     private func findNextButton() -> XCUIElement {
         let nextById = app.buttons[TestAccessibilityIdentifiers.SelectSubject.nextButton]
         return nextById.exists ? nextById : app.buttons["다음"]

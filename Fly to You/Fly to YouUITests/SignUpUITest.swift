@@ -23,29 +23,29 @@ final class SignUpUITest: XCTestCase {
     @MainActor
     func testSignUpViewNicknameInput() throws {
         
-        // SignUpView의 닉네임 입력 필드 찾기
+        // Given: SignUpView의 닉네임 입력 필드 존재
         let nicknameTextField = app.textFields[TestAccessibilityIdentifiers.SignUp.nicknameTextField]
         XCTAssertTrue(nicknameTextField.waitForExistence(timeout: 10), "닉네임 입력 필드가 존재해야 합니다")
         
-        // 닉네임 입력
+        // When: 닉네임 입력
         nicknameTextField.tap()
         nicknameTextField.typeText("테스트닉네임")
         
-        // 입력된 텍스트 확인
+        // Then: 입력된 텍스트 확인
         XCTAssertEqual(nicknameTextField.value as? String, "테스트닉네임", "입력한 닉네임이 표시되어야 합니다")
     }
     
     @MainActor
     func testSignUpViewEULACheckbox() throws {
         
-        // EULA 체크박스 찾기
+        // Given: EULA 체크박스 존재
         let eulaCheckbox = app.buttons[TestAccessibilityIdentifiers.SignUp.eulaCheckbox]
         XCTAssertTrue(eulaCheckbox.waitForExistence(timeout: 10), "EULA 체크박스가 존재해야 합니다")
         
-        // 체크박스 클릭
+        // When: 체크박스 클릭
         eulaCheckbox.tap()
         
-        // EULA 상세보기 버튼 확인
+        // Then: EULA 상세보기 버튼 존재 확인
         let eulaDetailButton = app.buttons[TestAccessibilityIdentifiers.SignUp.eulaDetailButton]
         XCTAssertTrue(eulaDetailButton.exists, "EULA 상세보기 버튼이 존재해야 합니다")
     }
@@ -53,36 +53,38 @@ final class SignUpUITest: XCTestCase {
     @MainActor
     func testSignUpViewCompleteButtonState() throws {
         
-        // 완료 버튼 찾기
+        // Given: 완료 버튼 존재
         let completeButton = app.buttons[TestAccessibilityIdentifiers.SignUp.completeButton]
         XCTAssertTrue(completeButton.waitForExistence(timeout: 10), "완료 버튼이 존재해야 합니다")
         
         // 초기 상태에서는 완료 버튼이 비활성화되어 있어야 함
         XCTAssertFalse(completeButton.isEnabled, "초기 상태에서 완료 버튼은 비활성화되어야 합니다")
         
-        // 닉네임 입력
+        // When: 닉네임 입력, EULA 체크박스 클릭
         let nicknameTextField = app.textFields[TestAccessibilityIdentifiers.SignUp.nicknameTextField]
         nicknameTextField.tap()
         nicknameTextField.typeText("테스트")
-        
-        // EULA 체크박스 클릭
+    
         let eulaCheckbox = app.buttons[TestAccessibilityIdentifiers.SignUp.eulaCheckbox]
         eulaCheckbox.tap()
         
-        // 완료 버튼이 활성화되어야 함
+        // Then: 완료 버튼이 활성화되어야 함
         XCTAssertTrue(completeButton.isEnabled, "닉네임 입력과 EULA 동의 후 완료 버튼이 활성화되어야 합니다")
     }
     
     @MainActor
     func testSignUpViewNicknameCharacterLimit() throws {
         
-        // 닉네임 입력 필드에 10자 초과 입력 시도
+        // Given: 닉네임 입력 필드 존재
+        
         let nicknameTextField = app.textFields[TestAccessibilityIdentifiers.SignUp.nicknameTextField]
         XCTAssertTrue(nicknameTextField.waitForExistence(timeout: 3), "닉네임 입력 필드가 존재해야 합니다")
+        
+        // When: 닉네임 입력 필드에 10자 초과 입력 시도
         nicknameTextField.tap()
         nicknameTextField.typeText("12345678901234567890") // 20자 입력
         
-        // 10자로 제한되는지 확인
+        // Then: 10자로 제한되는지 확인
         let textValue = nicknameTextField.value as? String ?? ""
         XCTAssertTrue(textValue.count <= 10, "닉네임은 10자를 초과할 수 없습니다")
     }
@@ -90,16 +92,17 @@ final class SignUpUITest: XCTestCase {
     @MainActor
     func testSignUpViewEULASheetPresentation() throws {
         
-        // EULA 상세보기 버튼 클릭
+        // Given: EULA 상세보기 버튼 존재
         let eulaDetailButton = app.buttons[TestAccessibilityIdentifiers.SignUp.eulaDetailButton]
         XCTAssertTrue(eulaDetailButton.waitForExistence(timeout: 10), "EULA 상세보기 버튼이 존재해야 합니다")
         eulaDetailButton.tap()
         
-        // EULA 시트가 나타나는지 확인
+        // When: EULA 상세보기 버튼 클릭
+        eulaDetailButton.tap()
+        
+        // Then: EULA 상세보기 화면 존재 확인
         let eulaSheet = app.scrollViews[TestAccessibilityIdentifiers.SignUp.eulaSheet]
         XCTAssertTrue(eulaSheet.waitForExistence(timeout: 10), "EULA 시트가 표시되어야 합니다")
-        
-        // 스크롤 테스트
         eulaSheet.swipeUp()
         eulaSheet.swipeDown()
     }
