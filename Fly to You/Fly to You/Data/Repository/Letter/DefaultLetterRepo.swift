@@ -86,7 +86,8 @@ final class DefaultLetterRepo: LetterRepo {
     }
     
     func blockLetter(letterId: String) async throws {
-        guard let currentUid = Auth.auth().currentUser?.uid, !letterId.isEmpty else { return }
+        let currentUid = try sessionService.getCurrentUserId()
+        guard !letterId.isEmpty else { return }
         
         try await db.collection("users").document(currentUid).updateData([
             "blockedLetters": FieldValue.arrayUnion([letterId])
@@ -94,7 +95,7 @@ final class DefaultLetterRepo: LetterRepo {
     }
      
     func getBlockedLetters() async throws -> [String] {
-        guard let currentUid = Auth.auth().currentUser?.uid else { return []}
+        let currentUid = try sessionService.getCurrentUserId()
         
         let document = try await db.collection("users").document(currentUid).getDocument()
         return document.data()?["blockedLetters"] as? [String] ?? []
