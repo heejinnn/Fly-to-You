@@ -29,11 +29,13 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
     private let fetchLetterUseCase: FetchLettersUseCase
     private let relayLetterUseCase: RelayLetterUseCase
     private let blockLetterUseCase: BlockLetterUseCase
+    private let sessionService: UserSessionService
     
-    init(fetchLetterUseCase: FetchLettersUseCase, relayLetterUseCase: RelayLetterUseCase, blockLetterUseCase: BlockLetterUseCase) {
+    init(fetchLetterUseCase: FetchLettersUseCase, relayLetterUseCase: RelayLetterUseCase, blockLetterUseCase: BlockLetterUseCase, sessionService: UserSessionService) {
         self.fetchLetterUseCase = fetchLetterUseCase
         self.relayLetterUseCase = relayLetterUseCase
         self.blockLetterUseCase = blockLetterUseCase
+        self.sessionService = sessionService
     }
 
     func relayLetter(toUid: String, topicData: TopicModel, message: String, letter: Letter, completion: @escaping (Result<Void, Error>) -> Void){
@@ -48,9 +50,14 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
     }
     
     func observeLetters() {
-        guard let uid = UserDefaults.standard.string(forKey: "uid") else { return }
-        fetchLetterUseCase.observeReceivedLetters(toUid: uid) { [weak self] letters in
-            self?.letters = letters
+        do {
+            let uid = try sessionService.getCurrentUserId()
+            fetchLetterUseCase.observeReceivedLetters(toUid: uid) { [weak self] letters in
+                self?.letters = letters
+            }
+        } catch {
+            // 세션 에러 처리 (로그인 필요 등)
+            print("Session error: \(error.localizedDescription)")
         }
     }
     

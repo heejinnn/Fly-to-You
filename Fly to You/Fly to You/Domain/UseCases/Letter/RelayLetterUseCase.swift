@@ -16,15 +16,18 @@ public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
     private let userRepo: UserRepo
     private let flightRepo: FlightRepo
     private let letterRepo: LetterRepo
+    private let sessionService: UserSessionService
     
     init(
         userRepo: UserRepo,
         flightRepo: FlightRepo,
-        letterRepo: LetterRepo
+        letterRepo: LetterRepo,
+        sessionService: UserSessionService
     ) {
         self.userRepo = userRepo
         self.flightRepo = flightRepo
         self.letterRepo = letterRepo
+        self.sessionService = sessionService
     }
     
     func send(
@@ -34,7 +37,7 @@ public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
         message: String,
         previousLetter: Letter
     ) async throws -> Letter {
-        guard let fromUid = UserDefaults.standard.string(forKey: "uid") else { throw FirebaseError.validationError(message: "uid not found") }
+        let fromUid = try sessionService.getCurrentUserId()
         
         let letter = Letter(
             id: UUID().uuidString,
