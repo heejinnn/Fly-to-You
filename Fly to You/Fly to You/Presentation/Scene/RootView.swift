@@ -22,7 +22,10 @@ struct RootView: View {
             }
         }
         .onAppear {
-            if Auth.auth().currentUser != nil, ((UserDefaults.standard.string(forKey: "uid")?.isEmpty) != nil) {
+            // UI 테스트에서 강제 로그아웃 설정이 있으면 로그아웃 상태로 시작
+            if ProcessInfo.processInfo.shouldForceLogout{
+                appState.isLoggedIn = false
+            } else if Auth.auth().currentUser != nil, ((UserDefaults.standard.string(forKey: "uid")?.isEmpty) != nil) {
                 appState.isLoggedIn = true
             }
         }

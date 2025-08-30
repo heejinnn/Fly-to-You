@@ -20,5 +20,6 @@ struct EULADetailSheetView: View {
                     .padding(.vertical, Spacing.sm)
             }
         }
+        .accessibilityIdentifier(AccessibilityIdentifiers.SignUp.eulaSheet)
     }
 }

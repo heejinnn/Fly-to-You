@@ -20,9 +20,13 @@ struct YourApp: App {
                 SplashView(gifReady: $gifReady)
                     .onChange(of: gifReady, { oldValue, newValue in
                         if newValue {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                withAnimation {
-                                    showSplash = false
+                            if ProcessInfo.processInfo.shouldSkipSplash{
+                                showSplash = false
+                            } else{
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                                    withAnimation {
+                                        showSplash = false
+                                    }
                                 }
                             }
                         }

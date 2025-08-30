@@ -32,6 +32,7 @@ struct SignUpView: View {
                             .font(.pretendard(.light, size: 16))
                             .foregroundColor(.black)
                             .padding(.leading, Spacing.md)
+                            .accessibilityIdentifier(AccessibilityIdentifiers.SignUp.nicknameTextField)
                             .onChange(of: nickname) {
                                 if nickname.count > 10 {
                                     nickname = String(nickname.prefix(10))
@@ -53,41 +54,12 @@ struct SignUpView: View {
                             .font(.pretendard(.light, size: 13))
                             .foregroundColor(.red)
                             .padding(.top, Spacing.xxs)
+                            .accessibilityIdentifier(AccessibilityIdentifiers.SignUp.duplicateErrorText)
                     }
                 }
                 .padding(.horizontal, Spacing.md)
                 
-                // EULA 동의 체크박스
-                VStack(alignment: .leading, spacing: Spacing.sm) {
-                    HStack(spacing: Spacing.sm) {
-                        Button(action: {
-                            isEULAAccepted.toggle()
-                        }) {
-                            Image(systemName: isEULAAccepted ? "checkmark.square.fill" : "square")
-                                .foregroundColor(isEULAAccepted ? .blue1 : .gray1)
-                                .frame(width: 20, height: 20)
-                        }
-                        
-                        HStack(spacing: Spacing.xxs) {
-                            Text("사용권 계약에 동의합니다.")
-                                .font(.pretendard(.regular, size: 14))
-                            
-                            Text("(필수)")
-                                .font(.pretendard(.regular, size: 14))
-                                .foregroundColor(.red)
-                            
-                            Spacer()
-                            
-                            Button("보기") {
-                                showingEULA = true
-                            }
-                            .font(.pretendard(.regular, size: 14))
-                            .foregroundColor(.blue1)
-                        }
-                    }
-                    .padding(.horizontal, Spacing.md)
-                }
-                .padding(.top, Spacing.xs)
+                eulaCheckBox
                 
                 Spacer()
             }
@@ -105,6 +77,7 @@ struct SignUpView: View {
                             .foregroundStyle(isFormValid ? .blue1 : .gray1)
                     })
                     .disabled(!isFormValid)
+                    .accessibilityIdentifier(AccessibilityIdentifiers.SignUp.completeButton)
                 }
             }
         }
@@ -112,6 +85,42 @@ struct SignUpView: View {
             EULADetailSheetView()
         }
     }
+    
+    private var eulaCheckBox: some View {
+        VStack(alignment: .leading, spacing: Spacing.sm) {
+            HStack(spacing: Spacing.sm) {
+                Button(action: {
+                    isEULAAccepted.toggle()
+                }) {
+                    Image(systemName: isEULAAccepted ? "checkmark.square.fill" : "square")
+                        .foregroundColor(isEULAAccepted ? .blue1 : .gray1)
+                        .frame(width: 20, height: 20)
+                }
+                .accessibilityIdentifier(AccessibilityIdentifiers.SignUp.eulaCheckbox)
+                
+                HStack(spacing: Spacing.xxs) {
+                    Text("사용권 계약에 동의합니다.")
+                        .font(.pretendard(.regular, size: 14))
+                    
+                    Text("(필수)")
+                        .font(.pretendard(.regular, size: 14))
+                        .foregroundColor(.red)
+                    
+                    Spacer()
+                    
+                    Button("보기") {
+                        showingEULA = true
+                    }
+                    .font(.pretendard(.regular, size: 14))
+                    .foregroundColor(.blue1)
+                    .accessibilityIdentifier(AccessibilityIdentifiers.SignUp.eulaDetailButton)
+                }
+            }
+            .padding(.horizontal, Spacing.md)
+        }
+        .padding(.top, Spacing.xs)
+    }
+    
 }
 
 

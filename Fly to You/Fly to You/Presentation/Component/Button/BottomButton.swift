@@ -23,5 +23,6 @@ struct BottomButton: View {
         }
         .padding(.horizontal, Spacing.md)
         .buttonStyle(.plain)
+        .accessibilityIdentifier(AccessibilityIdentifiers.Common.bottomButton)
     }
 }
