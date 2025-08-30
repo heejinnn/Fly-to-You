@@ -10,8 +10,13 @@ import FirebaseAuth
 
 final class DefaultLetterRepo: LetterRepo {
     private let db = Firestore.firestore()
+    private let sessionService: UserSessionService
     private var receivedListener: ListenerRegistration?
     private var sentListener: ListenerRegistration?
+    
+    init(sessionService: UserSessionService) {
+        self.sessionService = sessionService
+    }
     
     func save(letter: Letter) async throws -> Letter {
         let document = db.collection("letters").document(letter.id)
