@@ -9,7 +9,7 @@
 
 import SwiftUI
 
-final class MainSceneDIContainer {
+final class MainSceneDIContainer: BaseDIContainer {
     // MARK: - Factory
 
     func makeMainFactory() -> DefaultMainFactory { // DefaultMainFactory를 생성하여 반환
@@ -33,7 +33,7 @@ final class MainSceneDIContainer {
         return DefaultUserRepo()
     }
     func makeLetterRepo() -> LetterRepo {
-        return DefaultLetterRepo()
+        return DefaultLetterRepo(sessionService: getUserSessionService())
     }
     func makeFlightRepo() -> FlightRepo {
         return DefaultFlightRepo()

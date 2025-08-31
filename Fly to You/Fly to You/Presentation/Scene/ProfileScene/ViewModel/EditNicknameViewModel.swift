@@ -13,6 +13,11 @@ final class EditNicknameViewModel: ObservableObject {
     @Published var duplicateError: Bool = false
 
     private let db = Firestore.firestore()
+    private let sessionService: UserSessionService
+    
+    init(sessionService: UserSessionService) {
+        self.sessionService = sessionService
+    }
 
     func updateNickname(completion: @escaping (Bool) -> Void) {
         let trimmed = nickname.trimmingCharacters(in: .whitespaces)
@@ -26,19 +31,25 @@ final class EditNicknameViewModel: ObservableObject {
                 return
             }
 
-            guard let uid = UserDefaults.standard.string(forKey: "uid") else { return }
+            do {
+                let uid = try sessionService.getCurrentUserId()
+                
+                db.collection("users").document(uid).updateData([
+                    "nickname": trimmed
+                ]) { [weak self] error in
+                    if let error = error {
+                        Log.error("닉네임 업데이트 실패: \(error)")
+                        completion(false)
+                        return
+                    }
 
-            db.collection("users").document(uid).updateData([
-                "nickname": trimmed
-            ]) { error in
-                if let error = error {
-                    Log.error("닉네임 업데이트 실패: \(error)")
-                    return
+                    self?.sessionService.saveUserSession(uid: uid, nickname: trimmed)
+                    self?.duplicateError = false
+                    completion(true)
                 }
-
-                UserDefaults.standard.set(trimmed, forKey: "nickname")
-                self.duplicateError = false
-                completion(true)
+            } catch {
+                Log.error("Session error: \(error.localizedDescription)")
+                completion(false)
             }
         }
         completion(false)

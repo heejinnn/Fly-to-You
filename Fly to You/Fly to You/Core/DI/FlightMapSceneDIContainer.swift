@@ -6,7 +6,7 @@
 //
 
 
-final class FlightMapSceneDIContainer {
+final class FlightMapSceneDIContainer: BaseDIContainer {
     // MARK: - Factory
 
     func makeFlightMapFactory() -> DefaultFlightMapFactory {
@@ -41,7 +41,7 @@ final class FlightMapSceneDIContainer {
     }
     
     func makeLetterRepo() -> LetterRepo {
-        return DefaultLetterRepo()
+        return DefaultLetterRepo(sessionService: getUserSessionService())
     }
     
     func makeFlightRepo() -> FlightRepo {

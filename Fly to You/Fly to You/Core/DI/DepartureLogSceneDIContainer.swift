@@ -5,7 +5,7 @@
 //  Created by 최희진 on 4/18/25.
 //
 
-final class DepartureLogSceneDIContainer{
+final class DepartureLogSceneDIContainer: BaseDIContainer {
     
     func makeDepartureLogFactory() -> DefaultDepartureLogFactory {
         let viewModelWrapper = makeDepatureLogViewModelWrapper()
@@ -43,7 +43,7 @@ final class DepartureLogSceneDIContainer{
     }
     
     func makeLetterRepo() -> LetterRepo {
-        return DefaultLetterRepo()
+        return DefaultLetterRepo(sessionService: getUserSessionService())
     }
     
     func makeFlightRepo() -> FlightRepo {
@@ -54,7 +54,7 @@ final class DepartureLogSceneDIContainer{
     // MARK: - View Model
     
     func makeDepartureLogViewModel() -> DepartureLogViewModel {
-        return DefaultDepartureLogViewModel(fetchLetterUseCase: makeFetchLettersUseCase(), editLetterUseCase: makeEditLettersUseCase(), deleteLetterUseCase: makeDeleteLettersUseCase())
+        return DefaultDepartureLogViewModel(fetchLetterUseCase: makeFetchLettersUseCase(), editLetterUseCase: makeEditLettersUseCase(), deleteLetterUseCase: makeDeleteLettersUseCase(), sessionService: getUserSessionService())
     }
 
     // MARK: - View Model Wrapper

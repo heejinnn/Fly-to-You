@@ -10,7 +10,7 @@ import SwiftUI
 
 final class AppComponent {
     
-    private let appDIContainer = AppDIContainer()
+    private let appDIContainer = AppDIContainer(serviceFactory: ServiceFactory())
 
     func makeRootView() -> some View {
         let mainSceneDIContainer = appDIContainer.makeMainSceneDIContainer()

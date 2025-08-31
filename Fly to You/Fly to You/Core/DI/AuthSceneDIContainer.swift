@@ -5,7 +5,7 @@
 //  Created by 최희진 on 4/14/25.
 //
 
-final class AuthSceneDIContainer {
+final class AuthSceneDIContainer: BaseDIContainer {
     // MARK: - Factory
 
     func makeSignUpFactory() -> DefaultAuthFactory { // DefaultMainFactory를 생성하여 반환
