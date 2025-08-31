@@ -24,14 +24,9 @@ struct FlightMapView: View{
     @State private var selectedRoute: ReceiveLetterModel? = nil
     @State private var seachTopic: String = ""
     
-    // 현재 유저 UID
-    private var currentUid: String? {
-        UserDefaults.standard.string(forKey: "uid")
-    }
-    
     // 필터링된 항로
     private var filteredFlights: [FlightModel] {
-        guard let currentUid = currentUid else { return [] }
+        guard let currentUid = viewModelWrapper.currentUserId else { return [] }
 
         return viewModelWrapper.flights.filter { flight in
             let isMyFlight = flight.routes.contains { $0.from.uid == currentUid || $0.to.uid == currentUid }

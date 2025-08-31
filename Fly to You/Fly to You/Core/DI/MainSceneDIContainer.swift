@@ -30,7 +30,7 @@ final class MainSceneDIContainer: BaseDIContainer {
     // MARK: - Repository
     
     func makeUserRepo() -> UserRepo {
-        return DefaultUserRepo()
+        return DefaultUserRepo(sessionService: getUserSessionService())
     }
     func makeLetterRepo() -> LetterRepo {
         return DefaultLetterRepo(sessionService: getUserSessionService())

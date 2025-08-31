@@ -23,7 +23,7 @@ final class AuthSceneDIContainer: BaseDIContainer {
     // MARK: - Repository
     
     func makeSignUpRepo() -> SignUpRepo {
-        return DefaultSignUpRepo()
+        return DefaultSignUpRepo(sessionService: getUserSessionService())
     }
 
     // MARK: - View Model

@@ -17,7 +17,7 @@ struct ReportSheetView: View {
     @State private var content = ""
     @State private var selectedType: ReportType? = nil
     @State private var showTypeDialog = false
-    @StateObject private var viewModel = ReportViewModel()
+    @StateObject private var viewModel = ReportViewModel(sessionService: ProductionServiceFactory().createUserSessionService())
     
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xl) {

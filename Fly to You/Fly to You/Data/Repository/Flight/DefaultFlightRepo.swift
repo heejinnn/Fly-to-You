@@ -5,12 +5,10 @@
 //  Created by 최희진 on 4/16/25.
 //
 
-import FirebaseAuth
 import FirebaseFirestore
 import Alamofire
 
 final class DefaultFlightRepo: FlightRepo {
-    private let auth = Auth.auth()
     private let db = Firestore.firestore()
     private var flightsListener: ListenerRegistration?
     

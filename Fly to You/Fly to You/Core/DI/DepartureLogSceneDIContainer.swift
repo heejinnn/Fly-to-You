@@ -39,7 +39,7 @@ final class DepartureLogSceneDIContainer: BaseDIContainer {
     // MARK: - Repository
     
     func makeUserRepo() -> UserRepo {
-        return DefaultUserRepo()
+        return DefaultUserRepo(sessionService: getUserSessionService())
     }
     
     func makeLetterRepo() -> LetterRepo {
