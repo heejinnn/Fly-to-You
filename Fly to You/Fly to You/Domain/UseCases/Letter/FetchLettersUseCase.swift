@@ -10,6 +10,7 @@ protocol FetchLettersUseCase{
     func observeReceivedLetters(toUid: String, onUpdate: @escaping ([ReceiveLetterModel]) -> Void)
     func observeSentLetters(fromUid: String, onUpdate: @escaping ([ReceiveLetter]) -> Void)
     func removeListeners()
+    func getCurrentUserId() async throws -> String
 }
 
 final class DefaultFetchLettersUseCase: FetchLettersUseCase{
@@ -97,6 +98,10 @@ final class DefaultFetchLettersUseCase: FetchLettersUseCase{
 
     func removeListeners() {
         letterRepo.removeListeners()
+    }
+    
+    func getCurrentUserId() async throws -> String {
+        return try await userRepo.currentUserUid()
     }
     
 }

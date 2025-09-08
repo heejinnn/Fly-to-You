@@ -2,7 +2,7 @@
 //  UITestHelpers.swift
 //  Fly to YouUITests
 //
-//  Created by Claude on 8/18/25.
+//  Created by 최희진 on 8/18/25.
 //
 
 import XCTest

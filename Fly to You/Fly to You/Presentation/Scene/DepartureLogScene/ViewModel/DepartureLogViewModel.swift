@@ -33,24 +33,25 @@ class DefaultDepartureLogViewModel: DepartureLogViewModel {
     private let fetchLetterUseCase: FetchLettersUseCase
     private let editLetterUseCase: EditLetterUseCase
     private let deleteLetterUseCase: DeleteLetterUseCase
-    private let sessionService: UserSessionService
     
-    init(fetchLetterUseCase: FetchLettersUseCase, editLetterUseCase: EditLetterUseCase, deleteLetterUseCase: DeleteLetterUseCase, sessionService: UserSessionService) {
+    init(fetchLetterUseCase: FetchLettersUseCase, editLetterUseCase: EditLetterUseCase, deleteLetterUseCase: DeleteLetterUseCase) {
         self.fetchLetterUseCase = fetchLetterUseCase
         self.editLetterUseCase = editLetterUseCase
         self.deleteLetterUseCase = deleteLetterUseCase
-        self.sessionService = sessionService
     }
     
     func observeSentLetters() {
-        do {
-            let uid = try sessionService.getCurrentUserId()
-            fetchLetterUseCase.observeSentLetters(fromUid: uid) { [weak self] letters in
-                self?.letters = ReceiveLetter.toReceiveLetterModels(letters: letters)
+        Task {
+            do {
+                let uid = try await fetchLetterUseCase.getCurrentUserId()
+                await MainActor.run {
+                    fetchLetterUseCase.observeSentLetters(fromUid: uid) { [weak self] letters in
+                        self?.letters = ReceiveLetter.toReceiveLetterModels(letters: letters)
+                    }
+                }
+            } catch {
+                print("Session error: \(error.localizedDescription)")
             }
-        } catch {
-            // 세션 에러 처리
-            print("Session error: \(error.localizedDescription)")
         }
     }
     

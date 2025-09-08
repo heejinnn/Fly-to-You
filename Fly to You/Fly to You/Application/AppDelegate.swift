@@ -41,8 +41,6 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
     }
 }
 
-import Alamofire
-
 extension AppDelegate: MessagingDelegate {
     
     // 파이어베이스 MessagingDelegate 설정

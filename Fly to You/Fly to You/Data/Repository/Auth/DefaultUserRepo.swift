@@ -5,7 +5,7 @@
 //  Created by 최희진 on 4/16/25.
 //
 
-import FirebaseAuth
+import Foundation
 import FirebaseFirestore
 
 final class DefaultUserRepo: UserRepo {
@@ -66,6 +66,26 @@ final class DefaultUserRepo: UserRepo {
         } else {
             return false
         }
+    }
+    
+    func checkNicknameDuplicate(nickname: String) async throws -> Bool {
+        let snapshot = try await db.collection("users")
+            .whereField("nickname", isEqualTo: nickname.lowercased())
+            .getDocuments()
+        
+        return !snapshot.documents.isEmpty
+    }
+    
+    func updateNickname(nickname: String) async throws {
+        let uid = try sessionService.getCurrentUserId()
+        let userRef = db.collection("users").document(uid)
+        
+        try await userRef.updateData([
+            "nickname": nickname.trimmingCharacters(in: .whitespaces)
+        ])
+        
+        // 세션에도 업데이트
+        sessionService.saveUserSession(uid: uid, nickname: nickname)
     }
 }
 

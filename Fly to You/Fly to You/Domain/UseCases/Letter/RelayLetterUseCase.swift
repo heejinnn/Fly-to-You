@@ -16,18 +16,15 @@ public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
     private let userRepo: UserRepo
     private let flightRepo: FlightRepo
     private let letterRepo: LetterRepo
-    private let sessionService: UserSessionService
     
     init(
         userRepo: UserRepo,
         flightRepo: FlightRepo,
-        letterRepo: LetterRepo,
-        sessionService: UserSessionService
+        letterRepo: LetterRepo
     ) {
         self.userRepo = userRepo
         self.flightRepo = flightRepo
         self.letterRepo = letterRepo
-        self.sessionService = sessionService
     }
     
     func send(
@@ -37,7 +34,7 @@ public struct DefaultRelayLetterUseCase: RelayLetterUseCase {
         message: String,
         previousLetter: Letter
     ) async throws -> Letter {
-        let fromUid = try sessionService.getCurrentUserId()
+        let fromUid = try await userRepo.currentUserUid()
         
         let letter = Letter(
             id: UUID().uuidString,

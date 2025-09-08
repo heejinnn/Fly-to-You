@@ -12,14 +12,14 @@ final class ReportViewModel: ObservableObject {
 
     @Published var isDuplicated = false
     private let db = Firestore.firestore()
-    private let sessionService: UserSessionService
+    private let userRepo: UserRepo
     
-    init(sessionService: UserSessionService) {
-        self.sessionService = sessionService
+    init(userRepo: UserRepo) {
+        self.userRepo = userRepo
     }
     
     func sendReport(letter: ReceiveLetterModel, type: String, content: String) async throws{
-        let uid = try sessionService.getCurrentUserId()
+        let uid = try await userRepo.currentUserUid()
         
         let report = Report(id: UUID().uuidString, reporterId: uid, reportedId: letter.from.uid, type: type, content: content, letterId: letter.id, createdAt: Date())
         try await checkDuplicatedReport(letterId: letter.id, uid: uid)

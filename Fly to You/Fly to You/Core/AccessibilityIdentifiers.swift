@@ -2,7 +2,7 @@
 //  AccessibilityIdentifiers.swift
 //  Fly to You
 //
-//  Created by Claude on 8/18/25.
+//  Created by 최희진 on 8/18/25.
 //
 
 import Foundation

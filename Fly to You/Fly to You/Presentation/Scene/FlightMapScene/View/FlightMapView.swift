@@ -24,17 +24,6 @@ struct FlightMapView: View{
     @State private var selectedRoute: ReceiveLetterModel? = nil
     @State private var seachTopic: String = ""
     
-    // 필터링된 항로
-    private var filteredFlights: [FlightModel] {
-        guard let currentUid = viewModelWrapper.currentUserId else { return [] }
-
-        return viewModelWrapper.flights.filter { flight in
-            let isMyFlight = flight.routes.contains { $0.from.uid == currentUid || $0.to.uid == currentUid }
-            let matchesTab = selectedTab == "내 항로" ? isMyFlight : !isMyFlight
-            let matchesSearch = seachTopic.isEmpty || flight.topic.localizedCaseInsensitiveContains(seachTopic)
-            return matchesTab && matchesSearch
-        }
-    }
     
     var body: some View{
         ZStack {
@@ -73,9 +62,19 @@ struct FlightMapView: View{
         .animation(.easeInOut, value: showPopup)
         .onAppear{
             viewModelWrapper.viewModel.observeAllFlights()
+            viewModelWrapper.updateFilteredFlights(selectedTab: selectedTab, searchTopic: seachTopic)
         }
         .onDisappear{
             viewModelWrapper.viewModel.removeFlightsListener()
+        }
+        .onChange(of: selectedTab) { _, _ in
+            viewModelWrapper.updateFilteredFlights(selectedTab: selectedTab, searchTopic: seachTopic)
+        }
+        .onChange(of: seachTopic) { _, _ in
+            viewModelWrapper.updateFilteredFlights(selectedTab: selectedTab, searchTopic: seachTopic)
+        }
+        .onChange(of: viewModelWrapper.flights.count) { _, _ in
+            viewModelWrapper.updateFilteredFlights(selectedTab: selectedTab, searchTopic: seachTopic)
         }
         .sheet(isPresented: $showReportModal) {
             ReportSheetView(letter: selectedRoute, alertDuplicatedReport: $alertDuplicatedReport, completeReport: $completeReport)
@@ -109,7 +108,7 @@ struct FlightMapView: View{
     
     private var planeCellSection: some View {
         VStack(spacing: Spacing.sm){
-            ForEach(filteredFlights, id: \.id) { flight in
+            ForEach(viewModelWrapper.filteredFlights, id: \.id) { flight in
                 let participantCount = viewModelWrapper.viewModel.getParticipationCount(for: flight)
                 
                 PlaneCell(letter: flight.routes[0], participantCount: participantCount, route: .map)
@@ -152,6 +151,7 @@ struct FlightMapView: View{
 
 final class FlightMapViewModelWrapper: ObservableObject{
     @Published var flights: [FlightModel] = []
+    @Published var filteredFlights: [FlightModel] = []//TODO: ViewModel에서 output으로 처리
     
     var viewModel: FlightMapViewModel
     private var cancellables = Set<AnyCancellable>()
@@ -166,6 +166,17 @@ final class FlightMapViewModelWrapper: ObservableObject{
             .receive(on: DispatchQueue.main)
             .assign(to: \.flights, on: self)
             .store(in: &cancellables)
+    }
+    
+    
+    //TODO: ViewModel에서 로직 처리
+    func updateFilteredFlights(selectedTab: String, searchTopic: String) {
+        Task {
+            let filtered = await viewModel.filterFlights(selectedTab: selectedTab, searchTopic: searchTopic)
+            await MainActor.run {
+                self.filteredFlights = filtered
+            }
+        }
     }
 }
 

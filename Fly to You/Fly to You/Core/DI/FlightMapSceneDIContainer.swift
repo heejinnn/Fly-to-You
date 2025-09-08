@@ -54,7 +54,8 @@ final class FlightMapSceneDIContainer: BaseDIContainer {
         return DefaultFlightMapViewModel(
             fetchFlightsUseCase: makeFetchFlightsUseCase(), 
             blockLetterUseCase: makeBlockLetterUseCase(),
-            getParticipationCountUseCase: makeGetParticipationCountUseCase()
+            getParticipationCountUseCase: makeGetParticipationCountUseCase(),
+            userRepo: makeUserRepo()
         )
     }
     

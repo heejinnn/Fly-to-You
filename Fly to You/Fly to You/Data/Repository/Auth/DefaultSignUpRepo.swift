@@ -5,8 +5,9 @@
 //  Created by 최희진 on 4/14/25.
 //
 
-import FirebaseAuth
 import FirebaseFirestore
+import FirebaseAuth
+
 
 final class DefaultSignUpRepo: SignUpRepo {
     

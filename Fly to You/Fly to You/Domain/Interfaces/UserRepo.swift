@@ -10,6 +10,8 @@ protocol UserRepo{
     func currentUserUid() async throws -> String
     func fetchUsers(uids: [String]) async throws -> [User]
     func fetchReportedCount() async throws -> Bool
+    func checkNicknameDuplicate(nickname: String) async throws -> Bool
+    func updateNickname(nickname: String) async throws
 }
 
 

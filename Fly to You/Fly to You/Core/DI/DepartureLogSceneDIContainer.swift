@@ -54,7 +54,7 @@ final class DepartureLogSceneDIContainer: BaseDIContainer {
     // MARK: - View Model
     
     func makeDepartureLogViewModel() -> DepartureLogViewModel {
-        return DefaultDepartureLogViewModel(fetchLetterUseCase: makeFetchLettersUseCase(), editLetterUseCase: makeEditLettersUseCase(), deleteLetterUseCase: makeDeleteLettersUseCase(), sessionService: getUserSessionService())
+        return DefaultDepartureLogViewModel(fetchLetterUseCase: makeFetchLettersUseCase(), editLetterUseCase: makeEditLettersUseCase(), deleteLetterUseCase: makeDeleteLettersUseCase())
     }
 
     // MARK: - View Model Wrapper

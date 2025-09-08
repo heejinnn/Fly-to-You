@@ -28,7 +28,7 @@ final class LandingZoneSceneDIContainer: BaseDIContainer {
         let flightRepo = makeFlightRepo()
         let letterRepo = makeLetterRepo()
         
-        return DefaultRelayLetterUseCase(userRepo: userRepo, flightRepo: flightRepo, letterRepo: letterRepo, sessionService: getUserSessionService())
+        return DefaultRelayLetterUseCase(userRepo: userRepo, flightRepo: flightRepo, letterRepo: letterRepo)
     }
     
     private func makeBlockLetterUseCase() -> BlockLetterUseCase {
@@ -59,7 +59,7 @@ final class LandingZoneSceneDIContainer: BaseDIContainer {
         let relayLetterUseCase = makeRelayLetterUseCase()
         let blockLetterUseCase = makeBlockLetterUseCase()
         
-        return DafultLandingZoneViewModel(fetchLetterUseCase: useCase, relayLetterUseCase: relayLetterUseCase, blockLetterUseCase: blockLetterUseCase, sessionService: getUserSessionService())
+        return DafultLandingZoneViewModel(fetchLetterUseCase: useCase, relayLetterUseCase: relayLetterUseCase, blockLetterUseCase: blockLetterUseCase)
     }
 
     // MARK: - View Model Wrapper

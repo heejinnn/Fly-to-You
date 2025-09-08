@@ -2,7 +2,7 @@
 //  DeleteLetterUseCaseBusinessLogicTest.swift
 //  Fly to YouTests
 //
-//  Created by Claude on 8/16/25.
+//  Created by 최희진 on 8/16/25.
 //
 
 import XCTest

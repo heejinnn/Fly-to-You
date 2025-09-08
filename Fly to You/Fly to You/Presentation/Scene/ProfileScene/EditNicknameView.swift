@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EditNicknameView: View {
     @EnvironmentObject var viewModelWrapper: MainViewModelWrapper
-    @StateObject var viewModel = EditNicknameViewModel(sessionService: ProductionServiceFactory().createUserSessionService())
+    @StateObject var viewModel = EditNicknameViewModel(updateNicknameUseCase: DefaultUpdateNicknameUseCase(userRepo: DefaultUserRepo(sessionService: ProductionServiceFactory().createUserSessionService())))
     @State private var showSuccessAlert = false
     
     var body: some View {
