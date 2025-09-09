@@ -88,8 +88,8 @@ final class UserListSheetViewModel: ObservableObject {
             try? $0.data(as: User.self)
         }
         
-        DispatchQueue.main.async { [weak self] in
-            self?.userList = userDatas
+        await MainActor.run {
+            self.userList = userDatas
         }
     }
 }

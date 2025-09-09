@@ -10,13 +10,13 @@ import Foundation
 class BaseDIContainer {
     private let serviceFactory: ServiceFactory
     
-    private lazy var _userSessionService: UserSessionService = serviceFactory.createUserSessionService()
+    private lazy var userSessionService: UserSessionService = serviceFactory.createUserSessionService()
     
     init(serviceFactory: ServiceFactory) {
         self.serviceFactory = serviceFactory
     }
     
     func getUserSessionService() -> UserSessionService {
-        return _userSessionService
+        return userSessionService
     }
 }

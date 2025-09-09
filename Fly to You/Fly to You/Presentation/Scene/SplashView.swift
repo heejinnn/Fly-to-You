@@ -11,7 +11,6 @@ struct SplashView: View {
     
     @Binding var gifReady: Bool
 
-
     var body: some View {
         ZStack {
             GifPlayer(gifName: "earth_round") {
