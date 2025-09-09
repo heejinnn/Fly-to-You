@@ -18,7 +18,7 @@ struct RootView: View {
             if appState.isLoggedIn {
                 MainTabView()
             } else {
-                AppComponent()
+                AppCoordinator()
                     .makeSignUpView()
             }
         }

@@ -1,5 +1,5 @@
 //
-//  DepartureLogComponent.swift
+//  DepartureLogCoordinator.swift
 //  Fly to You
 //
 //  Created by 최희진 on 4/18/25.
@@ -8,15 +8,15 @@
 import SwiftUI
 
 
-// MARK: - RootDependency
+// MARK: - DepartureLogDependency
 
 protocol DepartureLogDependency {
     var departureLogFactory: any DepartureLogFactory { get }
 }
 
-// MARK: - RootComponent
+// MARK: - DepartureLogCoordinator
 
-final class DepartureLogComponent {
+final class DepartureLogCoordinator {
     private let dependency: DepartureLogDependency
 
     init(dependency: DepartureLogDependency) {

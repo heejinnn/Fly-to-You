@@ -1,5 +1,5 @@
 //
-//  AuthComponent.swift
+//  AuthCoordinator.swift
 //  Fly to You
 //
 //  Created by 최희진 on 4/14/25.
@@ -7,15 +7,15 @@
 
 import SwiftUI
 
-// MARK: - RootDependency
+// MARK: - AuthDependency
 
 protocol AuthDependency {
     var authFactory: any AuthFactory { get }
 }
 
-// MARK: - RootComponent
+// MARK: - AuthCoordinator
 
-final class AuthComponent {
+final class AuthCoordinator {
     private let dependency: AuthDependency
 
     init(dependency: AuthDependency) {
