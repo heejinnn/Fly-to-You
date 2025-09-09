@@ -1,5 +1,5 @@
 //
-//  RootComponent.swift
+//  RootCoordinator.swift
 //  Fly to You
 //
 //  Created by 최희진 on 4/13/25.
@@ -13,9 +13,9 @@ protocol RootDependency {
     var mainFactory: any MainFactory { get }
 }
 
-// MARK: - RootComponent
+// MARK: - RootCoordinator
 
-final class RootComponent {
+final class RootCoordinator {
     private let dependency: RootDependency
 
     init(dependency: RootDependency) {

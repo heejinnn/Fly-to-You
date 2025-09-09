@@ -5,12 +5,18 @@
 //  Created by 최희진 on 4/14/25.
 //
 
-import FirebaseAuth
 import FirebaseFirestore
+import FirebaseAuth
+
 
 final class DefaultSignUpRepo: SignUpRepo {
     
     private let db = Firestore.firestore()
+    private let sessionService: UserSessionService
+    
+    init(sessionService: UserSessionService) {
+        self.sessionService = sessionService
+    }
     
     func signUp(nickname: String, completion: @escaping (Bool) -> Void) {
         checkNicknameDuplicate(nickname: nickname) { [weak self] isDuplicate in
@@ -51,10 +57,9 @@ final class DefaultSignUpRepo: SignUpRepo {
             do {
                 try self.db.collection("users")
                     .document(uid)
-                    .setData(from: user) { error in
+                    .setData(from: user) { [weak self] error in
                     if error == nil {
-                        UserDefaults.standard.set(uid, forKey: "uid")
-                        UserDefaults.standard.set(nickname.lowercased(), forKey: "nickname")
+                        self?.sessionService.saveUserSession(uid: uid, nickname: nickname.lowercased())
                         completion(true)
                     }
                 }

@@ -1,5 +1,5 @@
 //
-//  LandingZoneComponent.swift
+//  LandingZoneCoordinator.swift
 //  Fly to You
 //
 //  Created by 최희진 on 4/17/25.
@@ -9,15 +9,15 @@
 
 import SwiftUI
 
-// MARK: - RootDependency
+// MARK: - LandingZoneDependency
 
 protocol LandingZoneDependency {
     var landingZoneFactory: any LandingZoneFactory { get }
 }
 
-// MARK: - RootComponent
+// MARK: - LandingZoneCoordinator
 
-final class LandingZoneComponent {
+final class LandingZoneCoordinator {
     private let dependency: LandingZoneDependency
 
     init(dependency: LandingZoneDependency) {

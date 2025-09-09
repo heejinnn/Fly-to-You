@@ -12,6 +12,7 @@ protocol FlightMapViewModelInput {
     func removeFlightsListener()
     func blockLetter(letterId: String)
     func getParticipationCount(for flight: FlightModel) -> Int
+    func filterFlights(selectedTab: String, searchTopic: String) async -> [FlightModel]
 }
 
 protocol FlightMapViewModelOutput {
@@ -27,11 +28,13 @@ final class DefaultFlightMapViewModel: FlightMapViewModel {
     private let fetchFlightsUseCase: FetchFlightsUseCase
     private let blockLetterUseCase: BlockLetterUseCase
     private let getParticipationCountUseCase: GetParticipationCountUseCase
+    private let userRepo: UserRepo
     
-    init(fetchFlightsUseCase: FetchFlightsUseCase, blockLetterUseCase: BlockLetterUseCase, getParticipationCountUseCase: GetParticipationCountUseCase){
+    init(fetchFlightsUseCase: FetchFlightsUseCase, blockLetterUseCase: BlockLetterUseCase, getParticipationCountUseCase: GetParticipationCountUseCase, userRepo: UserRepo){
         self.fetchFlightsUseCase = fetchFlightsUseCase
         self.blockLetterUseCase = blockLetterUseCase
         self.getParticipationCountUseCase = getParticipationCountUseCase
+        self.userRepo = userRepo
     }
     
     func observeAllFlights() {
@@ -54,6 +57,22 @@ final class DefaultFlightMapViewModel: FlightMapViewModel {
     
     func getParticipationCount(for flight: FlightModel) -> Int {
         return getParticipationCountUseCase.execute(for: flight)
+    }
+    
+    func filterFlights(selectedTab: String, searchTopic: String) async -> [FlightModel] {
+        do {
+            let currentUid = try await userRepo.currentUserUid()
+            
+            return flights.filter { flight in
+                let isMyFlight = flight.routes.contains { $0.from.uid == currentUid || $0.to.uid == currentUid }
+                let matchesTab = selectedTab == "내 항로" ? isMyFlight : !isMyFlight
+                let matchesSearch = searchTopic.isEmpty || flight.topic.localizedCaseInsensitiveContains(searchTopic)
+                return matchesTab && matchesSearch
+            }
+        } catch {
+            // 에러 발생 시 빈 배열 반환
+            return []
+        }
     }
 }
 

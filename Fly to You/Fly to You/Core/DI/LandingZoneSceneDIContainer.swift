@@ -6,7 +6,7 @@
 //
 
 
-final class LandingZoneSceneDIContainer {
+final class LandingZoneSceneDIContainer: BaseDIContainer {
     // MARK: - Factory
 
     func makeLandingZoneFactory() -> DefaultLandingZoneFactory {
@@ -41,11 +41,11 @@ final class LandingZoneSceneDIContainer {
     // MARK: - Repository
     
     func makeUserRepo() -> UserRepo {
-        return DefaultUserRepo()
+        return DefaultUserRepo(sessionService: getUserSessionService())
     }
     
     func makeLetterRepo() -> LetterRepo {
-        return DefaultLetterRepo()
+        return DefaultLetterRepo(sessionService: getUserSessionService())
     }
     
     func makeFlightRepo() -> FlightRepo {

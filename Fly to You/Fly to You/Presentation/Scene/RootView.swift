@@ -11,13 +11,14 @@ import FirebaseAuth
 
 struct RootView: View {
     @EnvironmentObject var appState: AppState
+    @State private var sessionService = ProductionServiceFactory().createUserSessionService()
 
     var body: some View {
         Group {
             if appState.isLoggedIn {
                 MainTabView()
             } else {
-                AppComponent()
+                AppCoordinator()
                     .makeSignUpView()
             }
         }
@@ -25,7 +26,7 @@ struct RootView: View {
             // UI 테스트에서 강제 로그아웃 설정이 있으면 로그아웃 상태로 시작
             if ProcessInfo.processInfo.shouldForceLogout{
                 appState.isLoggedIn = false
-            } else if Auth.auth().currentUser != nil, ((UserDefaults.standard.string(forKey: "uid")?.isEmpty) != nil) {
+            } else if Auth.auth().currentUser != nil, sessionService.isUserLoggedIn() {
                 appState.isLoggedIn = true
             }
         }

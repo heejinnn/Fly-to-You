@@ -5,12 +5,16 @@
 //  Created by 최희진 on 4/16/25.
 //
 
-import FirebaseAuth
+import Foundation
 import FirebaseFirestore
 
 final class DefaultUserRepo: UserRepo {
-    private let auth = Auth.auth()
     private let db = Firestore.firestore()
+    private let sessionService: UserSessionService
+    
+    init(sessionService: UserSessionService) {
+        self.sessionService = sessionService
+    }
     
     func fetchUid(nickname: String) async throws -> String {
         let query = db.collection("users")
@@ -27,10 +31,7 @@ final class DefaultUserRepo: UserRepo {
     }
     
     func currentUserUid() async throws -> String {
-        guard let user = auth.currentUser else {throw
-            FirebaseError.validationError(message: "로그인 필요")
-        }
-        return user.uid
+        return try sessionService.getCurrentUserId()
     }
     
     func fetchUsers(uids: [String]) async throws -> [User] {
@@ -55,7 +56,7 @@ final class DefaultUserRepo: UserRepo {
     }
     
     func fetchReportedCount() async throws -> Bool{
-        guard let uid = UserDefaults.standard.string(forKey: "uid") else { return true }
+        let uid = try sessionService.getCurrentUserId()
         
         let userRef = db.collection("users").document(uid)
         let document = try await userRef.getDocument()
@@ -65,6 +66,26 @@ final class DefaultUserRepo: UserRepo {
         } else {
             return false
         }
+    }
+    
+    func checkNicknameDuplicate(nickname: String) async throws -> Bool {
+        let snapshot = try await db.collection("users")
+            .whereField("nickname", isEqualTo: nickname.lowercased())
+            .getDocuments()
+        
+        return !snapshot.documents.isEmpty
+    }
+    
+    func updateNickname(nickname: String) async throws {
+        let uid = try sessionService.getCurrentUserId()
+        let userRef = db.collection("users").document(uid)
+        
+        try await userRef.updateData([
+            "nickname": nickname.trimmingCharacters(in: .whitespaces)
+        ])
+        
+        // 세션에도 업데이트
+        sessionService.saveUserSession(uid: uid, nickname: nickname)
     }
 }
 

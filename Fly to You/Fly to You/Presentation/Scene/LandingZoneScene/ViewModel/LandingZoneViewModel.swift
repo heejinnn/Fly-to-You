@@ -48,9 +48,18 @@ class DafultLandingZoneViewModel: LandingZoneViewModel {
     }
     
     func observeLetters() {
-        guard let uid = UserDefaults.standard.string(forKey: "uid") else { return }
-        fetchLetterUseCase.observeReceivedLetters(toUid: uid) { [weak self] letters in
-            self?.letters = letters
+        Task {
+            do {
+                let uid = try await fetchLetterUseCase.getCurrentUserId()
+                await MainActor.run {
+                    fetchLetterUseCase.observeReceivedLetters(toUid: uid) { [weak self] letters in
+                        self?.letters = letters
+                    }
+                }
+            } catch {
+                // 세션 에러 처리 (로그인 필요 등)
+                print("Session error: \(error.localizedDescription)")
+            }
         }
     }
     

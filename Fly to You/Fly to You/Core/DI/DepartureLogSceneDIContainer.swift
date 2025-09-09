@@ -5,7 +5,7 @@
 //  Created by 최희진 on 4/18/25.
 //
 
-final class DepartureLogSceneDIContainer{
+final class DepartureLogSceneDIContainer: BaseDIContainer {
     
     func makeDepartureLogFactory() -> DefaultDepartureLogFactory {
         let viewModelWrapper = makeDepatureLogViewModelWrapper()
@@ -39,11 +39,11 @@ final class DepartureLogSceneDIContainer{
     // MARK: - Repository
     
     func makeUserRepo() -> UserRepo {
-        return DefaultUserRepo()
+        return DefaultUserRepo(sessionService: getUserSessionService())
     }
     
     func makeLetterRepo() -> LetterRepo {
-        return DefaultLetterRepo()
+        return DefaultLetterRepo(sessionService: getUserSessionService())
     }
     
     func makeFlightRepo() -> FlightRepo {

@@ -11,7 +11,6 @@ import Combine
 struct DepartureLogView: View {
     
     @EnvironmentObject var viewModelWrapper: DepatureLogViewModelWrapper
-    private let currentUid = UserDefaults.standard.string(forKey: "uid") ?? ""
      
     var body: some View {
         NavigationStack(path: $viewModelWrapper.path) {

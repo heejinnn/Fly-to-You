@@ -6,7 +6,7 @@
 //
 
 
-final class FlightMapSceneDIContainer {
+final class FlightMapSceneDIContainer: BaseDIContainer {
     // MARK: - Factory
 
     func makeFlightMapFactory() -> DefaultFlightMapFactory {
@@ -37,11 +37,11 @@ final class FlightMapSceneDIContainer {
     // MARK: - Repository
     
     func makeUserRepo() -> UserRepo {
-        return DefaultUserRepo()
+        return DefaultUserRepo(sessionService: getUserSessionService())
     }
     
     func makeLetterRepo() -> LetterRepo {
-        return DefaultLetterRepo()
+        return DefaultLetterRepo(sessionService: getUserSessionService())
     }
     
     func makeFlightRepo() -> FlightRepo {
@@ -54,7 +54,8 @@ final class FlightMapSceneDIContainer {
         return DefaultFlightMapViewModel(
             fetchFlightsUseCase: makeFetchFlightsUseCase(), 
             blockLetterUseCase: makeBlockLetterUseCase(),
-            getParticipationCountUseCase: makeGetParticipationCountUseCase()
+            getParticipationCountUseCase: makeGetParticipationCountUseCase(),
+            userRepo: makeUserRepo()
         )
     }
     

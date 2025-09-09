@@ -10,25 +10,25 @@ import SwiftUI
 struct MainTabView: View {
     var body: some View {
         TabView {
-            AppComponent()
+            AppCoordinator()
                 .makeRootView()
                 .tabItem {
                     Label("Home", systemImage: "house")
                 }
 
-            AppComponent()
+            AppCoordinator()
                 .makeLandingZoneView()
                 .tabItem {
                     Label("비행기 착륙장", systemImage: "tray")
                 }
 
-            AppComponent()
+            AppCoordinator()
                 .makeDepartureLogView()
                 .tabItem {
                     Label("보낸 기록", systemImage: "doc")
                 }
             
-            AppComponent()
+            AppCoordinator()
                 .makeFlightMapView()
                 .tabItem{
                     Label("항로 맵", systemImage: "map")

@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct UserListSheetView: View {
-    @StateObject var viewModel = UserListSheetViewModel()
+    @StateObject var viewModel = UserListSheetViewModel(sessionService: ProductionServiceFactory().createUserSessionService())
     @Binding var toUser: User?
     @State private var searchUserId: String = ""
     private var filteredUserList: [User] {
@@ -72,18 +72,24 @@ final class UserListSheetViewModel: ObservableObject {
     
     @Published var userList: [User] = []
     private let db = Firestore.firestore()
+    private let sessionService: UserSessionService
+    
+    init(sessionService: UserSessionService) {
+        self.sessionService = sessionService
+    }
     
     func fetchUserList() async throws{
+        let currentUserId = try sessionService.getCurrentUserId()
         let snapshot = try await db.collection("users")
-               .whereField("uid", isNotEqualTo: UserDefaults.standard.string(forKey: "uid") ?? "")
+               .whereField("uid", isNotEqualTo: currentUserId)
                .getDocuments()
         
         let userDatas: [User] = snapshot.documents.compactMap {
             try? $0.data(as: User.self)
         }
         
-        DispatchQueue.main.async { [weak self] in
-            self?.userList = userDatas
+        await MainActor.run {
+            self.userList = userDatas
         }
     }
 }

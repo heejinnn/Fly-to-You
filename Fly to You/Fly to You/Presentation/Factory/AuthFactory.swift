@@ -1,5 +1,5 @@
 //
-//  DefaultSignUpFactory.swift
+//  AuthFactory.swift
 //  Fly to You
 //
 //  Created by 최희진 on 4/14/25.
@@ -7,20 +7,20 @@
 
 import SwiftUI
 
-// MARK: - MainFactoryDependency
+// MARK: - AuthFactoryDependency
 
 struct AuthFactoryDependency: AuthDependency {
     let authFactory: any AuthFactory
 }
 
-// MARK: - MainFactory
+// MARK: - AuthFactory
 
 protocol AuthFactory {
     associatedtype SomeView: View
     func makeSignUpView() -> SomeView
 }
 
-// MARK: - DefaultMainFactory
+// MARK: - DefaultAuthFactory
 
 final class DefaultAuthFactory: AuthFactory {
     private let authViewModelWrapper: AuthViewModelWrapper

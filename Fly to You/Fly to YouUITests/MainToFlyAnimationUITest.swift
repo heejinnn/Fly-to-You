@@ -2,7 +2,7 @@
 //  MainToFlyAnimationUITest.swift
 //  Fly to YouUITests
 //
-//  Created by Claude on 8/19/25.
+//  Created by 최희진 on 8/19/25.
 //
 
 import XCTest

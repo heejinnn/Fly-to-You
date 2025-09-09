@@ -1,5 +1,5 @@
 //
-//  FlightMapComponent.swift
+//  FlightMapCoordinator.swift
 //  Fly to You
 //
 //  Created by 최희진 on 4/22/25.
@@ -14,9 +14,9 @@ protocol FlightMapDependency {
     var flightMapFactory: any FlightMapFactory { get }
 }
 
-// MARK: - FlightMapComponent
+// MARK: - FlightMapCoordinator
 
-final class FlightMapComponent {
+final class FlightMapCoordinator {
     private let dependency: FlightMapDependency
 
     init(dependency: FlightMapDependency) {

@@ -41,9 +41,17 @@ class DefaultDepartureLogViewModel: DepartureLogViewModel {
     }
     
     func observeSentLetters() {
-        guard let uid = UserDefaults.standard.string(forKey: "uid") else { return }
-        fetchLetterUseCase.observeSentLetters(fromUid: uid) { [weak self] letters in
-            self?.letters = ReceiveLetter.toReceiveLetterModels(letters: letters)
+        Task {
+            do {
+                let uid = try await fetchLetterUseCase.getCurrentUserId()
+                await MainActor.run {
+                    fetchLetterUseCase.observeSentLetters(fromUid: uid) { [weak self] letters in
+                        self?.letters = ReceiveLetter.toReceiveLetterModels(letters: letters)
+                    }
+                }
+            } catch {
+                print("Session error: \(error.localizedDescription)")
+            }
         }
     }
     
