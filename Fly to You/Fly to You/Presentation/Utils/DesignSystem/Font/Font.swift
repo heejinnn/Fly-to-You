@@ -9,9 +9,7 @@ import SwiftUI
 
 extension Font {
     enum PretendardWeight {
-        case black
         case bold
-        case heavy
         case ultraLight
         case light
         case medium
@@ -21,12 +19,8 @@ extension Font {
         
         var value: String {
             switch self {
-            case .black:
-                return "Black"
             case .bold:
                 return "Bold"
-            case .heavy:
-                return "ExtraBold"
             case .ultraLight:
                 return "ExtraLight"
             case .light:
