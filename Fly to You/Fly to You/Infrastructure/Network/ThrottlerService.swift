@@ -34,18 +34,18 @@ private extension ThrottlerService {
 
         guard self.task?.isCancelled ?? true else{return}
         
+        Task{
+            await action()
+        }
+        
         self.task = Task{ [weak self] in
             guard let self else { return }
             
             do{
                 try await Task.sleep(for: .seconds(Int(self.dueTime)))
-                Task{
-                    await action()
-                }
             } catch {
                 return
             }
-
             self.task = nil
         }
     }
