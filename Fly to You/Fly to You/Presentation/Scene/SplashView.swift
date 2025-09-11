@@ -16,7 +16,7 @@ struct SplashView: View {
             GifPlayer(gifName: "earth_round") {
                 gifReady = true
             }
-            .frame(width: 600, height: 600)
+            .frame(width: 650, height: 650)
             .clipped()
             .opacity(0.8)
             
