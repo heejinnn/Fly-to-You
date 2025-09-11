@@ -10,7 +10,6 @@ import Foundation
 
 protocol SendLetterUseCase{
     func send(toUid: String, topic: String, topicId: String, message: String) async throws -> Letter
-    func fetchReportedCount() async throws -> Bool
 }
 
 public struct DefaultSendLetterUseCase: SendLetterUseCase {
@@ -52,9 +51,5 @@ public struct DefaultSendLetterUseCase: SendLetterUseCase {
         try await flightRepo.addRoute(flightId: savedLetter.topicId, letter: savedLetter)
         
         return savedLetter
-    }
-    
-    func fetchReportedCount() async throws -> Bool{
-        try await userRepo.fetchReportedCount()
     }
 }
