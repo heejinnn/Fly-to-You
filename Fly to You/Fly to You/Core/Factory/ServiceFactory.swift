@@ -9,4 +9,7 @@ import Foundation
 
 protocol ServiceFactory {
     func createUserSessionService() -> UserSessionService
+    func createThrottlerService() -> ThrottlerService
+    func createLetterNetworkService() -> LetterNetworkService
+    func createFlightNetworkService() -> FlightNetworkService
 }

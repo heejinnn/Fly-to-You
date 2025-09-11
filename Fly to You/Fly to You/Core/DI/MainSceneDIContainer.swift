@@ -26,6 +26,13 @@ final class MainSceneDIContainer: BaseDIContainer {
         
         return DefaultSendLetterUseCase(userRepo: userRepo, letterRepo: letterRepo, flightRepo: flightRepo)
     }
+    
+    private func makeFetchLettersUseCase() -> FetchLettersUseCase {
+        let userRepo = makeUserRepo()
+        let letterRepo = makeLetterRepo()
+        
+        return DefaultFetchLettersUseCase(letterRepo: letterRepo, userRepo: userRepo)
+    }
 
     // MARK: - Repository
     
@@ -33,18 +40,19 @@ final class MainSceneDIContainer: BaseDIContainer {
         return DefaultUserRepo(sessionService: getUserSessionService())
     }
     func makeLetterRepo() -> LetterRepo {
-        return DefaultLetterRepo(sessionService: getUserSessionService())
+        return DefaultLetterRepo(letterNetworkService: getLetterNetworkService())
     }
     func makeFlightRepo() -> FlightRepo {
-        return DefaultFlightRepo()
+        return DefaultFlightRepo(flightNetworkService: getFlightNetworkService())
     }
 
     // MARK: - View Model
     
     func makeSendLetterViewModel() -> SendLetterViewModel {
         let sendLetterUseCase = makeSendLetterUseCase()
+        let fetchLettersUseCase = makeFetchLettersUseCase()
         
-        return DefaultSendLetterViewModel(sendLetterUseCase: sendLetterUseCase)
+        return DefaultSendLetterViewModel(sendLetterUseCase: sendLetterUseCase, fetchLettersUseCase: fetchLettersUseCase)
     }
 
     // MARK: - View Model Wrapper

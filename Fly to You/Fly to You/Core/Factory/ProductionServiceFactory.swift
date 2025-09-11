@@ -12,4 +12,18 @@ final class ProductionServiceFactory: ServiceFactory {
         let storage = UserDefaultsSessionStorage()
         return DefaultUserSessionService(storage: storage)
     }
+    
+    func createThrottlerService() -> ThrottlerService {
+        return ThrottlerService()
+    }
+    
+    func createLetterNetworkService() -> LetterNetworkService {
+        return FirebaseLetterNetworkService(
+            sessionService: createUserSessionService(), throttlerService: createThrottlerService()
+        )
+    }
+    
+    func createFlightNetworkService() -> FlightNetworkService {
+        return FirebaseFlightNetworkService(throttlerService: createThrottlerService())
+    }
 }

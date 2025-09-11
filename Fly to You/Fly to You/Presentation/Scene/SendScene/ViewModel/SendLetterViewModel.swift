@@ -25,9 +25,11 @@ protocol SendLetterViewModel: SendLetterViewModelInput, SendLetterViewModelOutpu
 class DefaultSendLetterViewModel: SendLetterViewModel{
     
     private let sendLetterUseCase: SendLetterUseCase
+    private let fetchLettersUseCase: FetchLettersUseCase
     
-    init(sendLetterUseCase: SendLetterUseCase) {
+    init(sendLetterUseCase: SendLetterUseCase, fetchLettersUseCase: FetchLettersUseCase) {
         self.sendLetterUseCase = sendLetterUseCase
+        self.fetchLettersUseCase = fetchLettersUseCase
     }
     
     func sendLetter(toUid: String, topicData: TopicModel, message: String, completion: @escaping (Result<Letter, Error>) -> Void) {
@@ -49,6 +51,6 @@ class DefaultSendLetterViewModel: SendLetterViewModel{
     }
     
     func fetchReportedCount() async throws -> Bool{
-        try await sendLetterUseCase.fetchReportedCount()
+        try await fetchLettersUseCase.fetchReportedCount()
     }
 }

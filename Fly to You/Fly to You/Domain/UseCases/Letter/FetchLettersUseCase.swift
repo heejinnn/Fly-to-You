@@ -11,6 +11,7 @@ protocol FetchLettersUseCase{
     func observeSentLetters(fromUid: String, onUpdate: @escaping ([ReceiveLetter]) -> Void)
     func removeListeners()
     func getCurrentUserId() async throws -> String
+    func fetchReportedCount() async throws -> Bool
 }
 
 final class DefaultFetchLettersUseCase: FetchLettersUseCase{
@@ -104,4 +105,7 @@ final class DefaultFetchLettersUseCase: FetchLettersUseCase{
         return try await userRepo.currentUserUid()
     }
     
+    func fetchReportedCount() async throws -> Bool{
+        try await userRepo.fetchReportedCount()
+    }
 }
