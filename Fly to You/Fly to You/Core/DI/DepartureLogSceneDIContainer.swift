@@ -43,11 +43,11 @@ final class DepartureLogSceneDIContainer: BaseDIContainer {
     }
     
     func makeLetterRepo() -> LetterRepo {
-        return DefaultLetterRepo(sessionService: getUserSessionService())
+        return DefaultLetterRepo(letterNetworkService: getLetterNetworkService())
     }
     
     func makeFlightRepo() -> FlightRepo {
-        return DefaultFlightRepo()
+        return DefaultFlightRepo(flightNetworkService: getFlightNetworkService())
     }
 
 
