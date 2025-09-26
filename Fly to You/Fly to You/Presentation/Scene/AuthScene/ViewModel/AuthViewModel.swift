@@ -15,15 +15,16 @@ protocol AuthViewModelInput{
 }
 
 protocol AuthViewModelOutput{
-    var isLoggedInPublisher: Published<Bool>.Publisher { get }
-    var duplicateErrorPublisher: Published<Bool>.Publisher { get }
+    var isLoggedIn: Bool { get }
+    var duplicateError: Bool { get }
 }
 
 protocol AuthViewModel: AuthViewModelInput, AuthViewModelOutput{}
 
-class DefaultAuthViewModel: AuthViewModel {
-    @Published var isLoggedIn: Bool = false
-    @Published var duplicateError: Bool = false
+@Observable
+final class DefaultAuthViewModel: AuthViewModel {
+    private(set) var isLoggedIn: Bool = false
+    private(set) var duplicateError: Bool = false
     
     private let signUpUseCae: SignUpUseCase
     
@@ -47,14 +48,4 @@ class DefaultAuthViewModel: AuthViewModel {
             }
         }
     }
-}
-
-extension DefaultAuthViewModel{
-    var isLoggedInPublisher: Published<Bool>.Publisher{
-        $isLoggedIn
-    }
-    var duplicateErrorPublisher: Published<Bool>.Publisher{
-        $duplicateError
-    }
-    
 }

@@ -9,10 +9,9 @@ import SwiftUI
 import Combine
 
 struct SignUpView: View {
-    @ObservedObject var viewModelWrapper: AuthViewModelWrapper
+    @State var authViewModel: AuthViewModel
     @EnvironmentObject var appState: AppState
     @State private var nickname = ""
-    
     @State private var isEULAAccepted = false
     @State private var showingEULA = false
     @State private var isClickedSignUpButton = false
@@ -49,7 +48,7 @@ struct SignUpView: View {
                             .stroke(!nickname.isEmpty ? .blue1 : .gray1, lineWidth: 1)
                     )
                     
-                    if viewModelWrapper.duplicateError {
+                    if authViewModel.duplicateError {
                         Text("이미 사용 중인 닉네임입니다.")
                             .font(.pretendard(.light, size: 13))
                             .foregroundColor(.red)
@@ -66,7 +65,7 @@ struct SignUpView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        viewModelWrapper.viewModel.signUp(nickname: nickname) { result in
+                        authViewModel.signUp(nickname: nickname) { result in
                             if result {
                                 Log.info("[SignUpView] - 회원가입 성공")
                                 appState.isLoggedIn = true
@@ -119,31 +118,5 @@ struct SignUpView: View {
             .padding(.horizontal, Spacing.md)
         }
         .padding(.top, Spacing.xs)
-    }
-    
-}
-
-
-final class AuthViewModelWrapper: ObservableObject {
-    @Published var isLoggedIn: Bool = false
-    @Published var duplicateError: Bool = false
-    
-    var viewModel: AuthViewModel
-    private var cancellables = Set<AnyCancellable>()
-    
-    init(viewModel: AuthViewModel) {
-        self.viewModel = viewModel
-        bind()
-    }
-    private func bind() {
-        viewModel.isLoggedInPublisher
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.isLoggedIn, on: self)
-            .store(in: &cancellables)
-        
-        viewModel.duplicateErrorPublisher
-            .receive(on: DispatchQueue.main)
-            .assign(to: \.duplicateError, on: self)
-            .store(in: &cancellables)
     }
 }
