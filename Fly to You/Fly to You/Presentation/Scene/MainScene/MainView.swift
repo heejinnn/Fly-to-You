@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 struct MainView: View {
     
@@ -21,8 +20,8 @@ struct MainView: View {
     var body: some View {
         NavigationStack(path: $viewModelWrapper.path){
             ZStack {
-//                Image(.backgroundSky)
-//                    .resizable()
+                Image(.backgroundSky)
+                    .resizable()
                 
                 mainContent
             }
@@ -73,7 +72,7 @@ struct MainView: View {
     
     private var mainContent: some View {
         VStack(spacing: 40) {
-//           ShakingImage()
+            ShakingImage()
             
             Text("메세지를 접어서 날려보세요!")
                 .font(.pretendard(.ultraLight, size: 18))
@@ -110,7 +109,6 @@ final class MainViewModelWrapper: ObservableObject {
     @Published var topicData: TopicModel = TopicModel(topic: "", topicId: "")
     
     var viewModel: SendLetterViewModel
-    private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: SendLetterViewModel) {
         self.viewModel = viewModel

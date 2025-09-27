@@ -10,27 +10,18 @@ import SwiftUI
 @main
 struct YourApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @State private var showSplash = false
-    @State private var gifReady = false
+    @State private var showSplash = true
     @StateObject private var appState = AppState()
 
     var body: some Scene {
         WindowGroup {
             if showSplash {
-                SplashView(gifReady: $gifReady)
-                    .onChange(of: gifReady, { oldValue, newValue in
-                        if newValue {
-                            if ProcessInfo.processInfo.shouldSkipSplash{
-                                showSplash = false
-                            } else{
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                                    withAnimation {
-                                        showSplash = false
-                                    }
-                                }
-                            }
-                        }
-                    })
+                SplashView()
+                    .onAppear{
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+                            showSplash = false
+                        })
+                    }
             } else {
                 RootView()
                     .environmentObject(appState)

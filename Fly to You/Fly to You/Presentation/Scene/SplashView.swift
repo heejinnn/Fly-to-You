@@ -8,35 +8,31 @@
 import SwiftUI
 
 struct SplashView: View {
-    
-    @Binding var gifReady: Bool
 
     var body: some View {
         ZStack {
-            GifPlayer(gifName: "earth_round") {
-                gifReady = true
-            }
-            .frame(width: 650, height: 650)
+            Image(.earthRound)
+            .resizable()
+            .aspectRatio(contentMode: .fill)
+            .frame(height: 630)
             .clipped()
             .opacity(0.8)
             
-            if gifReady{
-                HStack(spacing: 5) {
-                    Text("Fly to You")
-                        .font(.italiana(size: 40))
-                        .foregroundStyle(.white)
-                    Image("paperplane")
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 40, height: 40)
-                }
-                
-                Text("“마음을 담은 종이비행기를 접어서, \n누군가에게 날려보내는 관심 표현\"")
-                    .font(.pretendard(.light, size: 20))
-                    .multilineTextAlignment(.center)
+            HStack(spacing: 5) {
+                Text("Fly to You")
+                    .font(.italiana(size: 40))
                     .foregroundStyle(.white)
-                    .offset(y: 200)
+                Image(.paperplane)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 40, height: 40)
             }
+            
+            Text("“마음을 담은 종이비행기를 접어서, \n누군가에게 날려보내는 관심 표현\"")
+                .font(.pretendard(.light, size: 20))
+                .multilineTextAlignment(.center)
+                .foregroundStyle(.white)
+                .offset(y: 190)
         }
     }
 }

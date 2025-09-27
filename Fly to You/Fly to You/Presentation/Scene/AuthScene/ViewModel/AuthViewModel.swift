@@ -6,9 +6,6 @@
 //
 
 import Foundation
-import FirebaseAuth
-import FirebaseFirestore
-
 
 protocol AuthViewModelInput{
     func signUp(nickname: String, completion: @escaping (Bool) -> Void)
@@ -31,8 +28,6 @@ final class DefaultAuthViewModel: AuthViewModel {
     init(signUpUseCase: SignUpUseCase) {
         self.signUpUseCae = signUpUseCase
     }
-    
-    private let db = Firestore.firestore()
 
     func signUp(nickname: String, completion: @escaping (Bool) -> Void) {
         
