@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 
 struct MainView: View {
     
@@ -110,7 +109,6 @@ final class MainViewModelWrapper: ObservableObject {
     @Published var topicData: TopicModel = TopicModel(topic: "", topicId: "")
     
     var viewModel: SendLetterViewModel
-    private var cancellables = Set<AnyCancellable>()
     
     init(viewModel: SendLetterViewModel) {
         self.viewModel = viewModel

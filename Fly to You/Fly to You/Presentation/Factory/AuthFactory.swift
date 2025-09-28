@@ -23,13 +23,13 @@ protocol AuthFactory {
 // MARK: - DefaultAuthFactory
 
 final class DefaultAuthFactory: AuthFactory {
-    private let authViewModelWrapper: AuthViewModelWrapper
+    private let authViewModel: AuthViewModel
 
-    init(authViewModelWrapper: AuthViewModelWrapper) {
-        self.authViewModelWrapper = authViewModelWrapper
+    init(authViewModel: AuthViewModel) {
+        self.authViewModel = authViewModel
     }
 
     public func makeSignUpView() -> some View { // some: "특정 타입만 반환"
-        return SignUpView(viewModelWrapper: authViewModelWrapper)
+        return SignUpView(authViewModel: authViewModel)
     }
 }

@@ -9,8 +9,8 @@ final class AuthSceneDIContainer: BaseDIContainer {
     // MARK: - Factory
 
     func makeSignUpFactory() -> DefaultAuthFactory { // DefaultMainFactory를 생성하여 반환
-        let viewModelWrapper = makeAuthViewModelWrapper()
-        return DefaultAuthFactory(authViewModelWrapper: viewModelWrapper)
+        let viewModel = makeAuthViewModel()
+        return DefaultAuthFactory(authViewModel: viewModel)
     }
 
     // MARK: - Use Cases
@@ -32,11 +32,5 @@ final class AuthSceneDIContainer: BaseDIContainer {
         let useCase = makeSignUpUseCase()
         
         return DefaultAuthViewModel(signUpUseCase: useCase)
-    }
-
-    // MARK: - View Model Wrapper
-
-    func makeAuthViewModelWrapper() -> AuthViewModelWrapper {
-        AuthViewModelWrapper(viewModel: makeAuthViewModel())
     }
 }
