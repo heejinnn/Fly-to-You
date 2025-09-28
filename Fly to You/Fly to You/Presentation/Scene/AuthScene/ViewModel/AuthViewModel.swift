@@ -18,7 +18,6 @@ protocol AuthViewModelOutput{
 
 protocol AuthViewModel: AuthViewModelInput, AuthViewModelOutput{}
 
-@Observable
 final class DefaultAuthViewModel: AuthViewModel {
     private(set) var isLoggedIn: Bool = false
     private(set) var duplicateError: Bool = false
@@ -35,12 +34,11 @@ final class DefaultAuthViewModel: AuthViewModel {
             if result{
                 self?.isLoggedIn = true
                 self?.duplicateError = false
-                completion(true)
             } else{
                 self?.isLoggedIn = false
                 self?.duplicateError = true
-                completion(false)
             }
+            completion(result)
         }
     }
 }

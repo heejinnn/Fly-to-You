@@ -9,12 +9,16 @@ import SwiftUI
 import Combine
 
 struct SignUpView: View {
-    @State var authViewModel: AuthViewModel
+    @State var authAdapter: AuthViewModelAdapter
     @EnvironmentObject var appState: AppState
     @State private var nickname = ""
     @State private var isEULAAccepted = false
     @State private var showingEULA = false
     @State private var isClickedSignUpButton = false
+    
+    init(authViewModel: AuthViewModel) {
+        self._authAdapter = State(initialValue: AuthViewModelAdapter(viewModel: authViewModel))
+    }
     
     private var isFormValid: Bool {
         !nickname.isEmpty && isEULAAccepted
@@ -48,7 +52,7 @@ struct SignUpView: View {
                             .stroke(!nickname.isEmpty ? .blue1 : .gray1, lineWidth: 1)
                     )
                     
-                    if authViewModel.duplicateError {
+                    if authAdapter.duplicateError {
                         Text("이미 사용 중인 닉네임입니다.")
                             .font(.pretendard(.light, size: 13))
                             .foregroundColor(.red)
@@ -65,7 +69,7 @@ struct SignUpView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        authViewModel.signUp(nickname: nickname) { result in
+                        authAdapter.signUp(nickname: nickname) { result in
                             if result {
                                 Log.info("[SignUpView] - 회원가입 성공")
                                 appState.isLoggedIn = true
@@ -118,5 +122,30 @@ struct SignUpView: View {
             .padding(.horizontal, Spacing.md)
         }
         .padding(.top, Spacing.xs)
+    }
+}
+
+@Observable
+final class AuthViewModelAdapter {
+    private let viewModel: AuthViewModel
+    
+    private(set) var isLoggedIn: Bool = false
+    private(set) var duplicateError: Bool = false
+    
+    init(viewModel: AuthViewModel) {
+        self.viewModel = viewModel
+        syncState()
+    }
+    
+    func signUp(nickname: String, completion: @escaping (Bool) -> Void) {
+        viewModel.signUp(nickname: nickname) { [weak self] result in
+            self?.syncState()
+            completion(result)
+        }
+    }
+    
+    private func syncState() {
+        isLoggedIn = viewModel.isLoggedIn
+        duplicateError = viewModel.duplicateError
     }
 }
