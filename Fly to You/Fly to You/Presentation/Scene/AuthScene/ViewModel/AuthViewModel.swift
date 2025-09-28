@@ -18,6 +18,7 @@ protocol AuthViewModelOutput{
 
 protocol AuthViewModel: AuthViewModelInput, AuthViewModelOutput{}
 
+@Observable
 final class DefaultAuthViewModel: AuthViewModel {
     private(set) var isLoggedIn: Bool = false
     private(set) var duplicateError: Bool = false
